@@ -2,7 +2,9 @@ QT += core gui webenginewidgets
 
 CONFIG += c++11
 
-SOURCES += src/main.cpp
+SOURCES += src/button.cpp
 SOURCES += src/file.cpp
+SOURCES += src/main.cpp
 
-HEADERS += file.h
+HEADERS += src/file.h
+HEADERS += src/button.h

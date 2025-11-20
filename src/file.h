@@ -1,2 +1,2 @@
-void save(QTextEdit *textEdit);
-void open(QTextEdit *textEdit);
+void save(QPlainTextEdit *textEdit);
+void open(QPlainTextEdit *textEdit);

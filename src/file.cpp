@@ -1,8 +1,8 @@
-#include <QPlainTextEdit>      // Pour QTextEdit
 #include <QFileDialog>    // Pour QFileDialog::getSaveFileName
 #include <QFile>          // Pour QFile
 #include <QTextStream>    // Pour QTextStream
 #include <QIODevice>      // Pour QIODevice::WriteOnly | QIODevice::Text
+#include "file.h"
 
 void save(QPlainTextEdit *textEdit) {
 	QString texte = textEdit->toPlainText();

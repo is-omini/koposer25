@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 
 #include <QWebEngineView>
+#include <QLabel>
 #include <Qt>
 
 #include "file.h"
@@ -61,19 +62,21 @@ QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
 		"background-color: rgba(31,31,31,1);"
 		"color: #fff;"
 	);
+
 	QVBoxLayout *layout = new QVBoxLayout(newBloc);
 	layout->setContentsMargins(0,0,0,0);
 	layout->setSpacing(0);
 
 	QLabel *numLinesLabel = nullptr;
 
-	editorTxt = CodeEdit(editorTxt, numLinesLabel) ;
-	//layout->addWidget(editorTxt);
+	// ✔ Correction : pointer, pas objet !
+	QWidget *editorTxtContenaire = CodeEdit(editorTxt, numLinesLabel);
 
-    layout->addWidget(editorTxt);
+	layout->addWidget(editorTxtContenaire);
 
 	return newBloc;
 }
+
 
 QWidget* VerticalBloc_C(QWebEngineView* &webView) {
 	QWidget *newBloc = new QWidget();

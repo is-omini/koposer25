@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = main.cpp 
-OBJECTS       = main.o
+SOURCES       = main.cpp \
+		file.cpp 
+OBJECTS       = main.o \
+		file.o
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/share/qt/mkspecs/common/unix.conf \
@@ -424,7 +426,8 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/exceptions.prf \
 		/opt/homebrew/share/qt/mkspecs/features/yacc.prf \
 		/opt/homebrew/share/qt/mkspecs/features/lex.prf \
-		koposer25.pro moncode.h main.cpp
+		koposer25.pro moncode.h main.cpp \
+		file.cpp
 QMAKE_TARGET  = koposer25
 DESTDIR       = 
 TARGET        = koposer25.app/Contents/MacOS/koposer25
@@ -1248,7 +1251,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents moncode.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp file.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1303,19 +1306,37 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-main.o: main.cpp /opt/homebrew/lib/QtCore.framework/Headers/Qt \
-		/opt/homebrew/lib/QtCore.framework/Headers/qnamespace.h \
+main.o: main.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
-		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/Qt \
+		/opt/homebrew/lib/QtCore.framework/Headers/qnamespace.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+file.o: file.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QFileDialog \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QFile \
+		/opt/homebrew/lib/QtCore.framework/Headers/qfile.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QTextStream \
+		/opt/homebrew/lib/QtCore.framework/Headers/qtextstream.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QIODevice \
+		/opt/homebrew/lib/QtCore.framework/Headers/qiodevice.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o file.cpp
 
 ####### Install
 

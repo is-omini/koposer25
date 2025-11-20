@@ -11,7 +11,7 @@ QWidget* CodeEdit(QPlainTextEdit* &editeur, QLabel* &numLinesLabel) {
 	numLinesLabel = new QLabel();
 	numLinesLabel->setAlignment(Qt::AlignTop | Qt::AlignRight);
 	numLinesLabel->setFixedWidth(32);
-	numLinesLabel->setStyleSheet("background-color: blue; color: white;");
+	numLinesLabel->setStyleSheet("background-color: rgba(31,31,31,1); color: white;");
 
 	editeur = new QPlainTextEdit();
 

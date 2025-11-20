@@ -20,7 +20,7 @@
 QWidget* VerticalBloc_TOP(QPlainTextEdit *editorTxt) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
-		"background-color: rgba(31,31,31,1);"
+		"background-color: rgba(23,23,23,1);"
 	);
 	newBloc->setFixedHeight(64);
 
@@ -32,46 +32,38 @@ QWidget* VerticalBloc_TOP(QPlainTextEdit *editorTxt) {
 	QObject::connect(saveButton, &Button::clicked, [editorTxt]() {
 		save(editorTxt);
 	});
-
 	Button *openButton = new Button("Ouvrir");
 	QObject::connect(openButton, &Button::clicked, [editorTxt]() {
 		open(editorTxt);
 	});
-
 	layout->addWidget(saveButton);
 	layout->addWidget(openButton);
-
 	layout->addStretch(); // Ajoute un espace flexible pour pousser les boutons à gauche
-
 	return newBloc;
 }
 
 QWidget* VerticalBloc_A() {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
-		"background-color: rgba(31,31,31,1);"
+		"background-color: rgba(23,23,23,1);"
+		"border: none;"
 	);
 	newBloc->setFixedWidth(240);
-
 	return newBloc;
 }
 
 QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
-		"background-color: rgba(31,31,31,1);"
+		"background-color: rgba(23,23,23,1);"
 		"color: #fff;"
+		"border: none;"
 	);
-
 	QVBoxLayout *layout = new QVBoxLayout(newBloc);
 	layout->setContentsMargins(0,0,0,0);
 	layout->setSpacing(0);
-
 	QLabel *numLinesLabel = nullptr;
-
-	// ✔ Correction : pointer, pas objet !
 	QWidget *editorTxtContenaire = CodeEdit(editorTxt, numLinesLabel);
-
 	layout->addWidget(editorTxtContenaire);
 
 	return newBloc;
@@ -80,7 +72,7 @@ QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
 
 QWidget* VerticalBloc_C(QWebEngineView* &webView) {
 	QWidget *newBloc = new QWidget();
-	newBloc->setStyleSheet("background-color: lightyellow;");
+	newBloc->setStyleSheet("background-color: lightyellow;border: none;");
 	
 	QVBoxLayout *layout = new QVBoxLayout(newBloc);
 	layout->setContentsMargins(0,0,0,0);

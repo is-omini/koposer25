@@ -2,7 +2,7 @@ QT += core gui webenginewidgets
 
 CONFIG += c++11
 
-SOURCES += main.cpp
-SOURCES += file.cpp
+SOURCES += src/main.cpp
+SOURCES += src/file.cpp
 
-HEADERS += moncode.h
+HEADERS += file.h

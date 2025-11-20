@@ -1,2 +1,3 @@
+#include <QPlainTextEdit>
 #pragma once
-#include <QPushButton>
+QPlainTextEdit* CodeEdit(QPlainTextEdit* &editeur, QLabel* &numLinesLabel);

@@ -53,9 +53,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = src/button.cpp \
+		src/codeEdit.cpp \
 		src/file.cpp \
 		src/main.cpp moc_button.cpp
 OBJECTS       = button.o \
+		codeEdit.o \
 		file.o \
 		main.o \
 		moc_button.o
@@ -430,7 +432,9 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/yacc.prf \
 		/opt/homebrew/share/qt/mkspecs/features/lex.prf \
 		koposer25.pro src/file.h \
-		src/button.h src/button.cpp \
+		src/button.h \
+		src/codeEdit.h src/button.cpp \
+		src/codeEdit.cpp \
 		src/file.cpp \
 		src/main.cpp
 QMAKE_TARGET  = koposer25
@@ -1255,8 +1259,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/file.h src/button.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/button.cpp src/file.cpp src/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/file.h src/button.h src/codeEdit.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/button.cpp src/codeEdit.cpp src/file.cpp src/main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1324,8 +1328,11 @@ button.o: src/button.cpp src/button.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o button.o src/button.cpp
 
-file.o: src/file.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
+codeEdit.o: src/codeEdit.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o codeEdit.o src/codeEdit.cpp
+
+file.o: src/file.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QFileDialog \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QFile \
@@ -1340,8 +1347,6 @@ main.o: src/main.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QApplication 
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \

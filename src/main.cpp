@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QMainWindow>
 
-#include <QPlainTextEdit>
 #include <QWidget>
 
 #include <QSplitter>
@@ -12,6 +11,7 @@
 
 #include "file.h"
 #include "button.h"
+#include "codeEdit.h"
 
 #define windowWidth 1080
 #define windowHeight 720
@@ -65,7 +65,9 @@ QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
 	layout->setContentsMargins(0,0,0,0);
 	layout->setSpacing(0);
 
-	editorTxt = new QPlainTextEdit();
+	QLabel *numLinesLabel = nullptr;
+
+	editorTxt = CodeEdit(editorTxt, numLinesLabel) ;
 	//layout->addWidget(editorTxt);
 
     layout->addWidget(editorTxt);

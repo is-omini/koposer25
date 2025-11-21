@@ -56,15 +56,23 @@ SOURCES       = src/interface.cpp \
 		src/explorer_files.cpp \
 		src/file.cpp \
 		src/main.cpp \
-		src/code_editor.cpp moc_interface.cpp \
-		moc_code_editor.cpp
+		src/code_editor.cpp \
+		src/web_view.cpp \
+		src/development_tab.cpp moc_interface.cpp \
+		moc_code_editor.cpp \
+		moc_web_view.cpp \
+		moc_development_tab.cpp
 OBJECTS       = interface.o \
 		explorer_files.o \
 		file.o \
 		main.o \
 		code_editor.o \
+		web_view.o \
+		development_tab.o \
 		moc_interface.o \
-		moc_code_editor.o
+		moc_code_editor.o \
+		moc_web_view.o \
+		moc_development_tab.o
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/share/qt/mkspecs/common/unix.conf \
@@ -438,11 +446,15 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		koposer25.pro src/interface.h \
 		src/explorer_files.h \
 		src/file.h \
-		src/code_editor.h src/interface.cpp \
+		src/code_editor.h \
+		src/web_view.h \
+		src/development_tab.h src/interface.cpp \
 		src/explorer_files.cpp \
 		src/file.cpp \
 		src/main.cpp \
-		src/code_editor.cpp
+		src/code_editor.cpp \
+		src/web_view.cpp \
+		src/development_tab.cpp
 QMAKE_TARGET  = koposer25
 DESTDIR       = 
 TARGET        = koposer25.app/Contents/MacOS/koposer25
@@ -1265,8 +1277,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/interface.h src/explorer_files.h src/file.h src/code_editor.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/interface.cpp src/explorer_files.cpp src/file.cpp src/main.cpp src/code_editor.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/interface.h src/explorer_files.h src/file.h src/code_editor.h src/web_view.h src/development_tab.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/interface.cpp src/explorer_files.cpp src/file.cpp src/main.cpp src/code_editor.cpp src/web_view.cpp src/development_tab.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1301,9 +1313,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 	/Library/Developer/CommandLineTools/usr/bin/clang++ -pipe -stdlib=libc++ -O2 -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -Wall -Wextra -dM -E -o moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_interface.cpp moc_code_editor.cpp
+compiler_moc_header_make_all: moc_interface.cpp moc_code_editor.cpp moc_web_view.cpp moc_development_tab.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_interface.cpp moc_code_editor.cpp
+	-$(DEL_FILE) moc_interface.cpp moc_code_editor.cpp moc_web_view.cpp moc_development_tab.cpp
 moc_interface.cpp: src/interface.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
@@ -1317,9 +1329,35 @@ moc_interface.cpp: src/interface.h \
 	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/julie/Documents/project-dev/koposer25/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/julie/Documents/project-dev/koposer25 -I/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers -I/opt/homebrew/lib/QtPrintSupport.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtWebEngineCore.framework/Headers -I/opt/homebrew/lib/QtQuick.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtQmlMeta.framework/Headers -I/opt/homebrew/lib/QtQmlModels.framework/Headers -I/opt/homebrew/lib/QtQmlWorkerScript.framework/Headers -I/opt/homebrew/lib/QtWebChannel.framework/Headers -I/opt/homebrew/lib/QtQml.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/include -I/opt/homebrew/include/QtQmlIntegration -I/opt/homebrew/lib/QtPositioning.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/opt/homebrew/opt/qt/include -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/17/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/interface.h -o moc_interface.cpp
 
 moc_code_editor.cpp: src/code_editor.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
 		moc_predefs.h \
 		/opt/homebrew/share/qt/libexec/moc
 	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/julie/Documents/project-dev/koposer25/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/julie/Documents/project-dev/koposer25 -I/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers -I/opt/homebrew/lib/QtPrintSupport.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtWebEngineCore.framework/Headers -I/opt/homebrew/lib/QtQuick.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtQmlMeta.framework/Headers -I/opt/homebrew/lib/QtQmlModels.framework/Headers -I/opt/homebrew/lib/QtQmlWorkerScript.framework/Headers -I/opt/homebrew/lib/QtWebChannel.framework/Headers -I/opt/homebrew/lib/QtQml.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/include -I/opt/homebrew/include/QtQmlIntegration -I/opt/homebrew/lib/QtPositioning.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/opt/homebrew/opt/qt/include -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/17/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/code_editor.h -o moc_code_editor.cpp
+
+moc_web_view.cpp: src/web_view.h \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
+		moc_predefs.h \
+		/opt/homebrew/share/qt/libexec/moc
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/julie/Documents/project-dev/koposer25/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/julie/Documents/project-dev/koposer25 -I/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers -I/opt/homebrew/lib/QtPrintSupport.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtWebEngineCore.framework/Headers -I/opt/homebrew/lib/QtQuick.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtQmlMeta.framework/Headers -I/opt/homebrew/lib/QtQmlModels.framework/Headers -I/opt/homebrew/lib/QtQmlWorkerScript.framework/Headers -I/opt/homebrew/lib/QtWebChannel.framework/Headers -I/opt/homebrew/lib/QtQml.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/include -I/opt/homebrew/include/QtQmlIntegration -I/opt/homebrew/lib/QtPositioning.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/opt/homebrew/opt/qt/include -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/17/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/web_view.h -o moc_web_view.cpp
+
+moc_development_tab.cpp: src/development_tab.h \
+		src/interface.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		moc_predefs.h \
+		/opt/homebrew/share/qt/libexec/moc
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/julie/Documents/project-dev/koposer25/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/julie/Documents/project-dev/koposer25 -I/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers -I/opt/homebrew/lib/QtPrintSupport.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtWebEngineCore.framework/Headers -I/opt/homebrew/lib/QtQuick.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtQmlMeta.framework/Headers -I/opt/homebrew/lib/QtQmlModels.framework/Headers -I/opt/homebrew/lib/QtQmlWorkerScript.framework/Headers -I/opt/homebrew/lib/QtWebChannel.framework/Headers -I/opt/homebrew/lib/QtQml.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/include -I/opt/homebrew/include/QtQmlIntegration -I/opt/homebrew/lib/QtPositioning.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/opt/homebrew/opt/qt/include -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/17/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/development_tab.h -o moc_development_tab.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1360,7 +1398,9 @@ explorer_files.o: src/explorer_files.cpp src/interface.h \
 		src/file.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
-		src/explorer_files.h
+		src/explorer_files.h \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o explorer_files.o src/explorer_files.cpp
 
 file.o: src/file.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QFileDialog \
@@ -1388,19 +1428,19 @@ main.o: src/main.cpp src/interface.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
 		src/explorer_files.h \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
 		src/code_editor.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		src/web_view.h \
+		src/development_tab.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		/opt/homebrew/lib/QtGui.framework/Headers/QTextDocument \
-		/opt/homebrew/lib/QtGui.framework/Headers/qtextdocument.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QScrollBar \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollbar.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
-		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
-		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QLabel \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qlabel.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/Qt \
@@ -1409,14 +1449,58 @@ main.o: src/main.cpp src/interface.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollarea.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cpp
 
-code_editor.o: src/code_editor.cpp 
+code_editor.o: src/code_editor.cpp src/code_editor.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
+		src/interface.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o code_editor.o src/code_editor.cpp
+
+web_view.o: src/web_view.cpp src/interface.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		src/web_view.h \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
+		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o web_view.o src/web_view.cpp
+
+development_tab.o: src/development_tab.cpp src/development_tab.h \
+		src/interface.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o development_tab.o src/development_tab.cpp
 
 moc_interface.o: moc_interface.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_interface.o moc_interface.cpp
 
 moc_code_editor.o: moc_code_editor.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_code_editor.o moc_code_editor.cpp
+
+moc_web_view.o: moc_web_view.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_web_view.o moc_web_view.cpp
+
+moc_development_tab.o: moc_development_tab.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_development_tab.o moc_development_tab.cpp
 
 ####### Install
 

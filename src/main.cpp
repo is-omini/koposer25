@@ -2,6 +2,8 @@
 #include "file.h"
 #include "explorer_files.h"
 #include "code_editor.h"
+#include "web_view.h"
+#include "development_tab.h"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -13,7 +15,6 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
-#include <QWebEngineView>
 #include <QLabel>
 #include <Qt>
 #include <QScrollArea>
@@ -45,8 +46,10 @@ QWidget* VerticalBloc_B(QPlainTextEdit* &codeEditorInput) {
 	return newBloc;
 }
 
-QWidget* webRenderViewer(QWebEngineView* &webView) {
-    QWidget *newBloc = new QWidget();
+QWidget* webRenderViewer(QWebEngineView* &webView, QPlainTextEdit* codeEditorInput) {
+	QWidget *newBloc = new WebViewer(webView, codeEditorInput);
+
+    /* QWidget *newBloc = new QWidget();
     newBloc->setStyleSheet("background-color: lightyellow; border: none;");
     
     QVBoxLayout *layout = new VerticalBoxLayout(newBloc);
@@ -58,7 +61,7 @@ QWidget* webRenderViewer(QWebEngineView* &webView) {
         webView->page()->runJavaScript("document.body.contentEditable = 'true';");
     });
 
-    layout->addWidget(webView);
+    layout->addWidget(webView); */
 
     return newBloc;
 }
@@ -82,87 +85,26 @@ int main(int argc, char *argv[]) {
 
 	QVBoxLayout *mainWindow = new VerticalBoxLayout(&window);
 
-	QWidget *blocB = VerticalBloc_B(codeEditorInput);
-	QWidget *blocC = webRenderViewer(vueWeb);
+	//QWidget *blocB = VerticalBloc_B(codeEditorInput);
+	//QWidget *blocC = webRenderViewer(vueWeb, codeEditorInput);
 	QWidget *actionBar = actionNavBar(codeEditorInput);
 	QWidget *blocA = explorerFiles(codeEditorInput, vueWeb);
 
 	QSplitter *mainSection = new Splitter(Qt::Horizontal);
 	QSplitter *bodySection = new Splitter(Qt::Vertical);
 
+	QSplitter *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
+
 	mainSection->addWidget(blocA);
-	mainSection->addWidget(blocB);
-	mainSection->addWidget(blocC);
+	mainSection->addWidget(tablDeveloppement);
+	//mainSection->addWidget(blocB);
+	//mainSection->addWidget(blocC);
 
 	bodySection->addWidget(actionBar);
 	bodySection->addWidget(mainSection);
 
 	mainWindow->addWidget(bodySection);
-
-	codeEditorInput->setPlainText(R"(<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-	<style>
-	body {
-		font-family: "Mulish", "Arial", sans-serif;
-		font-weight: 900;
-
-		background: #000;
-		color: #fff;
-	}
-	@keyframes loos {
-		from { transform: rotate(0); }
-		to { transform: rotate(360deg); }
-	}
-	.home {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-	}
-
-	.home h1 {
-		font-size: 64px;
-
-		text-shadow: 0px 0px 8px rgba(0, 0, 0, .2);
-	}
-
-	.home span.loading {
-		display: block;
-
-		width: 32px;
-		height: 32px;
-		border-radius: 100%;
-		border-top: solid 4px #fff;
-		border-left: solid 4px #fff;
-		border-right: solid 4px transparent;
-		border-bottom: solid 4px #fff;
-
-		margin: 0 auto;
-		margin-top: 32px;
-
-		animation: loos 2s linear infinite;
-	}
-	</style>
-</head>
-<body>
-	<span class="img"></span>
-	<div class="home">
-		<div>
-			<h1 id="welcome">Welcome</h1>
-			<span class="loading"></span>
-		</div>
-	</div>
-</body>
-</html>)");
+	
 	QObject::connect(codeEditorInput, &QPlainTextEdit::textChanged, [codeEditorInput, vueWeb]() {
 		vueWeb->setHtml(codeEditorInput->toPlainText());
 	});

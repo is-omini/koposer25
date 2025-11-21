@@ -1,3 +1,5 @@
+#ifndef INTERFACE_H
+#define INTERFACE_H
 #include <QSplitter>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -26,3 +28,4 @@ class Button : public QPushButton {
 public:
     explicit Button(const QString &text, QWidget *parent = nullptr);
 };
+#endif

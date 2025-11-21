@@ -27,7 +27,7 @@ QWidget* actionNavBar(QPlainTextEdit *codeEditorInput) {
 	newBloc->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
 	);
-	newBloc->setFixedHeight(48);
+	newBloc->setFixedHeight(32);
 
 	QHBoxLayout *layout = new HorizontalBoxLayout(newBloc);
 	Button *openButton = new Button("Ouvrir");
@@ -87,13 +87,12 @@ int main(int argc, char *argv[]) {
 
 	//QWidget *blocB = VerticalBloc_B(codeEditorInput);
 	//QWidget *blocC = webRenderViewer(vueWeb, codeEditorInput);
+	QSplitter *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
 	QWidget *actionBar = actionNavBar(codeEditorInput);
 	QWidget *blocA = explorerFiles(codeEditorInput, vueWeb);
 
 	QSplitter *mainSection = new Splitter(Qt::Horizontal);
 	QSplitter *bodySection = new Splitter(Qt::Vertical);
-
-	QSplitter *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
 
 	mainSection->addWidget(blocA);
 	mainSection->addWidget(tablDeveloppement);

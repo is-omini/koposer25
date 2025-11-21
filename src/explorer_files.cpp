@@ -13,7 +13,7 @@ ExplorerFiles::ExplorerFiles(
 	QWidget *parent) : QWidget(parent) {
 	setFixedWidth(240);
 
-	
+	developmentTabVar = developmentTab;
 	contenaireExplorere = new QWidget();
 	contenaireExplorere->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
@@ -22,7 +22,7 @@ ExplorerFiles::ExplorerFiles(
 
 	// Crée un layout vertical pour ExplorerFiles
     verticalBox = new VerticalBoxLayout(this);
-	explorerListFiles("/Users/julie/Documents/project-dev/koposer25/src/", developmentTab);
+	explorerListFiles("/Users/julie/Documents/project-dev/koposer25/src/");
 
 	Button *saveButton = new Button("Sauvegarder");
 	saveButton->setStyleSheet(
@@ -55,7 +55,7 @@ ExplorerFiles::ExplorerFiles(
     verticalBox->addWidget(syncButton);
 }
 
-void ExplorerFiles::explorerListFiles(std::string path, DevelopmentTab* developmentTab) {
+void ExplorerFiles::explorerListFiles(std::string path) {
 	QVBoxLayout *layout = new VerticalBoxLayout(contenaireExplorere);
 	Button *porjectNameTmp = new Button("My Project");
 	porjectNameTmp->setStyleSheet(
@@ -96,7 +96,7 @@ void ExplorerFiles::explorerListFiles(std::string path, DevelopmentTab* developm
 
 		saveButton->connect(saveButton, &QPushButton::clicked, [=](){
 			std::string fullPath = path + entry.path().filename().string();
-			developmentTab->updateViewer(fullPath.c_str());
+			developmentTabVar->updateViewer(fullPath.c_str());
 		});
 
 		layout->addWidget(saveButton, 0, Qt::AlignTop);

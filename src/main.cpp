@@ -18,11 +18,12 @@
 #include <QLabel>
 #include <Qt>
 #include <QScrollArea>
+#include <QFileDialog>
 
 #define windowWidth 1280
 #define windowHeight 800
 
-QWidget* actionNavBar(QPlainTextEdit *codeEditorInput) {
+QWidget* actionNavBar(QPlainTextEdit *codeEditorInput, ExplorerFiles *projectExplorer) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
@@ -35,8 +36,14 @@ QWidget* actionNavBar(QPlainTextEdit *codeEditorInput) {
 		open(codeEditorInput);
 	});
 	Button *openFOlderButton = new Button("Ouvrir");
-	QObject::connect(openFOlderButton, &Button::clicked, [codeEditorInput]() {
-		open(codeEditorInput);
+	QObject::connect(openFOlderButton, &Button::clicked, [newBloc, projectExplorer]() {
+		QString dossier = QFileDialog::getExistingDirectory(
+			newBloc,
+			"Choisir un dossier"
+		);
+		if(!dossier.isEmpty()) projectExplorer->explorerListFiles(
+			dossier.toStdString() + "/"
+		);
 	});
 	layout->addWidget(openFOlderButton);
 	layout->addWidget(openButton);
@@ -56,8 +63,8 @@ int main(int argc, char *argv[]) {
 	QVBoxLayout *mainWindow = new VerticalBoxLayout(&window);
 
 	DevelopmentTab *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
-	QWidget *actionBar = actionNavBar(codeEditorInput);
-	QWidget *projectExplorer = new ExplorerFiles(codeEditorInput, vueWeb, tablDeveloppement);
+	ExplorerFiles *projectExplorer = new ExplorerFiles(codeEditorInput, vueWeb, tablDeveloppement);
+	QWidget *actionBar = actionNavBar(codeEditorInput, projectExplorer);
 
 	QSplitter *mainSection = new Splitter(Qt::Horizontal);
 	QSplitter *bodySection = new Splitter(Qt::Vertical);

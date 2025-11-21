@@ -31,9 +31,11 @@ QWidget* explorerFiles(QPlainTextEdit *codeEditorInput, QWebEngineView* webView)
 		"   background-color: rgba(0, 120, 212, 0.8);"
 		"}"
 	);
-	layout->addWidget(porjectNameTmp, 0, Qt::AlignTop);
 
-	std::string path = "/Users/julie/Documents/project-dev/koposer25/src/";
+	// Contenaires files listes
+	// Fait une fonction qui génere ça !!!
+	layout->addWidget(porjectNameTmp, 0, Qt::AlignTop);
+	std::string path = "/Users/julie/Documents/project-dev/koposer25/src/"; // ATTR_PATH de la fonction
 	for (const auto& entry : fs::directory_iterator(path)) {
 		//entry.path().filename().string()
 		Button *saveButton = new Button(
@@ -64,8 +66,8 @@ QWidget* explorerFiles(QPlainTextEdit *codeEditorInput, QWebEngineView* webView)
 
 		layout->addWidget(saveButton, 0, Qt::AlignTop);
 	}
-
 	layout->addStretch();
+	// Contenaires files listes
 
 	Button *saveButton = new Button("Sauvegarder");
 	saveButton->setStyleSheet(

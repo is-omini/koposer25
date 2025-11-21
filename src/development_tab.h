@@ -19,7 +19,7 @@ public:
 
     QSplitter *layoutEditorAndWebviewer;
 
-    QVector<QPushButton*> allButtonsTabEditors;
+    QVector<Button*> allButtonsTabEditors;
 
     explicit DevelopmentTab(
         QPlainTextEdit* &codeEditorInput,

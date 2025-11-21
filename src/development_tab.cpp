@@ -5,6 +5,8 @@
 #include "web_view.h"
 #include "development_tab.h"
 
+#include <QScrollArea>
+
 #include <cstring>
 
 QHBoxLayout* DevelopmentTab::filesActiveList = nullptr;
@@ -24,7 +26,7 @@ void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
         "   background-color: rgba(0, 120, 212, 0.8);"
         "}"
     );
-    filesActiveList->addWidget(newButton, 0, Qt::AlignLeft);
+    filesActiveList->addWidget(newButton);
 }
 
 void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, int addNewButton) {
@@ -32,17 +34,29 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
     codeEditorElement->setPlainText(QString::fromUtf8(text));
     free(text);
 
-    std::cout << fileName << std::endl;
-
     QString qFileName = QString::fromUtf8(fileName);
     QString qFilePath = QString::fromUtf8(filePath);
     
     if(addNewButton == 1) {
-        Button *newButton;
-        addButton(QString::fromUtf8(fileName), newButton);
-        newButton->connect(newButton, &QPushButton::clicked, [qFilePath, qFileName, this](){
-            DevelopmentTab::updateViewer(qFilePath.toUtf8().constData(), qFileName.toUtf8().constData(), 0);
-        });
+        bool exists = false;
+        for (auto *b : this->allButtonsTabEditors) {
+            if (b->attrID == qFileName) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            //std::cout << ":D" << std::endl;
+            Button *newButton;
+            addButton(qFileName, newButton);
+            newButton->attrID = qFileName;
+            newButton->connect(newButton, &QPushButton::clicked, [qFilePath, qFileName, this](){
+                DevelopmentTab::updateViewer(qFilePath.toUtf8().constData(), qFileName.toUtf8().constData(), 0);
+            });
+            this->allButtonsTabEditors.push_back(newButton);
+        }
+
+        
     }
 
     if(
@@ -51,7 +65,6 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
         (strstr(fileName, ".htm") == nullptr)
     ) webViewer->hide();
     else webViewer->show();
-    //allButtonsTabEditors.push_back(button)
 }
 
 DevelopmentTab::DevelopmentTab(
@@ -79,38 +92,33 @@ DevelopmentTab::DevelopmentTab(
 
     layoutEditorAndWebviewer->addWidget(codeEditor);
     layoutEditorAndWebviewer->addWidget(webViewer);
-    // 
+    //
+
+    QScrollArea *scroll = new QScrollArea(this);
+    scroll->setFixedHeight(32); 
+    scroll->setWidgetResizable(true);               // Le contenu peut s’adapter
+    scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // vertical invisible
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // horizontal invisible
+    scroll->setFrameShape(QFrame::NoFrame);         // pas de bord
 
     QWidget *bloc = new QWidget();
     bloc->setStyleSheet(
         "background-color: rgba(23,23,23,1);"
     );
-    bloc->setFixedHeight(32);
 
     //
     filesActiveList = new HorizontalBoxLayout(bloc);
-    Button *addedFile;
-    addButton("index.html", addedFile);
-    addedFile->setStyleSheet(
-        "QPushButton {"
-        "   background-color: rgba(0, 120, 212, 1);"
-        "   border: 1px solid rgba(0, 120, 212, 1);"
-        "   color: white;"
-        "   padding: 8px 10px;"
-        "   margin: 0;"
-        "   text-align: left;"
-        "}"
-        "QPushButton:hover {"
-        "   background-color: rgba(0, 120, 212, 0.8);"
-        "}"
-    );
-    
-    filesActiveList->addStretch();
     filesActiveList->setContentsMargins(0, 0, 0, 0);
     filesActiveList->setSpacing(0);
+    filesActiveList->addStretch();
     //
 
+    bloc->setFixedHeight(32);
+
+    scroll->setWidget(bloc);
+
     v->addWidget(layoutEditorAndWebviewer);
-    v->addWidget(bloc);
+    v->addWidget(scroll);
+
     addWidget(v);
 }

@@ -18,4 +18,5 @@ moc_interface.o
 moc_predefs.h
 moc_web_view.cpp
 moc_web_view.o
+moc_explorer_files.cpp
 web_view.o

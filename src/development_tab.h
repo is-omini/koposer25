@@ -25,7 +25,7 @@ public:
         Qt::Orientation orientation,
         QWidget *parent = nullptr);
 
-    void updateViewer(const char *files);
+    void updateViewer(const char *filePath, const char *fileName);
 private:
     static QHBoxLayout *filesActiveList;
     void addButton(const QString &text, Button* &newButton) ;

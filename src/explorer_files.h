@@ -9,10 +9,14 @@ void explorerListFiles(std::string path, QWidget *newBloc, DevelopmentTab* devel
 
 class ExplorerFiles : public QWidget {
     Q_OBJECT
+private:
+	DevelopmentTab* developmentTabVar = nullptr;
+	QVBoxLayout *verticalBox = nullptr;
+	QWidget *contenaireExplorere = nullptr;
+	QVBoxLayout *layoutExplorerListItems = nullptr;
+
 public:
-	DevelopmentTab* developmentTabVar;
-	QVBoxLayout *verticalBox;
-	QWidget *contenaireExplorere;
+	QVector<QPushButton*> allButtonsExplorer;
     explicit ExplorerFiles(
     	QPlainTextEdit *codeEditorInput,
 		QWebEngineView* webView,

@@ -27,16 +27,16 @@ void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
     filesActiveList->addWidget(newButton, 0, Qt::AlignLeft);
 }
 
-void DevelopmentTab::updateViewer(const char *files) {
+void DevelopmentTab::updateViewer(const char *filePath, const char *fileName) {
     std::cout << "Hello World!" << std::endl;
-    char *text = read(files);
+    char *text = read(filePath);
     codeEditorElement->setPlainText(QString::fromUtf8(text));
     free(text);
 
     if(
-        (strstr(files, ".html") == nullptr)
+        (strstr(fileName, ".html") == nullptr)
         ||
-        (strstr(files, ".htm") == nullptr)
+        (strstr(fileName, ".htm") == nullptr)
     ) webViewer->hide();
     else webViewer->show();
 }

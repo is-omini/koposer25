@@ -6,14 +6,26 @@
 #include <QPlainTextEdit>
 #include <QWebEngineView>
 
+#include <iostream>
+
 class DevelopmentTab : public QSplitter {
     Q_OBJECT
 public:
+    QPlainTextEdit *codeEditorElement; 
+    QWebEngineView *webViewElement;
+
+    QWidget *codeEditor;
+    QWidget *webViewer;
+
+    QSplitter *layoutEditorAndWebviewer;
+
     explicit DevelopmentTab(
         QPlainTextEdit* &codeEditorInput,
         QWebEngineView* &webView,
         Qt::Orientation orientation,
         QWidget *parent = nullptr);
+
+    void updateViewer(const char *files);
 private:
     static QHBoxLayout *filesActiveList;
     void addButton(const QString &text, Button* &newButton) ;

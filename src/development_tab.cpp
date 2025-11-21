@@ -5,6 +5,8 @@
 #include "web_view.h"
 #include "development_tab.h"
 
+#include <cstring>
+
 QHBoxLayout* DevelopmentTab::filesActiveList = nullptr;
 void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
 
@@ -25,6 +27,20 @@ void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
     filesActiveList->addWidget(newButton, 0, Qt::AlignLeft);
 }
 
+void DevelopmentTab::updateViewer(const char *files) {
+    std::cout << "Hello World!" << std::endl;
+    char *text = read(files);
+    codeEditorElement->setPlainText(QString::fromUtf8(text));
+    free(text);
+
+    if(
+        (strstr(files, ".html") == nullptr)
+        ||
+        (strstr(files, ".htm") == nullptr)
+    ) webViewer->hide();
+    else webViewer->show();
+}
+
 DevelopmentTab::DevelopmentTab(
     QPlainTextEdit* &codeEditorInput,
     QWebEngineView* &webView,
@@ -36,13 +52,21 @@ DevelopmentTab::DevelopmentTab(
     setContentsMargins(0,0,0,0);
     setHandleWidth(0);
 
-    QSplitter *v = new Splitter(Qt::Vertical);
-    QSplitter *h = new Splitter(Qt::Horizontal);
 
-    QWidget *blocB = new EditorCode(codeEditorInput);
-    QWidget *blocC = new WebViewer(webView, codeEditorInput);
-    h->addWidget(blocB);
-    h->addWidget(blocC);
+
+    QSplitter *v = new Splitter(Qt::Vertical);
+    layoutEditorAndWebviewer = new Splitter(Qt::Horizontal);
+
+    //
+    codeEditor = new EditorCode(codeEditorInput);
+    webViewer = new WebViewer(webView, codeEditorInput);
+
+    codeEditorElement = codeEditorInput;
+    webViewElement = webView;
+
+    layoutEditorAndWebviewer->addWidget(codeEditor);
+    layoutEditorAndWebviewer->addWidget(webViewer);
+    // 
 
     QWidget *bloc = new QWidget();
     bloc->setStyleSheet(
@@ -50,8 +74,8 @@ DevelopmentTab::DevelopmentTab(
     );
     bloc->setFixedHeight(32);
 
+    //
     filesActiveList = new HorizontalBoxLayout(bloc);
-
     Button *addedFile;
     addButton("index.html", addedFile);
     addedFile->setStyleSheet(
@@ -67,9 +91,6 @@ DevelopmentTab::DevelopmentTab(
         "   background-color: rgba(0, 120, 212, 0.8);"
         "}"
     );
-    //addButton("index.css");
-    //addButton("index.js");
-
     QObject::connect(addedFile, &Button::clicked, [=]() {
         Button *addedFileButton;
         addButton("index.html", addedFileButton);
@@ -77,9 +98,9 @@ DevelopmentTab::DevelopmentTab(
     filesActiveList->addStretch();
     filesActiveList->setContentsMargins(0, 0, 0, 0);
     filesActiveList->setSpacing(0);
+    //
 
-    v->addWidget(h);
+    v->addWidget(layoutEditorAndWebviewer);
     v->addWidget(bloc);
-
     addWidget(v);
 }

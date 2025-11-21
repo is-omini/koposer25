@@ -34,43 +34,13 @@ QWidget* actionNavBar(QPlainTextEdit *codeEditorInput) {
 	QObject::connect(openButton, &Button::clicked, [codeEditorInput]() {
 		open(codeEditorInput);
 	});
+	Button *openFOlderButton = new Button("Ouvrir");
+	QObject::connect(openFOlderButton, &Button::clicked, [codeEditorInput]() {
+		open(codeEditorInput);
+	});
+	layout->addWidget(openFOlderButton);
 	layout->addWidget(openButton);
 	layout->addStretch();
-
-	return newBloc;
-}
-
-QWidget* VerticalBloc_B(QPlainTextEdit* &codeEditorInput) {
-	QWidget *newBloc = new EditorCode(codeEditorInput);
-
-	return newBloc;
-}
-
-QWidget* webRenderViewer(QWebEngineView* &webView, QPlainTextEdit* codeEditorInput) {
-	QWidget *newBloc = new WebViewer(webView, codeEditorInput);
-
-    /* QWidget *newBloc = new QWidget();
-    newBloc->setStyleSheet("background-color: lightyellow; border: none;");
-    
-    QVBoxLayout *layout = new VerticalBoxLayout(newBloc);
-
-    webView = new QWebEngineView();
-    webView->setHtml("<h1>Hello World</h1>");
-    //webView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect(webView, &QWebEngineView::loadFinished, [=](bool){
-        webView->page()->runJavaScript("document.body.contentEditable = 'true';");
-    });
-
-    layout->addWidget(webView); */
-
-    return newBloc;
-}
-
-QWidget* widget() {
-	QWidget *newBloc = new QWidget();
-	newBloc->setStyleSheet(
-		"background-color: rgba(23,23,23,0.3);"
-	);
 
 	return newBloc;
 }
@@ -85,19 +55,15 @@ int main(int argc, char *argv[]) {
 
 	QVBoxLayout *mainWindow = new VerticalBoxLayout(&window);
 
-	//QWidget *blocB = VerticalBloc_B(codeEditorInput);
-	//QWidget *blocC = webRenderViewer(vueWeb, codeEditorInput);
-	QSplitter *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
+	DevelopmentTab *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
 	QWidget *actionBar = actionNavBar(codeEditorInput);
-	QWidget *blocA = explorerFiles(codeEditorInput, vueWeb);
+	QWidget *projectExplorer = new ExplorerFiles(codeEditorInput, vueWeb, tablDeveloppement);
 
 	QSplitter *mainSection = new Splitter(Qt::Horizontal);
 	QSplitter *bodySection = new Splitter(Qt::Vertical);
 
-	mainSection->addWidget(blocA);
+	mainSection->addWidget(projectExplorer);
 	mainSection->addWidget(tablDeveloppement);
-	//mainSection->addWidget(blocB);
-	//mainSection->addWidget(blocC);
 
 	bodySection->addWidget(actionBar);
 	bodySection->addWidget(mainSection);

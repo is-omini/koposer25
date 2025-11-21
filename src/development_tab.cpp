@@ -104,11 +104,7 @@ DevelopmentTab::DevelopmentTab(
         "   background-color: rgba(0, 120, 212, 0.8);"
         "}"
     );
-    QObject::connect(addedFile, &Button::clicked, [=]() {
-        Button *addedFileButton;
-        addButton("index.html", addedFileButton);
-        std::cout << addedFileButton->attrFilepathGet << std::endl;
-    });
+    
     filesActiveList->addStretch();
     filesActiveList->setContentsMargins(0, 0, 0, 0);
     filesActiveList->setSpacing(0);

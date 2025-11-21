@@ -1,7 +1,11 @@
+#include "interface.h"
+#include "file.h"
+#include "explorer_files.h"
+#include "code_editor.h"
+
 #include <QApplication>
 #include <QMainWindow>
 
-#include <QTextDocument>
 #include <QScrollBar>
 
 #include <QWidget>
@@ -12,182 +16,160 @@
 #include <QWebEngineView>
 #include <QLabel>
 #include <Qt>
+#include <QScrollArea>
 
-#include "file.h"
-#include "button.h"
-#include "codeEdit.h"
+#define windowWidth 1280
+#define windowHeight 800
 
-#define windowWidth 1080
-#define windowHeight 720
-
-QWidget* VerticalBloc_TOP(QPlainTextEdit *editorTxt) {
+QWidget* actionNavBar(QPlainTextEdit *codeEditorInput) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
 	);
 	newBloc->setFixedHeight(48);
 
-	QHBoxLayout *layout = new QHBoxLayout(newBloc);
-	layout->setContentsMargins(0,0,0,0);
-	layout->setSpacing(0);
-
-	Button *saveButton = new Button("Sauvegarder");
-	QObject::connect(saveButton, &Button::clicked, [editorTxt]() {
-		save(editorTxt);
-	});
+	QHBoxLayout *layout = new HorizontalBoxLayout(newBloc);
 	Button *openButton = new Button("Ouvrir");
-	QObject::connect(openButton, &Button::clicked, [editorTxt]() {
-		open(editorTxt);
+	QObject::connect(openButton, &Button::clicked, [codeEditorInput]() {
+		open(codeEditorInput);
 	});
-	layout->addWidget(saveButton);
 	layout->addWidget(openButton);
-	layout->addStretch(); // Ajoute un espace flexible pour pousser les boutons à gauche
+	layout->addStretch();
+
 	return newBloc;
 }
 
-QWidget* VerticalBloc_A() {
+QWidget* VerticalBloc_B(QPlainTextEdit* &codeEditorInput) {
+	QWidget *newBloc = new EditorCode(codeEditorInput);
+
+	return newBloc;
+}
+
+QWidget* webRenderViewer(QWebEngineView* &webView) {
+    QWidget *newBloc = new QWidget();
+    newBloc->setStyleSheet("background-color: lightyellow; border: none;");
+    
+    QVBoxLayout *layout = new VerticalBoxLayout(newBloc);
+
+    webView = new QWebEngineView();
+    webView->setHtml("<h1>Hello World</h1>");
+    //webView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(webView, &QWebEngineView::loadFinished, [=](bool){
+        webView->page()->runJavaScript("document.body.contentEditable = 'true';");
+    });
+
+    layout->addWidget(webView);
+
+    return newBloc;
+}
+
+QWidget* widget() {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
-		"background-color: rgba(23,23,23,1);"
-		"border: none;"
+		"background-color: rgba(23,23,23,0.3);"
 	);
-	newBloc->setFixedWidth(240);
-	return newBloc;
-}
-
-void updateLineNumbers(QPlainTextEdit* editor, QLabel* label)
-{
-	QStringList list;
-	int totalLines = editor->document()->blockCount();
-
-	for (int i = 1; i <= totalLines; ++i)
-		list << QString::number(i);
-
-	label->setText(list.join("\n"));
-}
-
-QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
-	QWidget *newBloc = new QWidget();
-	newBloc->setStyleSheet(
-		"background-color: rgba(23,23,23,1);"
-		"color: white;"
-	);
-
-	QVBoxLayout *mainEditor = new QVBoxLayout(newBloc);
-	mainEditor->setContentsMargins(0,0,0,0);
-	mainEditor->setSpacing(0);
-
-	QWidget *tabBar = new QWidget();
-	tabBar->setStyleSheet(
-		"background-color: red;"
-	);
-	tabBar->setFixedHeight(48);
-
-	QLabel *numLinesLabel = nullptr;
-	QWidget *editorTxtContenaire = CodeEdit(editorTxt, numLinesLabel);
-
-	mainEditor->addWidget(tabBar);
-	mainEditor->addWidget(editorTxtContenaire);
-
-	// Connecter les signaux pour mettre à jour les numéros de ligne
-	QObject::connect(
-		editorTxt->document(),
-		&QTextDocument::blockCountChanged,
-		[=]() { updateLineNumbers(editorTxt, numLinesLabel);
-	});
-	QObject::connect(
-		editorTxt,
-		&QPlainTextEdit::textChanged,
-		[=]() { updateLineNumbers(editorTxt, numLinesLabel);
-	});
-	QObject::connect(
-		editorTxt->verticalScrollBar(),
-		&QScrollBar::valueChanged,
-		[=]() { updateLineNumbers(editorTxt, numLinesLabel);
-	});
-	// Initialiser l'affichage
-	updateLineNumbers(editorTxt, numLinesLabel);
-
-	/* newBloc->setStyleSheet(
-		"background-color: rgba(23,23,23,1);"
-		"color: #fff;"
-		"border: none;"
-	);
-	QVBoxLayout *layout = new QVBoxLayout(newBloc);
-	layout->setContentsMargins(0,0,0,0);
-	layout->setSpacing(0);
-
-
-	QLabel *numLinesLabel = nullptr;
-	QWidget *editorTxtContenaire = CodeEdit(editorTxt, numLinesLabel);
-	layout->addWidget(editorTxtContenaire);
-	 */
 
 	return newBloc;
 }
 
-
-QWidget* VerticalBloc_C(QWebEngineView* &webView) {
-	QWidget *newBloc = new QWidget();
-	newBloc->setStyleSheet("background-color: lightyellow;border: none;");
-	
-	QVBoxLayout *layout = new QVBoxLayout(newBloc);
-	layout->setContentsMargins(0,0,0,0);
-	layout->setSpacing(0);
-
-	webView = new QWebEngineView();
-	webView->setHtml("<h1>Hello World</h1>");
-	layout->addWidget(webView);
-
-	return newBloc;
-}
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
 
 	QWidget window;
 
-	QPlainTextEdit *editorA = nullptr;
+	QPlainTextEdit *codeEditorInput = nullptr;
 	QWebEngineView *vueWeb = nullptr;
 
-	QVBoxLayout *mainWindow = new QVBoxLayout(&window);
+	QVBoxLayout *mainWindow = new VerticalBoxLayout(&window);
 
-	QWidget *blocA = VerticalBloc_A();
-	QWidget *blocB = VerticalBloc_B(editorA);
-	QWidget *blocC = VerticalBloc_C(vueWeb);
-	QWidget *actionBar = VerticalBloc_TOP(editorA);
+	QWidget *blocB = VerticalBloc_B(codeEditorInput);
+	QWidget *blocC = webRenderViewer(vueWeb);
+	QWidget *actionBar = actionNavBar(codeEditorInput);
+	QWidget *blocA = explorerFiles(codeEditorInput, vueWeb);
 
-	QSplitter *mainSection = new QSplitter(Qt::Horizontal);
-	QSplitter *bodySection = new QSplitter(Qt::Vertical);
+	QSplitter *mainSection = new Splitter(Qt::Horizontal);
+	QSplitter *bodySection = new Splitter(Qt::Vertical);
 
 	mainSection->addWidget(blocA);
 	mainSection->addWidget(blocB);
 	mainSection->addWidget(blocC);
-	mainSection->setContentsMargins(0,0,0,0);
-	mainSection->setHandleWidth(0);
 
 	bodySection->addWidget(actionBar);
 	bodySection->addWidget(mainSection);
-	bodySection->setContentsMargins(0,0,0,0);
-	bodySection->setHandleWidth(0);
 
-	mainSection->setStyleSheet("QSplitter::handle { background: transparent; }");
-	bodySection->setStyleSheet("QSplitter::handle { background: transparent; }");
-
-	mainWindow->setContentsMargins(0,0,0,0);
-	mainWindow->setSpacing(0);
 	mainWindow->addWidget(bodySection);
 
+	codeEditorInput->setPlainText(R"(<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+	<style>
+	body {
+		font-family: "Mulish", "Arial", sans-serif;
+		font-weight: 900;
 
-	QObject::connect(editorA, &QPlainTextEdit::textChanged, [editorA, vueWeb]() {
-		vueWeb->setHtml(editorA->toPlainText());
+		background: #000;
+		color: #fff;
+	}
+	@keyframes loos {
+		from { transform: rotate(0); }
+		to { transform: rotate(360deg); }
+	}
+	.home {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	.home h1 {
+		font-size: 64px;
+
+		text-shadow: 0px 0px 8px rgba(0, 0, 0, .2);
+	}
+
+	.home span.loading {
+		display: block;
+
+		width: 32px;
+		height: 32px;
+		border-radius: 100%;
+		border-top: solid 4px #fff;
+		border-left: solid 4px #fff;
+		border-right: solid 4px transparent;
+		border-bottom: solid 4px #fff;
+
+		margin: 0 auto;
+		margin-top: 32px;
+
+		animation: loos 2s linear infinite;
+	}
+	</style>
+</head>
+<body>
+	<span class="img"></span>
+	<div class="home">
+		<div>
+			<h1 id="welcome">Welcome</h1>
+			<span class="loading"></span>
+		</div>
+	</div>
+</body>
+</html>)");
+	QObject::connect(codeEditorInput, &QPlainTextEdit::textChanged, [codeEditorInput, vueWeb]() {
+		vueWeb->setHtml(codeEditorInput->toPlainText());
 	});
-	vueWeb->setHtml(editorA->toPlainText());
+	vueWeb->setHtml(codeEditorInput->toPlainText());
 
-	window.setWindowTitle("Fenêtre 4 blocs fixes");
+	window.setWindowTitle("Hello World");
 	window.resize(windowWidth, windowHeight);
 	window.show();
-
 	return app.exec();
 }

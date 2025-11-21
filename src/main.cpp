@@ -1,6 +1,9 @@
 #include <QApplication>
 #include <QMainWindow>
 
+#include <QTextDocument>
+#include <QScrollBar>
+
 #include <QWidget>
 
 #include <QSplitter>
@@ -22,7 +25,7 @@ QWidget* VerticalBloc_TOP(QPlainTextEdit *editorTxt) {
 	newBloc->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
 	);
-	newBloc->setFixedHeight(64);
+	newBloc->setFixedHeight(48);
 
 	QHBoxLayout *layout = new QHBoxLayout(newBloc);
 	layout->setContentsMargins(0,0,0,0);
@@ -52,9 +55,60 @@ QWidget* VerticalBloc_A() {
 	return newBloc;
 }
 
+void updateLineNumbers(QPlainTextEdit* editor, QLabel* label)
+{
+	QStringList list;
+	int totalLines = editor->document()->blockCount();
+
+	for (int i = 1; i <= totalLines; ++i)
+		list << QString::number(i);
+
+	label->setText(list.join("\n"));
+}
+
 QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
+		"background-color: rgba(23,23,23,1);"
+		"color: white;"
+	);
+
+	QVBoxLayout *mainEditor = new QVBoxLayout(newBloc);
+	mainEditor->setContentsMargins(0,0,0,0);
+	mainEditor->setSpacing(0);
+
+	QWidget *tabBar = new QWidget();
+	tabBar->setStyleSheet(
+		"background-color: red;"
+	);
+	tabBar->setFixedHeight(48);
+
+	QLabel *numLinesLabel = nullptr;
+	QWidget *editorTxtContenaire = CodeEdit(editorTxt, numLinesLabel);
+
+	mainEditor->addWidget(tabBar);
+	mainEditor->addWidget(editorTxtContenaire);
+
+	// Connecter les signaux pour mettre à jour les numéros de ligne
+	QObject::connect(
+		editorTxt->document(),
+		&QTextDocument::blockCountChanged,
+		[=]() { updateLineNumbers(editorTxt, numLinesLabel);
+	});
+	QObject::connect(
+		editorTxt,
+		&QPlainTextEdit::textChanged,
+		[=]() { updateLineNumbers(editorTxt, numLinesLabel);
+	});
+	QObject::connect(
+		editorTxt->verticalScrollBar(),
+		&QScrollBar::valueChanged,
+		[=]() { updateLineNumbers(editorTxt, numLinesLabel);
+	});
+	// Initialiser l'affichage
+	updateLineNumbers(editorTxt, numLinesLabel);
+
+	/* newBloc->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
 		"color: #fff;"
 		"border: none;"
@@ -62,9 +116,12 @@ QWidget* VerticalBloc_B(QPlainTextEdit* &editorTxt) {
 	QVBoxLayout *layout = new QVBoxLayout(newBloc);
 	layout->setContentsMargins(0,0,0,0);
 	layout->setSpacing(0);
+
+
 	QLabel *numLinesLabel = nullptr;
 	QWidget *editorTxtContenaire = CodeEdit(editorTxt, numLinesLabel);
 	layout->addWidget(editorTxtContenaire);
+	 */
 
 	return newBloc;
 }
@@ -114,6 +171,9 @@ int main(int argc, char *argv[])
 	bodySection->addWidget(mainSection);
 	bodySection->setContentsMargins(0,0,0,0);
 	bodySection->setHandleWidth(0);
+
+	mainSection->setStyleSheet("QSplitter::handle { background: transparent; }");
+	bodySection->setStyleSheet("QSplitter::handle { background: transparent; }");
 
 	mainWindow->setContentsMargins(0,0,0,0);
 	mainWindow->setSpacing(0);

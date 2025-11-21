@@ -27,11 +27,23 @@ void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
     filesActiveList->addWidget(newButton, 0, Qt::AlignLeft);
 }
 
-void DevelopmentTab::updateViewer(const char *filePath, const char *fileName) {
-    std::cout << "Hello World!" << std::endl;
+void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, int addNewButton) {
     char *text = read(filePath);
     codeEditorElement->setPlainText(QString::fromUtf8(text));
     free(text);
+
+    std::cout << fileName << std::endl;
+
+    QString qFileName = QString::fromUtf8(fileName);
+    QString qFilePath = QString::fromUtf8(filePath);
+    
+    if(addNewButton == 1) {
+        Button *newButton;
+        addButton(QString::fromUtf8(fileName), newButton);
+        newButton->connect(newButton, &QPushButton::clicked, [qFilePath, qFileName, this](){
+            DevelopmentTab::updateViewer(qFilePath.toUtf8().constData(), qFileName.toUtf8().constData(), 0);
+        });
+    }
 
     if(
         (strstr(fileName, ".html") == nullptr)
@@ -39,6 +51,7 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName) {
         (strstr(fileName, ".htm") == nullptr)
     ) webViewer->hide();
     else webViewer->show();
+    //allButtonsTabEditors.push_back(button)
 }
 
 DevelopmentTab::DevelopmentTab(
@@ -94,6 +107,7 @@ DevelopmentTab::DevelopmentTab(
     QObject::connect(addedFile, &Button::clicked, [=]() {
         Button *addedFileButton;
         addButton("index.html", addedFileButton);
+        std::cout << addedFileButton->attrFilepathGet << std::endl;
     });
     filesActiveList->addStretch();
     filesActiveList->setContentsMargins(0, 0, 0, 0);

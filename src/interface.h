@@ -26,6 +26,7 @@ public:
 class Button : public QPushButton {
     Q_OBJECT
 public:
+    std::string attrFilepathGet;
     explicit Button(const QString &text, QWidget *parent = nullptr);
 };
 #endif

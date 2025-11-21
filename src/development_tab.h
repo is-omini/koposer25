@@ -19,13 +19,15 @@ public:
 
     QSplitter *layoutEditorAndWebviewer;
 
+    QVector<QPushButton*> allButtonsTabEditors;
+
     explicit DevelopmentTab(
         QPlainTextEdit* &codeEditorInput,
         QWebEngineView* &webView,
         Qt::Orientation orientation,
         QWidget *parent = nullptr);
 
-    void updateViewer(const char *filePath, const char *fileName);
+    void updateViewer(const char *filePath, const char *fileName, int addNewButton = 1);
 private:
     static QHBoxLayout *filesActiveList;
     void addButton(const QString &text, Button* &newButton) ;

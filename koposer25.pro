@@ -2,21 +2,30 @@ QT += core gui webenginewidgets svg
 
 CONFIG += c++11
 
-SOURCES += src/DreamMountain.cpp
-SOURCES += src/main.cpp
-SOURCES += src/interface.cpp
-SOURCES += src/explorer_files.cpp
-SOURCES += src/file.cpp
-SOURCES += src/html_color_syntax.cpp
-SOURCES += src/code_editor.cpp
-SOURCES += src/web_view.cpp
-SOURCES += src/development_tab.cpp
+# Dossier de build
+DESTDIR = build/bin          # le binaire final ira dans build/bin
+OBJECTS_DIR = build/obj      # fichiers objets
+MOC_DIR = build/moc          # fichiers moc
+UI_DIR = build/ui            # fichiers ui compilés
+RCC_DIR = build/rcc          # fichiers rcc compilés
 
-HEADERS += src/DreamMountain.h
-HEADERS += src/interface.h
-HEADERS += src/explorer_files.h
-HEADERS += src/file.h
-HEADERS += src/code_editor.h
-HEADERS += src/web_view.h
-HEADERS += src/development_tab.h
-HEADERS += src/html_color_syntax.h
+# Sources
+SOURCES += src/DreamMountain.cpp \
+           src/main.cpp \
+           src/interface.cpp \
+           src/explorer_files.cpp \
+           src/file.cpp \
+           src/html_color_syntax.cpp \
+           src/code_editor.cpp \
+           src/web_view.cpp \
+           src/development_tab.cpp
+
+# Headers
+HEADERS += src/DreamMountain.h \
+           src/interface.h \
+           src/explorer_files.h \
+           src/file.h \
+           src/code_editor.h \
+           src/web_view.h \
+           src/development_tab.h \
+           src/html_color_syntax.h

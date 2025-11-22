@@ -1278,11 +1278,16 @@ build/bin/DreamMoutain.app/Contents/PkgInfo:
 build/bin/DreamMoutain.app/Contents/Info.plist: 
 	@test -d build/bin/DreamMoutain.app/Contents || mkdir -p build/bin/DreamMoutain.app/Contents
 	@$(DEL_FILE) build/bin/DreamMoutain.app/Contents/Info.plist
-	@set -o pipefail && plutil -convert xml1 -o - MacOs/Info.plist | sed -e "s,@SHORT_VERSION@,1.0,g" -e "s,\$${QMAKE_SHORT_VERSION},1.0,g" -e "s,@FULL_VERSION@,1.0.0,g" -e "s,\$${QMAKE_FULL_VERSION},1.0.0,g" -e "s,@TYPEINFO@,????,g" -e "s,\$${QMAKE_PKGINFO_TYPEINFO},????,g" -e "s,@BUNDLEIDENTIFIER@,com.yourcompany.DreamMoutain,g" -e "s,\$${PRODUCT_BUNDLE_IDENTIFIER},com.yourcompany.DreamMoutain,g" -e "s,\$${MACOSX_DEPLOYMENT_TARGET},14.0,g" -e "s,\$${IPHONEOS_DEPLOYMENT_TARGET},,g" -e "s,\$${TVOS_DEPLOYMENT_TARGET},,g" -e "s,\$${WATCHOS_DEPLOYMENT_TARGET},,g" -e "s,\$${IOS_LAUNCH_SCREEN},LaunchScreen,g" -e "s,@ICON@,,g" -e "s,\$${ASSETCATALOG_COMPILER_APPICON_NAME},,g" -e "s,@EXECUTABLE@,DreamMoutain,g" -e "s,@LIBRARY@,DreamMoutain,g" -e "s,\$${EXECUTABLE_NAME},DreamMoutain,g" -e "s,@TYPEINFO@,????,g" -e "s,\$${QMAKE_PKGINFO_TYPEINFO},????,g" >build/bin/DreamMoutain.app/Contents/Info.plist
+	@set -o pipefail && plutil -convert xml1 -o - MacOs/Info.plist | sed -e "s,@SHORT_VERSION@,1.0,g" -e "s,\$${QMAKE_SHORT_VERSION},1.0,g" -e "s,@FULL_VERSION@,1.0.0,g" -e "s,\$${QMAKE_FULL_VERSION},1.0.0,g" -e "s,@TYPEINFO@,????,g" -e "s,\$${QMAKE_PKGINFO_TYPEINFO},????,g" -e "s,@BUNDLEIDENTIFIER@,com.yourcompany.DreamMoutain,g" -e "s,\$${PRODUCT_BUNDLE_IDENTIFIER},com.yourcompany.DreamMoutain,g" -e "s,\$${MACOSX_DEPLOYMENT_TARGET},14.0,g" -e "s,\$${IPHONEOS_DEPLOYMENT_TARGET},,g" -e "s,\$${TVOS_DEPLOYMENT_TARGET},,g" -e "s,\$${WATCHOS_DEPLOYMENT_TARGET},,g" -e "s,\$${IOS_LAUNCH_SCREEN},LaunchScreen,g" -e "s,@ICON@,icon.icns,g" -e "s,\$${ASSETCATALOG_COMPILER_APPICON_NAME},icon.icns,g" -e "s,@EXECUTABLE@,DreamMoutain,g" -e "s,@LIBRARY@,DreamMoutain,g" -e "s,\$${EXECUTABLE_NAME},DreamMoutain,g" -e "s,@TYPEINFO@,????,g" -e "s,\$${QMAKE_PKGINFO_TYPEINFO},????,g" >build/bin/DreamMoutain.app/Contents/Info.plist
+build/bin/DreamMoutain.app/Contents/Resources/icon.icns: MacOs/icon.icns
+	@test -d build/bin/DreamMoutain.app/Contents/Resources/ || mkdir -p build/bin/DreamMoutain.app/Contents/Resources/
+	@$(DEL_FILE) build/bin/DreamMoutain.app/Contents/Resources/icon.icns
+	@$(COPY_FILE) MacOs/icon.icns build/bin/DreamMoutain.app/Contents/Resources/icon.icns
 
 all: Makefile \
 		build/bin/DreamMoutain.app/Contents/PkgInfo \
-		build/bin/DreamMoutain.app/Contents/Info.plist build/bin/DreamMoutain.app/Contents/MacOS/DreamMoutain
+		build/bin/DreamMoutain.app/Contents/Info.plist \
+		build/bin/DreamMoutain.app/Contents/Resources/icon.icns build/bin/DreamMoutain.app/Contents/MacOS/DreamMoutain
 
 dist: distdir FORCE
 	(cd `dirname $(DISTDIR)` && $(TAR) $(DISTNAME).tar $(DISTNAME) && $(COMPRESS) $(DISTNAME).tar) && $(MOVE) `dirname $(DISTDIR)`/$(DISTNAME).tar.gz . && $(DEL_FILE) -r $(DISTDIR)

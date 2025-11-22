@@ -36,5 +36,6 @@ HEADERS += src/DreamMountain.h \
 mac {
     QMAKE_BUNDLE_NAME = DreamMoutain
     QMAKE_BUNDLE_IDENTIFIER = com.iamomini.creatdev.DreamMoutain
+    ICON = MacOs/icon.icns
     QMAKE_INFO_PLIST = MacOs/Info.plist
 }

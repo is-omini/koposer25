@@ -60,6 +60,7 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
 
     char *text = read(filePath);
     codeEditorElement->setPlainText(QString::fromUtf8(text));
+    //dreamMountain->vueWeb->setHtml(codeEditorElement->getPlainText());
     free(text);
 
     QString qFileName = QString::fromUtf8(fileName);
@@ -74,7 +75,6 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
             }
         }
         if (!exists) {
-            //std::cout << ":D" << std::endl;
             Button *newButton;
             addButton(qFileName, newButton);
             newButton->attrID = qFileName;
@@ -87,7 +87,6 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
                 styleSelected,
                 styleNormal
             ](){
-                //dreamMountain->currentPath = qFilePath;
                 dreamMountain->setCurrentPath(qFilePath);
 
                 for (auto b : dreamMountain->explorerAllButton) {
@@ -143,7 +142,7 @@ DevelopmentTab::DevelopmentTab(
     layoutEditorAndWebviewer->addWidget(codeEditor);
     layoutEditorAndWebviewer->addWidget(webViewer);
     layoutEditorAndWebviewer->setSizes({640, 400});
-    webViewer->hide();
+    //webViewer->hide();
     //
 
     QScrollArea *scroll = new QScrollArea(this);

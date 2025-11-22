@@ -108,6 +108,74 @@ QWidget* TopExplorer(ExplorerFiles *projectExplorer, DevelopmentTab *tablDevelop
 	layoutExplorerProjectActionButtons->addWidget(projectSaveButton);
 	///
 	layoutExplorerProjectActionButtons->addStretch();
+
+	///
+	Button *editorCodeToggleViewButton = new Button("Source");
+	editorCodeToggleViewButton->setStyleSheet(
+		"QPushButton {"
+		"   color: white;"
+		"   background-color: #25282d;"
+		"   padding: 8px 16px;"
+		"	border-top-right-radius: 0px;"
+	    "	border-bottom-right-radius: 0px;"
+	    "	border-top-left-radius: 4px;"
+	    "	border-bottom-left-radius: 4px;"
+		"   margin: 0;"
+		"	text-align: center;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #4a4b4e;"
+		"}"
+	);
+	QObject::connect(editorCodeToggleViewButton, &Button::clicked, [tablDeveloppement]() {
+		//save(tablDeveloppement->dreamMountain->codeEditorInput, tablDeveloppement->dreamMountain->currentPath);
+	});
+	editorCodeToggleViewButton->setCursor(Qt::PointingHandCursor);
+	layoutExplorerProjectActionButtons->addWidget(editorCodeToggleViewButton);
+	///
+	Button *webViewANDeditorCodeToggleViewButton = new Button("Source | Visual");
+	webViewANDeditorCodeToggleViewButton->setStyleSheet(
+		"QPushButton {"
+		"   color: white;"
+		"   background-color: #25282d;"
+		"   padding: 8px 16px;"
+		"	border-radius: 0px;"
+		"   margin: 0;"
+		"	text-align: center;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #4a4b4e;"
+		"}"
+	);
+	QObject::connect(webViewANDeditorCodeToggleViewButton, &Button::clicked, [tablDeveloppement]() {
+		//save(tablDeveloppement->dreamMountain->codeEditorInput, tablDeveloppement->dreamMountain->currentPath);
+	});
+	webViewANDeditorCodeToggleViewButton->setCursor(Qt::PointingHandCursor);
+	layoutExplorerProjectActionButtons->addWidget(webViewANDeditorCodeToggleViewButton);
+	///
+	Button *webViewToggleViewButton = new Button("Visual");
+	webViewToggleViewButton->setStyleSheet(
+		"QPushButton {"
+		"   color: white;"
+		"   background-color: #25282d;"
+		"   padding: 8px 16px;"
+		"	border-top-right-radius: 4px;"
+	    "	border-bottom-right-radius: 4px;"
+	    "	border-top-left-radius: 0px;"
+	    "	border-bottom-left-radius: 0px;"
+		"   margin: 0;"
+		"	text-align: center;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #4a4b4e;"
+		"}"
+	);
+	QObject::connect(webViewToggleViewButton, &Button::clicked, [tablDeveloppement]() {
+		//save(tablDeveloppement->dreamMountain->codeEditorInput, tablDeveloppement->dreamMountain->currentPath);
+	});
+	webViewToggleViewButton->setCursor(Qt::PointingHandCursor);
+	layoutExplorerProjectActionButtons->addWidget(webViewToggleViewButton);
+	///
 	return newBloc;
 }
 
@@ -148,6 +216,10 @@ DreamMountain::DreamMountain() {
 	bodySection->addWidget(mainSection);
 
 	mainWindow->addWidget(bodySection);
+
+	QObject::connect(codeEditorInput, &QPlainTextEdit::textChanged, [this]() {
+		vueWeb->setHtml(codeEditorInput->toPlainText());
+	});
 }
 
 void DreamMountain::setCurrentPath(QString path) {

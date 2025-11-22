@@ -31,7 +31,17 @@ void createButtonForExplorer(QString svgBalise, Button* &projectButton) {
 	);
 }
 
+void ExplorerFiles::ExplorerFocusButton(QString path) {
+	qDebug() << path;
+	/* for (auto b : this->dreamMountain->explorerAllButton) {
+		if(b == newButton) continue;
+		b->setEnabled(true);
+		b->setStyleSheet(styleNormal);
+	} */
+}
+
 ExplorerFiles::ExplorerFiles(
+	DreamMountain* main,
 	QPlainTextEdit *codeEditorInput,
 	QWebEngineView* webView,
 	DevelopmentTab* developmentTab,
@@ -39,6 +49,7 @@ ExplorerFiles::ExplorerFiles(
 	setFixedWidth(240);
 
 	developmentTabVar = developmentTab;
+	this->dreamMountain = main;
 
 	QScrollArea *scroll = new QScrollArea(this);
 	scroll->setWidgetResizable(true);	  // important pour le resize
@@ -59,6 +70,16 @@ ExplorerFiles::ExplorerFiles(
 		"border: 1px solid rgba(0, 120, 212, 1);"
 	);
 	QHBoxLayout *layoutExplorerProjectActionButtons = new HorizontalBoxLayout(projectButtons);
+	///
+	Button *projectBackPath = new Button();
+	createButtonForExplorer(R"(
+	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+	<path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/>
+	</svg>
+	)", projectBackPath);
+	QObject::connect(projectBackPath, &Button::clicked, [codeEditorInput, this]() {
+	});
+	layoutExplorerProjectActionButtons->addWidget(projectBackPath);
 	///
 	Button *projectImportFile = new Button();
 	createButtonForExplorer(R"(
@@ -109,7 +130,7 @@ ExplorerFiles::ExplorerFiles(
 }
 
 void ExplorerFiles::explorerListFiles(std::string path) {
-	allButtonsExplorer.clear();
+	dreamMountain->explorerAllButton.clear();
 	if (layoutExplorerListItems) {
 		qDebug() << "DELETE !!!!!!";
 		QLayoutItem *child;
@@ -189,15 +210,16 @@ void ExplorerFiles::explorerListFiles(std::string path) {
 			QString::fromStdString(entry.path().filename().string())
 		);
 		newButton->attrPath = QString::fromStdString(path + '/' + entry.path().filename().string());
-		newButton->setStyleSheet(
-			styleNormal
-		);
-		allButtonsExplorer.push_back(newButton);
+		newButton->setStyleSheet(styleNormal);
+		dreamMountain->explorerAllButton.push_back(newButton);
 
 		std::string fullPath = path + '/' + entry.path().filename().string();
 		if (entry.is_directory()) {
 			newButton->connect(newButton, &QPushButton::clicked, [=](){
+				//this->oldProjectPath = this->currentProjectPath;
+				//this->currentProjectPath = QString::fromStdString(fullPath);
 				ExplorerFiles::explorerListFiles(fullPath);
+				qDebug() << this->oldProjectPath;
 			});
 		} else {
 			newButton->connect(newButton, &QPushButton::clicked, [
@@ -211,14 +233,13 @@ void ExplorerFiles::explorerListFiles(std::string path) {
 				this->currentPath = QString::fromStdString(fullPath);
 				newButton->setEnabled(false);
 				newButton->setStyleSheet(styleSelected);
-				for (auto b : this->allButtonsExplorer) {
+				for (auto b : dreamMountain->explorerAllButton) {
 					if(b == newButton) continue;
 					b->setEnabled(true);
 					b->setStyleSheet(styleNormal);
 				}
 				developmentTabVar->updateViewer(fullPath.c_str(), entry.path().filename().string().c_str());
 				qDebug() << "Hello";
-				qDebug() << this->currentPath;
 			});
 		}
 

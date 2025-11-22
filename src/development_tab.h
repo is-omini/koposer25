@@ -1,8 +1,10 @@
 #ifndef DEVELOPMENT_TAB_H
 #define DEVELOPMENT_TAB_H
+#include "DreamMountain.h"
 
 #include "interface.h"
 #include "code_editor.h"
+
 #include <QSplitter>
 #include <QPlainTextEdit>
 #include <QWebEngineView>
@@ -18,11 +20,15 @@ public:
     QWidget *codeEditor;
     QWidget *webViewer;
 
+
+    QString currentPath;
+
     QSplitter *layoutEditorAndWebviewer;
 
     QVector<Button*> allButtonsTabEditors;
 
     explicit DevelopmentTab(
+        DreamMountain* dreamMountain,
         TextEdit* &codeEditorInput,
         QWebEngineView* &webView,
         Qt::Orientation orientation,
@@ -30,6 +36,8 @@ public:
 
     void updateViewer(const char *filePath, const char *fileName, int addNewButton = 1);
 private:
+    DreamMountain* dreamMountain;
+
     static QHBoxLayout *filesActiveList;
     void addButton(const QString &text, Button* &newButton) ;
 };

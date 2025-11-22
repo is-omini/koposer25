@@ -30,6 +30,34 @@ void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
 }
 
 void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, int addNewButton) {
+    const QString styleNormal = R"(
+    QPushButton {
+        background-color: rgba(23,23,23,1);
+        border: 1px solid rgba(23,23,23,1);
+        color: white;
+        padding: 5px 10px 5px 32px;
+        margin: 0;
+        text-align: left;
+    }
+    QPushButton:hover {
+        background-color: rgba(31,31,31,1);
+    }
+    )";
+
+    const QString styleSelected = R"(
+    QPushButton {
+        background-color: rgba(0,120,212,0.3);
+        border: 1px solid rgba(0,120,212,0.3);
+        color: white;
+        padding: 5px 10px 5px 32px;
+        margin: 0;
+        text-align: left;
+    }
+    QPushButton:hover {
+        background-color: rgba(0,120,212,1.0);
+    }
+    )";
+
     char *text = read(filePath);
     codeEditorElement->setPlainText(QString::fromUtf8(text));
     free(text);
@@ -39,7 +67,7 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
     
     if(addNewButton == 1) {
         bool exists = false;
-        for (auto *b : this->allButtonsTabEditors) {
+        for (auto *b : dreamMountain->tabDevAllButton) {
             if (b->attrID == qFileName) {
                 exists = true;
                 break;
@@ -50,10 +78,31 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
             Button *newButton;
             addButton(qFileName, newButton);
             newButton->attrID = qFileName;
-            newButton->connect(newButton, &QPushButton::clicked, [qFilePath, qFileName, this](){
+            newButton->attrPath = qFilePath;
+            newButton->connect(newButton, &QPushButton::clicked, [
+                qFilePath,
+                qFileName,
+                this,
+                newButton,
+                styleSelected,
+                styleNormal
+            ](){
+                //dreamMountain->currentPath = qFilePath;
+                dreamMountain->setCurrentPath(qFilePath);
+
+                for (auto b : dreamMountain->explorerAllButton) {
+                    if(b->attrPath == newButton->attrPath) {
+                        b->setEnabled(false);
+                        b->setStyleSheet(styleSelected);
+                    } else {
+                        b->setEnabled(true);
+                        b->setStyleSheet(styleNormal);
+                    }
+                }
+
                 DevelopmentTab::updateViewer(qFilePath.toUtf8().constData(), qFileName.toUtf8().constData(), 0);
             });
-            this->allButtonsTabEditors.push_back(newButton);
+            dreamMountain->tabDevAllButton.push_back(newButton);
         }
 
         
@@ -68,6 +117,8 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
 }
 
 DevelopmentTab::DevelopmentTab(
+    DreamMountain* main,
+
     TextEdit* &codeEditorInput,
     QWebEngineView* &webView,
     Qt::Orientation orientation,
@@ -78,7 +129,7 @@ DevelopmentTab::DevelopmentTab(
     setContentsMargins(0,0,0,0);
     setHandleWidth(0);
 
-
+    this->dreamMountain = main;
 
     QSplitter *v = new Splitter(Qt::Vertical);
     layoutEditorAndWebviewer = new Splitter(Qt::Horizontal);

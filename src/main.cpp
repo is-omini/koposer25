@@ -1,28 +1,8 @@
-#include "interface.h"
-#include "file.h"
-#include "explorer_files.h"
-#include "code_editor.h"
-#include "web_view.h"
-#include "development_tab.h"
+#include "DreamMountain.h"
 
 #include <QApplication>
-#include <QMainWindow>
-
-#include <QScrollBar>
-
 #include <QWidget>
-
-#include <QSplitter>
-#include <QVBoxLayout>
-
-#include <QLabel>
-#include <Qt>
-#include <QScrollArea>
-#include <QFileDialog>
-
-#define windowWidth 1280
-#define windowHeight 800
-
+/*
 QWidget* actionNavBar(QPlainTextEdit *codeEditorInput, ExplorerFiles *projectExplorer) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
@@ -35,20 +15,25 @@ QWidget* actionNavBar(QPlainTextEdit *codeEditorInput, ExplorerFiles *projectExp
 	layout->addStretch();
 
 	return newBloc;
-}
+}*/
 
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
 
-	QWidget window;
+	new DreamMountain();
+
+	/*QWidget window;
+	DevelopmentTab *tablDeveloppement = nullptr;
+	ExplorerFiles *projectExplorer = nullptr;
 
 	TextEdit *codeEditorInput = nullptr;
 	QWebEngineView *vueWeb = nullptr;
 
 	QVBoxLayout *mainWindow = new VerticalBoxLayout(&window);
 
-	DevelopmentTab *tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
-	ExplorerFiles *projectExplorer = new ExplorerFiles(codeEditorInput, vueWeb, tablDeveloppement);
+	tablDeveloppement = new DevelopmentTab(codeEditorInput, vueWeb, Qt::Horizontal);
+	projectExplorer = new ExplorerFiles(codeEditorInput, vueWeb, tablDeveloppement);
+
 	QWidget *actionBar = actionNavBar(codeEditorInput, projectExplorer);
 
 	QSplitter *mainSection = new Splitter(Qt::Horizontal);
@@ -69,6 +54,6 @@ int main(int argc, char *argv[]) {
 
 	window.setWindowTitle("Hello World");
 	window.resize(windowWidth, windowHeight);
-	window.show();
+	window.show(); */
 	return app.exec();
 }

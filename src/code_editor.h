@@ -30,7 +30,7 @@ public:
 
     int lineNumberAreaWidth() {
         int digits = QString::number(blockCount()).length();
-        return 3 + 16 + fontMetrics().horizontalAdvance('9') * digits;
+        return 3 + 32 + fontMetrics().horizontalAdvance('9') * digits;
     }
 
 protected:

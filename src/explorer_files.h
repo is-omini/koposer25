@@ -23,33 +23,9 @@ private:
 	QVBoxLayout *layoutExplorerListItems = nullptr;
 
 public:
-	QString styleNormal = R"(
-	QPushButton {
-		background-color: rgba(23,23,23,1);
-		border: 1px solid rgba(23,23,23,1);
-		color: white;
-		padding: 5px 10px 5px 32px;
-		margin: 0;
-		text-align: left;
-	}
-	QPushButton:hover {
-		background-color: rgba(31,31,31,1);
-	}
-	)";
+	QString styleNormal;
 
-	QString styleSelected = R"(
-	QPushButton {
-		background-color: rgba(0,120,212,0.3);
-		border: 1px solid rgba(0,120,212,0.3);
-		color: white;
-		padding: 5px 10px 5px 32px;
-		margin: 0;
-		text-align: left;
-	}
-	QPushButton:hover {
-		background-color: rgba(0,120,212,1.0);
-	}
-	)";
+	QString styleSelected;
 
 	QVector<QPushButton*> allButtonsExplorer;
     explicit ExplorerFiles(

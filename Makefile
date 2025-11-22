@@ -60,12 +60,14 @@ SOURCES       = src/DreamMountain.cpp \
 		src/html_color_syntax.cpp \
 		src/code_editor.cpp \
 		src/web_view.cpp \
-		src/development_tab.cpp build/moc/moc_interface.cpp \
+		src/development_tab.cpp \
+		src/custom_title_bar.cpp build/moc/moc_interface.cpp \
 		build/moc/moc_explorer_files.cpp \
 		build/moc/moc_code_editor.cpp \
 		build/moc/moc_web_view.cpp \
 		build/moc/moc_development_tab.cpp \
-		build/moc/moc_html_color_syntax.cpp
+		build/moc/moc_html_color_syntax.cpp \
+		build/moc/moc_custom_title_bar.cpp
 OBJECTS       = build/obj/DreamMountain.o \
 		build/obj/main.o \
 		build/obj/interface.o \
@@ -75,12 +77,14 @@ OBJECTS       = build/obj/DreamMountain.o \
 		build/obj/code_editor.o \
 		build/obj/web_view.o \
 		build/obj/development_tab.o \
+		build/obj/custom_title_bar.o \
 		build/obj/moc_interface.o \
 		build/obj/moc_explorer_files.o \
 		build/obj/moc_code_editor.o \
 		build/obj/moc_web_view.o \
 		build/obj/moc_development_tab.o \
-		build/obj/moc_html_color_syntax.o
+		build/obj/moc_html_color_syntax.o \
+		build/obj/moc_custom_title_bar.o
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/share/qt/mkspecs/common/unix.conf \
@@ -458,7 +462,8 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		src/code_editor.h \
 		src/web_view.h \
 		src/development_tab.h \
-		src/html_color_syntax.h src/DreamMountain.cpp \
+		src/html_color_syntax.h \
+		src/custom_title_bar.h src/DreamMountain.cpp \
 		src/main.cpp \
 		src/interface.cpp \
 		src/explorer_files.cpp \
@@ -466,7 +471,8 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		src/html_color_syntax.cpp \
 		src/code_editor.cpp \
 		src/web_view.cpp \
-		src/development_tab.cpp
+		src/development_tab.cpp \
+		src/custom_title_bar.cpp
 QMAKE_TARGET  = DreamMoutain
 DESTDIR       = build/bin/
 TARGET        = build/bin/DreamMoutain.app/Contents/MacOS/DreamMoutain
@@ -1296,8 +1302,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/DreamMountain.h src/interface.h src/explorer_files.h src/file.h src/code_editor.h src/web_view.h src/development_tab.h src/html_color_syntax.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/DreamMountain.cpp src/main.cpp src/interface.cpp src/explorer_files.cpp src/file.cpp src/html_color_syntax.cpp src/code_editor.cpp src/web_view.cpp src/development_tab.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/DreamMountain.h src/interface.h src/explorer_files.h src/file.h src/code_editor.h src/web_view.h src/development_tab.h src/html_color_syntax.h src/custom_title_bar.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/DreamMountain.cpp src/main.cpp src/interface.cpp src/explorer_files.cpp src/file.cpp src/html_color_syntax.cpp src/code_editor.cpp src/web_view.cpp src/development_tab.cpp src/custom_title_bar.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1332,9 +1338,9 @@ compiler_moc_predefs_clean:
 build/moc/moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 	/Library/Developer/CommandLineTools/usr/bin/clang++ -pipe -stdlib=libc++ -O2 -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -Wall -Wextra -dM -E -o build/moc/moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: build/moc/moc_interface.cpp build/moc/moc_explorer_files.cpp build/moc/moc_code_editor.cpp build/moc/moc_web_view.cpp build/moc/moc_development_tab.cpp build/moc/moc_html_color_syntax.cpp
+compiler_moc_header_make_all: build/moc/moc_interface.cpp build/moc/moc_explorer_files.cpp build/moc/moc_code_editor.cpp build/moc/moc_web_view.cpp build/moc/moc_development_tab.cpp build/moc/moc_html_color_syntax.cpp build/moc/moc_custom_title_bar.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) build/moc/moc_interface.cpp build/moc/moc_explorer_files.cpp build/moc/moc_code_editor.cpp build/moc/moc_web_view.cpp build/moc/moc_development_tab.cpp build/moc/moc_html_color_syntax.cpp
+	-$(DEL_FILE) build/moc/moc_interface.cpp build/moc/moc_explorer_files.cpp build/moc/moc_code_editor.cpp build/moc/moc_web_view.cpp build/moc/moc_development_tab.cpp build/moc/moc_html_color_syntax.cpp build/moc/moc_custom_title_bar.cpp
 build/moc/moc_interface.cpp: src/interface.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
@@ -1440,6 +1446,22 @@ build/moc/moc_html_color_syntax.cpp: src/html_color_syntax.h \
 		build/moc/moc_predefs.h \
 		/opt/homebrew/share/qt/libexec/moc
 	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/julie/Documents/project-dev/koposer25/build/moc/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/julie/Documents/project-dev/koposer25 -I/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers -I/opt/homebrew/lib/QtPrintSupport.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtWebEngineCore.framework/Headers -I/opt/homebrew/lib/QtQuick.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtSvg.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtQmlMeta.framework/Headers -I/opt/homebrew/lib/QtQmlModels.framework/Headers -I/opt/homebrew/lib/QtQmlWorkerScript.framework/Headers -I/opt/homebrew/lib/QtWebChannel.framework/Headers -I/opt/homebrew/lib/QtQml.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/include -I/opt/homebrew/include/QtQmlIntegration -I/opt/homebrew/lib/QtPositioning.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/opt/homebrew/opt/qt/include -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/17/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/html_color_syntax.h -o build/moc/moc_html_color_syntax.cpp
+
+build/moc/moc_custom_title_bar.cpp: src/custom_title_bar.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QLabel \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlabel.h \
+		/opt/homebrew/lib/QtGui.framework/Headers/QMouseEvent \
+		/opt/homebrew/lib/QtGui.framework/Headers/qevent.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		build/moc/moc_predefs.h \
+		/opt/homebrew/share/qt/libexec/moc
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/julie/Documents/project-dev/koposer25/build/moc/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/julie/Documents/project-dev/koposer25 -I/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers -I/opt/homebrew/lib/QtPrintSupport.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtWebEngineCore.framework/Headers -I/opt/homebrew/lib/QtQuick.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtSvg.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtQmlMeta.framework/Headers -I/opt/homebrew/lib/QtQmlModels.framework/Headers -I/opt/homebrew/lib/QtQmlWorkerScript.framework/Headers -I/opt/homebrew/lib/QtWebChannel.framework/Headers -I/opt/homebrew/lib/QtQml.framework/Headers -I/opt/homebrew/lib/QtNetwork.framework/Headers -I/opt/homebrew/include -I/opt/homebrew/include/QtQmlIntegration -I/opt/homebrew/lib/QtPositioning.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/opt/homebrew/opt/qt/include -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/17/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/custom_title_bar.h -o build/moc/moc_custom_title_bar.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1667,6 +1689,9 @@ build/obj/development_tab.o: src/development_tab.cpp src/interface.h \
 		src/web_view.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/development_tab.o src/development_tab.cpp
 
+build/obj/custom_title_bar.o: src/custom_title_bar.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/custom_title_bar.o src/custom_title_bar.cpp
+
 build/obj/moc_interface.o: build/moc/moc_interface.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/moc_interface.o build/moc/moc_interface.cpp
 
@@ -1684,6 +1709,9 @@ build/obj/moc_development_tab.o: build/moc/moc_development_tab.cpp
 
 build/obj/moc_html_color_syntax.o: build/moc/moc_html_color_syntax.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/moc_html_color_syntax.o build/moc/moc_html_color_syntax.cpp
+
+build/obj/moc_custom_title_bar.o: build/moc/moc_custom_title_bar.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/moc_custom_title_bar.o build/moc/moc_custom_title_bar.cpp
 
 ####### Install
 

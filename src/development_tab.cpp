@@ -155,7 +155,7 @@ DevelopmentTab::DevelopmentTab(
 
     QWidget *bloc = new QWidget();
     bloc->setStyleSheet(
-        "background-color: rgba(23,23,23,1);"
+        "background-color: "+dreamMountain->windowBackgoundColor+";"
     );
 
     //

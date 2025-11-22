@@ -10,6 +10,12 @@
 
 class DreamMountain {
 public:
+	QString blueColor; // #3477f7
+	QString windowBackgoundColor; // #2c2d30
+	QString contenaireBackgoundColor; // #1e1f22
+	QString inputBackgoundColor; // #1e1f22
+	QString borderColor; // #5c5d63
+	
 	TextEdit *codeEditorInput;
 	QWebEngineView *vueWeb;
 
@@ -22,5 +28,8 @@ public:
 	void setCurrentPath(QString path);
 private:
 	QWidget window;
+	// attr : #58a8f5
+	// base : #ce8e6d
+	// othes : #6bb38a
 };
 #endif

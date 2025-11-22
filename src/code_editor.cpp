@@ -7,7 +7,7 @@ LineNumberArea::LineNumberArea(TextEdit *editor) : QWidget(editor), textEdit(edi
 
 void LineNumberArea::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
-    painter.fillRect(event->rect(), QColor("#2a2a2a"));
+    painter.fillRect(event->rect(), QColor("#1e1f22"));
 
     QTextBlock block = textEdit->firstVisibleBlock();
     int blockNumber = block.blockNumber();
@@ -17,8 +17,8 @@ void LineNumberArea::paintEvent(QPaintEvent *event) {
     while(block.isValid() && top <= event->rect().bottom()) {
         if(block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
-            painter.setPen(QColor("#FFFFFF"));
-            painter.drawText(0, top, width()-8, textEdit->fontMetrics().height(),
+            painter.setPen(QColor("#4d4e51"));
+            painter.drawText(0, top, qMax(32, width()-16), textEdit->fontMetrics().height(),
                              Qt::AlignRight, number);
         }
         block = block.next();
@@ -34,7 +34,7 @@ EditorCode::EditorCode(
 ) : QWidget(parent)
 {
     setStyleSheet(
-        "background-color: rgba(31,31,31,1);"
+        "background-color: #1e1f22;"
         "color: white;"
     );
     QVBoxLayout *layout = new VerticalBoxLayout(this);
@@ -47,7 +47,8 @@ EditorCode::EditorCode(
     codeEditorInput->setFont(f);
 
     QPalette p = codeEditorInput->palette();
-    p.setColor(QPalette::Highlight, QColor(0, 120, 212, 20));
+    p.setColor(QPalette::Highlight, QColor("#25282d"));
+    p.setColor(QPalette::HighlightedText, QColor("#ffffff"));
     codeEditorInput->setPalette(p);
 
     HtmlHighlighter *highlighter = new HtmlHighlighter(codeEditorInput->document());

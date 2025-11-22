@@ -11,68 +11,6 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
-/*
-QWidget* ExplorerFiles::TopExplorer() {
-	QWidget *newBloc = new QWidget();
-	newBloc->setStyleSheet(
-		"background-color: rgba(23,23,23,1);"
-	);
-	newBloc->setFixedHeight(32);
-
-	QHBoxLayout *layoutExplorerProjectActionButtons = new HorizontalBoxLayout(newBloc);
-	///
-	Button *projectBackPath = new Button();
-	createButtonForExplorer(R"(
-	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/>
-	</svg>
-	)", projectBackPath);
-	//QObject::connect(projectBackPath, &Button::clicked, []() {});
-	layoutExplorerProjectActionButtons->addWidget(projectBackPath);
-	///
-	Button *projectImportFile = new Button();
-	createButtonForExplorer(R"(
-	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v240h-80v-200H520v-200H240v640h360v80H240Zm638 15L760-183v89h-80v-226h226v80h-90l118 118-56 57Zm-638-95v-640 640Z"/>
-	</svg>
-	)", projectImportFile);
-	QObject::connect(projectImportFile, &Button::clicked, [this]() {
-		open(this->dreamMountain->codeEditorInput);
-	});
-	layoutExplorerProjectActionButtons->addWidget(projectImportFile);
-	///
-	Button *projectImportFolder = new Button();
-	createButtonForExplorer(R"(
-	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/>
-	</svg>
-	)", projectImportFolder);
-	QObject::connect(projectImportFolder, &Button::clicked, [newBloc, this]() {
-		QString dossier = QFileDialog::getExistingDirectory(
-			newBloc,
-			"Choisir un dossier"
-		);
-
-		if(!dossier.isEmpty()) this->explorerListFiles(dossier.toUtf8().constData());
-	});
-	layoutExplorerProjectActionButtons->addWidget(projectImportFolder);
-	///
-	Button *projectSaveButton = new Button();
-	createButtonForExplorer(R"(
-	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
-	</svg>
-	)", projectSaveButton);
-	QObject::connect(projectSaveButton, &Button::clicked, [this]() {
-		save(this->dreamMountain->codeEditorInput, this->currentPath);
-	});
-	layoutExplorerProjectActionButtons->addWidget(projectSaveButton);
-	///
-	layoutExplorerProjectActionButtons->addStretch();
-
-	return newBloc;
-}
-*/
 ExplorerFiles::ExplorerFiles(
 	DreamMountain* main,
 	QPlainTextEdit *codeEditorInput,
@@ -83,8 +21,8 @@ ExplorerFiles::ExplorerFiles(
 
 	styleNormal = R"(
 	QPushButton {
-		background-color: rgba(23,23,23,1);
-		border: 1px solid rgba(23,23,23,1);
+		background-color: #2c2d30;
+		border: 1px solid #2c2d30;
 		color: white;
 		padding: 5px 10px 5px 32px;
 		margin: 0;
@@ -97,15 +35,15 @@ ExplorerFiles::ExplorerFiles(
 
 	styleSelected = R"(
 	QPushButton {
-		background-color: rgba(0,120,212,0.3);
-		border: 1px solid rgba(0,120,212,0.3);
+		background-color: #44454a;
+		border: 1px solid #44454a;
 		color: white;
 		padding: 5px 10px 5px 32px;
 		margin: 0;
 		text-align: left;
 	}
 	QPushButton:hover {
-		background-color: rgba(0,120,212,1.0);
+		background-color: #2c2d30);
 	}
 	)";
 
@@ -121,7 +59,7 @@ ExplorerFiles::ExplorerFiles(
 
 	contenaireExplorere = new QWidget();
 	contenaireExplorere->setStyleSheet(
-		"background-color: rgba(23,23,23,1);"
+		"background-color: "+dreamMountain->windowBackgoundColor+";"
 		"color: white;"
 	);
 	/*
@@ -206,8 +144,8 @@ void ExplorerFiles::explorerListFiles(std::string path) {
 
 	const QString styleNormal = R"(
 	QPushButton {
-		background-color: rgba(23,23,23,1);
-		border: 1px solid rgba(23,23,23,1);
+		background-color: #2c2d30;
+		border: 1px solid #2c2d30;
 		color: white;
 		padding: 5px 10px 5px 32px;
 		margin: 0;
@@ -220,15 +158,15 @@ void ExplorerFiles::explorerListFiles(std::string path) {
 
 	const QString styleSelected = R"(
 	QPushButton {
-		background-color: rgba(0,120,212,0.3);
-		border: 1px solid rgba(0,120,212,0.3);
+		background-color: #44454a;
+		border: 1px solid #44454a;
 		color: white;
 		padding: 5px 10px 5px 32px;
 		margin: 0;
 		text-align: left;
 	}
 	QPushButton:hover {
-		background-color: rgba(0,120,212,1.0);
+		background-color: #2c2d30);
 	}
 	)";
 

@@ -14,20 +14,20 @@
 
 void createButtonForExplorer(QString svgBalise, Button* &projectButton) {
 	projectButton = new Button();
-	projectButton->setSvg(svgBalise, 18, 18);
+	projectButton->setSvg(svgBalise, 20, 20);
 	projectButton->setStyleSheet(
 		"QPushButton {"
-		"   background-color: rgba(42, 42, 42, 0.0);"
 		"	border: none;"
 		"   color: white;"
+		"   background-color: transparent;"
 		"   padding: 8px 8px;"
-		"	width: 18px;"
-		"	height: 18px;"
+		"	width: 20px;"
+		"	height: 20px;"
 		"   margin: 0;"
 		"	text-align: center;"
 		"}"
 		"QPushButton:hover {"
-		"   background-color: rgba(42, 42, 42, 1.0);"
+		"   background-color: #4a4b4e;"
 		"}"
 	);
 	projectButton->setCursor(Qt::PointingHandCursor);
@@ -36,7 +36,7 @@ void createButtonForExplorer(QString svgBalise, Button* &projectButton) {
 QWidget* TopExplorer(ExplorerFiles *projectExplorer, DevelopmentTab *tablDeveloppement) {
 	QWidget *newBloc = new QWidget();
 	newBloc->setStyleSheet(
-		"background-color: rgba(23,23,23,1);"
+		"background-color: #2c2d30;"
 	);
 	newBloc->setFixedHeight(40);
 
@@ -65,7 +65,7 @@ QWidget* TopExplorer(ExplorerFiles *projectExplorer, DevelopmentTab *tablDevelop
 	Button *projectImportFolder = new Button();
 	createButtonForExplorer(R"(
 	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/>
+	<path d="M604.62-64.62q-25.31 0-42.66-17.34-17.34-17.35-17.34-42.66 0-19.92 11.38-35.23 11.38-15.3 28.62-21.69v-247.15q-17.24-6.39-28.62-21.19-11.38-14.81-11.38-34.74 0-25.3 17.34-42.65 17.35-17.35 42.66-17.35 25.3 0 42.65 17.35 17.35 17.35 17.35 42.65 0 19.93-11.39 34.74-11.38 14.8-28.61 21.19v148.07L800-339v-89.69q-17.23-6.39-28.62-21.19Q760-464.69 760-484.62q0-25.3 17.35-42.65 17.34-17.35 42.65-17.35t42.65 17.35Q880-509.92 880-484.62q0 19.93-11.38 34.74-11.39 14.8-28.62 21.19v118.23l-215.38 71.54v57.38q17.23 6.39 28.61 21.69 11.39 15.31 11.39 35.23 0 25.31-17.35 42.66-17.35 17.34-42.65 17.34ZM160-200v-520 520Zm24.62 0q-27.62 0-46.12-18.5Q120-237 120-264.62v-430.76q0-27.62 18.5-46.12Q157-760 184.62-760h199.23l80 80H800q16.08 0 28.04 11.96T840-640H447.77l-80-80H184.62q-10.77 0-17.7 6.92-6.92 6.93-6.92 17.7v430.76q0 10.77 6.92 17.7 6.93 6.92 17.7 6.92h264.61v40H184.62Z"/>
 	</svg>
 	)", projectImportFolder);
 	QObject::connect(projectImportFolder, &Button::clicked, [projectExplorer, newBloc]() {
@@ -88,7 +88,7 @@ QWidget* TopExplorer(ExplorerFiles *projectExplorer, DevelopmentTab *tablDevelop
 	Button *projectImportFile = new Button();
 	createButtonForExplorer(R"(
 	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v240h-80v-200H520v-200H240v640h360v80H240Zm638 15L760-183v89h-80v-226h226v80h-90l118 118-56 57Zm-638-95v-640 640Z"/>
+	<path d="M264.62-120q-27.62 0-46.12-18.5Q200-157 200-184.62v-590.76q0-27.62 18.5-46.12Q237-840 264.62-840H580l180 180v280h-40v-260H560v-160H264.62q-9.24 0-16.93 7.69-7.69 7.69-7.69 16.93v590.76q0 9.24 7.69 16.93 7.69 7.69 16.93 7.69H620v40H264.62ZM878-93.46l-138-138v118.23h-40V-300h186.77v40H767.54l138 138L878-93.46ZM240-160v-640 640Z"/>
 	</svg>
 	)", projectImportFile);
 	QObject::connect(projectImportFile, &Button::clicked, [tablDeveloppement]() {
@@ -99,7 +99,7 @@ QWidget* TopExplorer(ExplorerFiles *projectExplorer, DevelopmentTab *tablDevelop
 	Button *projectSaveButton = new Button();
 	createButtonForExplorer(R"(
 	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
-	<path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
+	<path d="M720-148.46 851.54-280 824-307.54l-84 84V-419h-40v195.46l-84-84L588.46-280 720-148.46ZM580-20v-40h280v40H580ZM244.62-180q-26.08 0-45.35-19.27Q180-218.54 180-244.62v-550.76q0-26.08 19.27-45.35Q218.54-860 244.62-860H520l220 220v125.62h-40V-620H500v-200H244.62q-9.24 0-16.93 7.69-7.69 7.69-7.69 16.93v550.76q0 9.24 7.69 16.93 7.69 7.69 16.93 7.69h240v40h-240ZM220-220v-600 600Z"/>
 	</svg>
 	)", projectSaveButton);
 	QObject::connect(projectSaveButton, &Button::clicked, [tablDeveloppement]() {
@@ -112,6 +112,12 @@ QWidget* TopExplorer(ExplorerFiles *projectExplorer, DevelopmentTab *tablDevelop
 }
 
 DreamMountain::DreamMountain() {
+	blueColor = "#3477f7";
+	windowBackgoundColor = "#2c2d30";
+	contenaireBackgoundColor = "#1e1f22";
+	inputBackgoundColor = "#1e1f22";
+	borderColor = "#5c5d63";
+
 	window.setWindowTitle("DreamMountain : InDevelopment");
 	window.resize(1280, 800);
 	window.show();

@@ -40,6 +40,13 @@ Button::Button(const QString &text, QWidget *parent)
 		"}"
 	);
 };
+/*
+Button::ButtonSvg(const QString &text, QString svgBalise, int size = 8, QWidget *parent)
+    : QPushButton(text, parent)
+{
+	setSvg(svgBalise, size, size);
+
+};*/
 
 void Button::setSvg(QString svg, int w, int h) {
 	QSvgRenderer renderer(svg.toUtf8());

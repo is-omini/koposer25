@@ -26,6 +26,7 @@ public:
     QSplitter *layoutEditorAndWebviewer;
 
     QVector<Button*> allButtonsTabEditors;
+    DreamMountain* dreamMountain;
 
     explicit DevelopmentTab(
         DreamMountain* dreamMountain,
@@ -36,7 +37,6 @@ public:
 
     void updateViewer(const char *filePath, const char *fileName, int addNewButton = 1);
 private:
-    DreamMountain* dreamMountain;
 
     static QHBoxLayout *filesActiveList;
     void addButton(const QString &text, Button* &newButton) ;

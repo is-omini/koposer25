@@ -32,6 +32,9 @@ public:
     QString attrPath;
     
     explicit Button(const QString &text = nullptr, QWidget *parent = nullptr);
+
+    //void addSvg(const QString &text, QString svgBalise, int size = 8, QWidget *parent);
+
     void setSvg(QString svg, int w = 0, int h = 0);
 };
 #endif

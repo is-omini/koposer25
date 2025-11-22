@@ -11,65 +11,15 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
-void createButtonForExplorer(QString svgBalise, Button* &projectButton) {
-	projectButton = new Button();
-	projectButton->setSvg(svgBalise, 16, 16);
-	projectButton->setStyleSheet(
-		"QPushButton {"
-		"   background-color: rgba(0, 120, 212, 1.0);"
-		"	border: none;"
-		"   color: white;"
-		"   padding: 8px 8px;"
-		"	width: 16px;"
-		"	height: 16px;"
-		"   margin: 0;"
-		"	text-align: center;"
-		"}"
-		"QPushButton:hover {"
-		"   background-color: rgba(0, 120, 212, 0.6);"
-		"}"
-	);
-}
-
-void ExplorerFiles::ExplorerFocusButton(QString path) {
-	qDebug() << path;
-	/* for (auto b : this->dreamMountain->explorerAllButton) {
-		if(b == newButton) continue;
-		b->setEnabled(true);
-		b->setStyleSheet(styleNormal);
-	} */
-}
-
-ExplorerFiles::ExplorerFiles(
-	DreamMountain* main,
-	QPlainTextEdit *codeEditorInput,
-	QWebEngineView* webView,
-	DevelopmentTab* developmentTab,
-	QWidget *parent) : QWidget(parent) {
-	setFixedWidth(240);
-
-	developmentTabVar = developmentTab;
-	this->dreamMountain = main;
-
-	QScrollArea *scroll = new QScrollArea(this);
-	scroll->setWidgetResizable(true);	  // important pour le resize
-	scroll->setFrameShape(QFrame::NoFrame); // option : enlever le cadre
-	scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-	contenaireExplorere = new QWidget();
-	contenaireExplorere->setStyleSheet(
+/*
+QWidget* ExplorerFiles::TopExplorer() {
+	QWidget *newBloc = new QWidget();
+	newBloc->setStyleSheet(
 		"background-color: rgba(23,23,23,1);"
-		"color: white;"
 	);
+	newBloc->setFixedHeight(32);
 
-	// Crée un layout vertical pour ExplorerFiles
-	verticalBox = new VerticalBoxLayout(this);
-	QWidget *projectButtons = new QWidget();
-	projectButtons->setStyleSheet(
-		"background-color: rgba(23, 23, 23, 1);"
-		"border: 1px solid rgba(0, 120, 212, 1);"
-	);
-	QHBoxLayout *layoutExplorerProjectActionButtons = new HorizontalBoxLayout(projectButtons);
+	QHBoxLayout *layoutExplorerProjectActionButtons = new HorizontalBoxLayout(newBloc);
 	///
 	Button *projectBackPath = new Button();
 	createButtonForExplorer(R"(
@@ -77,8 +27,7 @@ ExplorerFiles::ExplorerFiles(
 	<path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/>
 	</svg>
 	)", projectBackPath);
-	QObject::connect(projectBackPath, &Button::clicked, [codeEditorInput, this]() {
-	});
+	//QObject::connect(projectBackPath, &Button::clicked, []() {});
 	layoutExplorerProjectActionButtons->addWidget(projectBackPath);
 	///
 	Button *projectImportFile = new Button();
@@ -87,8 +36,8 @@ ExplorerFiles::ExplorerFiles(
 	<path d="M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v240h-80v-200H520v-200H240v640h360v80H240Zm638 15L760-183v89h-80v-226h226v80h-90l118 118-56 57Zm-638-95v-640 640Z"/>
 	</svg>
 	)", projectImportFile);
-	QObject::connect(projectImportFile, &Button::clicked, [codeEditorInput]() {
-		open(codeEditorInput);
+	QObject::connect(projectImportFile, &Button::clicked, [this]() {
+		open(this->dreamMountain->codeEditorInput);
 	});
 	layoutExplorerProjectActionButtons->addWidget(projectImportFile);
 	///
@@ -98,14 +47,13 @@ ExplorerFiles::ExplorerFiles(
 	<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/>
 	</svg>
 	)", projectImportFolder);
-	QObject::connect(projectImportFolder, &Button::clicked, [projectButtons, this]() {
+	QObject::connect(projectImportFolder, &Button::clicked, [newBloc, this]() {
 		QString dossier = QFileDialog::getExistingDirectory(
-			projectButtons,
+			newBloc,
 			"Choisir un dossier"
 		);
-		if(!dossier.isEmpty()) this->explorerListFiles(
-			dossier.toStdString() + "/"
-		);
+
+		if(!dossier.isEmpty()) this->explorerListFiles(dossier.toUtf8().constData());
 	});
 	layoutExplorerProjectActionButtons->addWidget(projectImportFolder);
 	///
@@ -115,15 +63,126 @@ ExplorerFiles::ExplorerFiles(
 	<path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
 	</svg>
 	)", projectSaveButton);
-	QObject::connect(projectSaveButton, &Button::clicked, [codeEditorInput, this]() {
-		save(codeEditorInput, this->currentPath);
+	QObject::connect(projectSaveButton, &Button::clicked, [this]() {
+		save(this->dreamMountain->codeEditorInput, this->currentPath);
 	});
 	layoutExplorerProjectActionButtons->addWidget(projectSaveButton);
 	///
-	verticalBox->addWidget(projectButtons, 0, Qt::AlignTop);
 	layoutExplorerProjectActionButtons->addStretch();
 
-	explorerListFiles("/Users/julie/Documents/project-dev/koposer25/src/");
+	return newBloc;
+}
+*/
+ExplorerFiles::ExplorerFiles(
+	DreamMountain* main,
+	QPlainTextEdit *codeEditorInput,
+	QWebEngineView* webView,
+	DevelopmentTab* developmentTab,
+	QWidget *parent) : QWidget(parent) {
+	setFixedWidth(240);
+
+	styleNormal = R"(
+	QPushButton {
+		background-color: rgba(23,23,23,1);
+		border: 1px solid rgba(23,23,23,1);
+		color: white;
+		padding: 5px 10px 5px 32px;
+		margin: 0;
+		text-align: left;
+	}
+	QPushButton:hover {
+		background-color: rgba(31,31,31,1);
+	}
+	)";
+
+	styleSelected = R"(
+	QPushButton {
+		background-color: rgba(0,120,212,0.3);
+		border: 1px solid rgba(0,120,212,0.3);
+		color: white;
+		padding: 5px 10px 5px 32px;
+		margin: 0;
+		text-align: left;
+	}
+	QPushButton:hover {
+		background-color: rgba(0,120,212,1.0);
+	}
+	)";
+
+	developmentTabVar = developmentTab;
+	this->dreamMountain = main;
+
+	verticalBox = new VerticalBoxLayout(this);
+
+	scroll = new QScrollArea(this);
+	scroll->setWidgetResizable(true);	  // important pour le resize
+	scroll->setFrameShape(QFrame::NoFrame); // option : enlever le cadre
+	scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	contenaireExplorere = new QWidget();
+	contenaireExplorere->setStyleSheet(
+		"background-color: rgba(23,23,23,1);"
+		"color: white;"
+	);
+	/*
+		QWidget *projectButtons = new QWidget();
+		projectButtons->setStyleSheet(
+			"background-color: rgba(23, 23, 23, 1);"
+		);
+		QHBoxLayout *layoutExplorerProjectActionButtons = new HorizontalBoxLayout(projectButtons);
+		///
+		Button *projectBackPath = new Button();
+		createButtonForExplorer(R"(
+		<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+		<path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/>
+		</svg>
+		)", projectBackPath);
+		QObject::connect(projectBackPath, &Button::clicked, [codeEditorInput, this]() {
+		});
+		layoutExplorerProjectActionButtons->addWidget(projectBackPath);
+		///
+		Button *projectImportFile = new Button();
+		createButtonForExplorer(R"(
+		<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+		<path d="M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v240h-80v-200H520v-200H240v640h360v80H240Zm638 15L760-183v89h-80v-226h226v80h-90l118 118-56 57Zm-638-95v-640 640Z"/>
+		</svg>
+		)", projectImportFile);
+		QObject::connect(projectImportFile, &Button::clicked, [codeEditorInput]() {
+			open(codeEditorInput);
+		});
+		layoutExplorerProjectActionButtons->addWidget(projectImportFile);
+		///
+		Button *projectImportFolder = new Button();
+		createButtonForExplorer(R"(
+		<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+		<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z"/>
+		</svg>
+		)", projectImportFolder);
+		QObject::connect(projectImportFolder, &Button::clicked, [projectButtons, this]() {
+			QString dossier = QFileDialog::getExistingDirectory(
+				projectButtons,
+				"Choisir un dossier"
+			);
+			if(!dossier.isEmpty()) this->explorerListFiles(
+				dossier.toStdString() + "/"
+			);
+		});
+		layoutExplorerProjectActionButtons->addWidget(projectImportFolder);
+		///
+		Button *projectSaveButton = new Button();
+		createButtonForExplorer(R"(
+		<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff">
+		<path d="M840-680v480q0 33-23.5 56.5T760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h480l160 160Zm-80 34L646-760H200v560h560v-446ZM480-240q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35ZM240-560h360v-160H240v160Zm-40-86v446-560 114Z"/>
+		</svg>
+		)", projectSaveButton);
+		QObject::connect(projectSaveButton, &Button::clicked, [codeEditorInput, this]() {
+			save(codeEditorInput, this->currentPath);
+		});
+		layoutExplorerProjectActionButtons->addWidget(projectSaveButton);
+		///
+		verticalBox->addWidget(projectButtons, 0, Qt::AlignTop);
+		layoutExplorerProjectActionButtons->addStretch();
+	*/
 
 	scroll->setWidget(contenaireExplorere);
 	verticalBox->addWidget(scroll);
@@ -216,10 +275,16 @@ void ExplorerFiles::explorerListFiles(std::string path) {
 		std::string fullPath = path + '/' + entry.path().filename().string();
 		if (entry.is_directory()) {
 			newButton->connect(newButton, &QPushButton::clicked, [=](){
-				//this->oldProjectPath = this->currentProjectPath;
-				//this->currentProjectPath = QString::fromStdString(fullPath);
-				ExplorerFiles::explorerListFiles(fullPath);
-				qDebug() << this->oldProjectPath;
+				// Met à jour le chemin courant
+				this->currentPath = QString::fromStdString(fullPath);
+
+				// Ajoute à l'historique si nécessaire
+				if (projectPathHistory.empty() || projectPathHistory.back() != fullPath) {
+					projectPathHistory.push_back(fullPath);
+				}
+
+				// Recharge l’explorateur
+				this->explorerListFiles(fullPath + "/");
 			});
 		} else {
 			newButton->connect(newButton, &QPushButton::clicked, [

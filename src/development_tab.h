@@ -2,6 +2,7 @@
 #define DEVELOPMENT_TAB_H
 
 #include "interface.h"
+#include "code_editor.h"
 #include <QSplitter>
 #include <QPlainTextEdit>
 #include <QWebEngineView>
@@ -11,7 +12,7 @@
 class DevelopmentTab : public QSplitter {
     Q_OBJECT
 public:
-    QPlainTextEdit *codeEditorElement; 
+    TextEdit *codeEditorElement; 
     QWebEngineView *webViewElement;
 
     QWidget *codeEditor;
@@ -22,7 +23,7 @@ public:
     QVector<Button*> allButtonsTabEditors;
 
     explicit DevelopmentTab(
-        QPlainTextEdit* &codeEditorInput,
+        TextEdit* &codeEditorInput,
         QWebEngineView* &webView,
         Qt::Orientation orientation,
         QWidget *parent = nullptr);

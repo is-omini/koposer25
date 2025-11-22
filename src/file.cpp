@@ -10,21 +10,30 @@
 #include <string>
 using namespace std;
 
-void save(QPlainTextEdit *textEdit) {
-	QString texte = textEdit->toPlainText();
+void save(QPlainTextEdit *textEdit, const QString &path) {
+	QString fichierPath = path;
 
-	QString nomFichier = QFileDialog::getSaveFileName(
-		nullptr, 
-		"Enregistrer fichier", 
-		"", 
-		"Tous les fichiers (*)"
-	);
-	if (!nomFichier.isEmpty()) {
-		QFile fichier(nomFichier);
-		if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			QTextStream out(&fichier);
-			out << texte;
-		}
+	if (fichierPath.isEmpty()) {
+		fichierPath = QFileDialog::getSaveFileName(
+			nullptr, 
+			"Enregistrer fichier", 
+			"", 
+			"Tous les fichiers (*)"
+		);
+	}
+
+	// Si on a toujours pas de chemin, l'utilisateur a annulé
+    if (fichierPath.isEmpty()) {
+        return;
+    }
+
+    QFile fichier(fichierPath);
+
+	QString texte = textEdit->toPlainText();
+		
+	if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		QTextStream out(&fichier);
+		out << texte;
 	}
 }
 

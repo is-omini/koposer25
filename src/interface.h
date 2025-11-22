@@ -4,6 +4,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QSvgRenderer>
+#include <QPainter>
 
 class Splitter : public QSplitter {
     Q_OBJECT
@@ -27,6 +29,9 @@ class Button : public QPushButton {
     Q_OBJECT
 public:
     QString attrID;
-    explicit Button(const QString &text, QWidget *parent = nullptr);
+    QString attrPath;
+    
+    explicit Button(const QString &text = nullptr, QWidget *parent = nullptr);
+    void setSvg(QString svg, int w = 0, int h = 0);
 };
 #endif

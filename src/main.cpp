@@ -31,22 +31,7 @@ QWidget* actionNavBar(QPlainTextEdit *codeEditorInput, ExplorerFiles *projectExp
 	newBloc->setFixedHeight(32);
 
 	QHBoxLayout *layout = new HorizontalBoxLayout(newBloc);
-	Button *openButton = new Button("Ouvrir");
-	QObject::connect(openButton, &Button::clicked, [codeEditorInput]() {
-		open(codeEditorInput);
-	});
-	Button *openFOlderButton = new Button("Ouvrir");
-	QObject::connect(openFOlderButton, &Button::clicked, [newBloc, projectExplorer]() {
-		QString dossier = QFileDialog::getExistingDirectory(
-			newBloc,
-			"Choisir un dossier"
-		);
-		if(!dossier.isEmpty()) projectExplorer->explorerListFiles(
-			dossier.toStdString() + "/"
-		);
-	});
-	layout->addWidget(openFOlderButton);
-	layout->addWidget(openButton);
+
 	layout->addStretch();
 
 	return newBloc;
@@ -57,7 +42,7 @@ int main(int argc, char *argv[]) {
 
 	QWidget window;
 
-	QPlainTextEdit *codeEditorInput = nullptr;
+	TextEdit *codeEditorInput = nullptr;
 	QWebEngineView *vueWeb = nullptr;
 
 	QVBoxLayout *mainWindow = new VerticalBoxLayout(&window);
@@ -80,7 +65,7 @@ int main(int argc, char *argv[]) {
 	QObject::connect(codeEditorInput, &QPlainTextEdit::textChanged, [codeEditorInput, vueWeb]() {
 		vueWeb->setHtml(codeEditorInput->toPlainText());
 	});
-	vueWeb->setHtml(codeEditorInput->toPlainText());
+	//vueWeb->setHtml("<h1>Hello</h1>");
 
 	window.setWindowTitle("Hello World");
 	window.resize(windowWidth, windowHeight);

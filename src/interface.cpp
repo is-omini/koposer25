@@ -40,3 +40,14 @@ Button::Button(const QString &text, QWidget *parent)
 		"}"
 	);
 };
+
+void Button::setSvg(QString svg, int w, int h) {
+	QSvgRenderer renderer(svg.toUtf8());
+	QPixmap pixmap(w, h);
+	pixmap.fill(Qt::transparent);         // fond transparent
+	QPainter painter(&pixmap);
+	renderer.render(&painter);
+	QIcon icon(pixmap);  // chemin vers ton fichier SVG
+	this->setIcon(icon);
+	this->setIconSize(QSize(w, h));
+};

@@ -14,6 +14,7 @@ private:
 	QVBoxLayout *verticalBox = nullptr;
 	QWidget *contenaireExplorere = nullptr;
 	QVBoxLayout *layoutExplorerListItems = nullptr;
+	QString currentPath;
 
 public:
 	QVector<QPushButton*> allButtonsExplorer;

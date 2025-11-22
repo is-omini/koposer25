@@ -68,7 +68,7 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
 }
 
 DevelopmentTab::DevelopmentTab(
-    QPlainTextEdit* &codeEditorInput,
+    TextEdit* &codeEditorInput,
     QWebEngineView* &webView,
     Qt::Orientation orientation,
     QWidget *parent)
@@ -89,9 +89,10 @@ DevelopmentTab::DevelopmentTab(
 
     codeEditorElement = codeEditorInput;
     webViewElement = webView;
-
     layoutEditorAndWebviewer->addWidget(codeEditor);
     layoutEditorAndWebviewer->addWidget(webViewer);
+    layoutEditorAndWebviewer->setSizes({640, 400});
+    webViewer->hide();
     //
 
     QScrollArea *scroll = new QScrollArea(this);

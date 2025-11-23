@@ -8,6 +8,7 @@
 #include <QSplitter>
 #include <QPlainTextEdit>
 #include <QWebEngineView>
+#include <QHBoxLayout>
 
 #include <iostream>
 
@@ -32,10 +33,14 @@ public:
         DreamMountain* dreamMountain,
         TextEdit* &codeEditorInput,
         QWebEngineView* &webView,
+        QHBoxLayout* &filesAList,
         Qt::Orientation orientation,
         QWidget *parent = nullptr);
 
     void updateViewer(const char *filePath, const char *fileName, int addNewButton = 1);
+
+    void toggleViewCodeEditor();
+    void toggleViewWebView();
 private:
 
     static QHBoxLayout *filesActiveList;

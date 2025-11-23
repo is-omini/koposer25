@@ -20,6 +20,7 @@ ExplorerFiles::ExplorerFiles(
 	DevelopmentTab* developmentTab,
 	QWidget *parent) : QWidget(parent) {
 	setFixedWidth(240);
+	setStyleSheet("background-color: "+main->windowBackgoundColor+";");
 
 	styleNormal = R"(
 	QPushButton {
@@ -61,10 +62,6 @@ ExplorerFiles::ExplorerFiles(
     scroll->setStyleSheet(scrollBarWindow);
 
 	contenaireExplorere = new QWidget();
-	contenaireExplorere->setStyleSheet(
-		"background-color: "+dreamMountain->windowBackgoundColor+";"
-		"color: white;"
-	);
 
 	scroll->setWidget(contenaireExplorere);
 	verticalBox->addWidget(scroll);

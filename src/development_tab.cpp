@@ -10,6 +10,17 @@
 #include <cstring>
 
 QHBoxLayout* DevelopmentTab::filesActiveList = nullptr;
+
+void DevelopmentTab::toggleViewCodeEditor() {
+    if(codeEditor->isVisible()) codeEditor->hide();
+    else codeEditor->show();
+}
+void DevelopmentTab::toggleViewWebView() {
+    if(webViewer->isVisible()) webViewer->hide();
+    else webViewer->show();
+}
+
+
 void DevelopmentTab::addButton(const QString &text, Button* &newButton) {
 
     newButton = new Button(text);
@@ -103,8 +114,6 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
             });
             dreamMountain->tabDevAllButton.push_back(newButton);
         }
-
-        
     }
 
     if(
@@ -117,9 +126,9 @@ void DevelopmentTab::updateViewer(const char *filePath, const char *fileName, in
 
 DevelopmentTab::DevelopmentTab(
     DreamMountain* main,
-
     TextEdit* &codeEditorInput,
     QWebEngineView* &webView,
+    QHBoxLayout* &filesAList,
     Qt::Orientation orientation,
     QWidget *parent)
     : QSplitter(orientation, parent)
@@ -129,6 +138,7 @@ DevelopmentTab::DevelopmentTab(
     setHandleWidth(0);
 
     this->dreamMountain = main;
+    this->filesActiveList = filesAList;
 
     QSplitter *v = new Splitter(Qt::Vertical);
     layoutEditorAndWebviewer = new Splitter(Qt::Horizontal);
@@ -139,37 +149,38 @@ DevelopmentTab::DevelopmentTab(
 
     codeEditorElement = codeEditorInput;
     webViewElement = webView;
+
     layoutEditorAndWebviewer->addWidget(codeEditor);
     layoutEditorAndWebviewer->addWidget(webViewer);
     layoutEditorAndWebviewer->setSizes({640, 400});
     //webViewer->hide();
     //
 
-    QScrollArea *scroll = new QScrollArea(this);
-    scroll->setFixedHeight(32); 
-    scroll->setWidgetResizable(true);               // Le contenu peut s’adapter
-    scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // vertical invisible
-    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // horizontal invisible
-    scroll->setFrameShape(QFrame::NoFrame);         // pas de bord
+    // QScrollArea *scroll = new QScrollArea(this);
+    // scroll->setFixedHeight(32); 
+    // scroll->setWidgetResizable(true);               // Le contenu peut s’adapter
+    // scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // vertical invisible
+    // scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // horizontal invisible
+    // scroll->setFrameShape(QFrame::NoFrame);         // pas de bord
 
-    QWidget *bloc = new QWidget();
-    bloc->setStyleSheet(
-        "background-color: "+dreamMountain->windowBackgoundColor+";"
-    );
+    // QWidget *bloc = new QWidget();
+    // bloc->setStyleSheet(
+    //     "background-color: "+dreamMountain->windowBackgoundColor+";"
+    // );
 
-    //
-    filesActiveList = new HorizontalBoxLayout(bloc);
-    filesActiveList->setContentsMargins(0, 0, 0, 0);
-    filesActiveList->setSpacing(0);
-    filesActiveList->addStretch();
-    //
+    // //
+    // filesActiveList = new HorizontalBoxLayout(bloc);
+    // filesActiveList->setContentsMargins(0, 0, 0, 0);
+    // filesActiveList->setSpacing(0);
+    // filesActiveList->addStretch();
+    // //
 
-    bloc->setFixedHeight(32);
+    // bloc->setFixedHeight(32);
 
-    scroll->setWidget(bloc);
+    // scroll->setWidget(bloc);
 
     v->addWidget(layoutEditorAndWebviewer);
-    v->addWidget(scroll);
+    // v->addWidget(scroll);
 
     addWidget(v);
 }

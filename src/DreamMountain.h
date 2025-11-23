@@ -2,13 +2,14 @@
 #define DREAMMOUNTAIN_H
 
 #include <QWidget>
+#include <QMainWindow>
 #include <QWebEngineView>
 
 #include "interface.h"
 
 #include "code_editor.h"
 
-class DreamMountain {
+class DreamMountain : public QMainWindow {
 public:
 	QString blueColor; // #3477f7
 	QString windowBackgoundColor; // #2c2d30
@@ -23,10 +24,11 @@ public:
 	QVector<ButtonSvg*> explorerAllButton;
 
 	QString currentPath;
-	DreamMountain();
+	explicit DreamMountain(QWidget *parent = nullptr);
 
 	void setCurrentPath(QString path);
 private:
+	QHBoxLayout *filesActiveList;
 	QWidget window;
 	// attr : #58a8f5
 	// base : #ce8e6d

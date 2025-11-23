@@ -27,7 +27,7 @@ void createButtonForExplorer(QString svgBalise, Button* &projectButton) {
 		"	text-align: center;"
 		"}"
 		"QPushButton:hover {"
-		"   background-color: #4a4b4e;"
+		"   background-color: #1e1f22;"
 		"}"
 	);
 	projectButton->setCursor(Qt::PointingHandCursor);

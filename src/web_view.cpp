@@ -10,7 +10,7 @@ WebViewer::WebViewer(QWebEngineView* &webView, QPlainTextEdit* codeEditorInput, 
     );
 
     QVBoxLayout *layout = new VerticalBoxLayout(this);
-    webView = new QWebEngineView();
+    webView = new QWebEngineView(this);
     QObject::connect(webView, &QWebEngineView::loadFinished, [=](bool){
         webView->page()->runJavaScript("document.body.contentEditable = 'true';");
     });

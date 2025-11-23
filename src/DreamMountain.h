@@ -20,7 +20,7 @@ public:
 	QWebEngineView *vueWeb;
 
 	QVector<Button*> tabDevAllButton; // Gere la tabulation en bas à droite
-	QVector<Button*> explorerAllButton;
+	QVector<ButtonSvg*> explorerAllButton;
 
 	QString currentPath;
 	DreamMountain();

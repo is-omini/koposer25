@@ -20,19 +20,18 @@ SOURCES += src/DreamMountain.cpp \
     src/html_color_syntax.cpp \
     src/code_editor.cpp \
     src/web_view.cpp \
-    src/development_tab.cpp \
-    src/custom_title_bar.cpp
+    src/development_tab.cpp
 
 # Headers
 HEADERS += src/DreamMountain.h \
+    src/ui_styles.h \
     src/interface.h \
     src/explorer_files.h \
     src/file.h \
     src/code_editor.h \
     src/web_view.h \
     src/development_tab.h \
-    src/html_color_syntax.h \
-    src/custom_title_bar.h
+    src/html_color_syntax.h
 
 # Personnalisation macOS
 mac {

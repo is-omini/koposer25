@@ -206,8 +206,8 @@ DreamMountain::DreamMountain() {
 	dir.cdUp();
 	dir.cdUp();
 	dir.cdUp();
-	qDebug() << dir.filePath("").toUtf8().constData();
-	projectExplorer->explorerListFiles(dir.filePath("project/").toUtf8().constData());
+	//projectExplorer->explorerListFiles(dir.filePath("project/").toUtf8().constData());
+	projectExplorer->explorerListFiles("/Applications", "Applications");
 
 	mainSection->addWidget(projectExplorer);
 	mainSection->addWidget(tablDeveloppement);

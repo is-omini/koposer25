@@ -35,7 +35,7 @@ public:
 		DevelopmentTab* developmentTab,
 		QWidget *parent = nullptr);
 
-    void explorerListFiles(std::string path);
+    void explorerListFiles(std::string path, QString titleProject = "My new project");
     QWidget* TopExplorer();
 	
 	QString currentPath;

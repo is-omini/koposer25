@@ -40,6 +40,8 @@ protected:
         lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
     }
 
+    void keyPressEvent(QKeyEvent *event) override;
+
 private slots:
     void updateLineNumberAreaWidth(int) {
         setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);

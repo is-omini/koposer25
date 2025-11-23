@@ -6,6 +6,7 @@
 
 #include <QTextBlock>
 #include <QPainter>
+#include "interface.h"
 
 class TextEdit;
 
@@ -32,6 +33,8 @@ public:
 
     TextEdit* codeEditor;
     QWidget* overlay;
+    VerticalBoxLayout* listAuto;
+    
     int cursorPosY;
     int cursorPosX;
 };

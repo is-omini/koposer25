@@ -26,6 +26,7 @@ public:
 	QString styleNormal;
 
 	QString styleSelected;
+	QString porjectName;
 
 	QVector<QPushButton*> allButtonsExplorer;
     explicit ExplorerFiles(

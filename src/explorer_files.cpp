@@ -68,6 +68,7 @@ ExplorerFiles::ExplorerFiles(
 }
 
 void ExplorerFiles::explorerListFiles(std::string path, QString titleProject) {
+	porjectName = titleProject;
 	dreamMountain->explorerAllButton.clear();
 	if (layoutExplorerListItems) {
 		qDebug() << "DELETE !!!!!!";
@@ -183,7 +184,7 @@ void ExplorerFiles::explorerListFiles(std::string path, QString titleProject) {
 				}
 
 				// Recharge l’explorateur
-				this->explorerListFiles(fullPath + "/");
+				this->explorerListFiles(fullPath + "/", titleProject);
 			});
 		} else {
 			newButton->connect(newButton, &QPushButton::clicked, [

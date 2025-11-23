@@ -118,7 +118,7 @@ public:
             std::string previous = projectExplorer->projectPathHistory.back();
             projectExplorer->currentPath = QString::fromStdString(previous);
 
-            projectExplorer->explorerListFiles(previous + "/");
+            projectExplorer->explorerListFiles(previous + "/", projectExplorer->porjectName);
         });
         layoutExplorerProjectActionButtons->addWidget(projectBackPath);
         ///
@@ -472,9 +472,9 @@ DreamMountain::DreamMountain(QWidget *parent) : QMainWindow(parent) {
 	QDir dir(binPath);
 	dir.cdUp();
 	dir.cdUp();
-	dir.cdUp();
-	//projectExplorer->explorerListFiles(dir.filePath("project/").toUtf8().constData());
-	projectExplorer->explorerListFiles("/Applications", "Applications");
+	//dir.cdUp();
+	projectExplorer->explorerListFiles(dir.filePath("").toUtf8().constData(), "DreamMountain.app");
+	//projectExplorer->explorerListFiles("/Applications", "Applications");
 
 	mainSection->addWidget(projectExplorer);
 	mainSection->addWidget(tablDeveloppement);

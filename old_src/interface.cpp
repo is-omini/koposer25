@@ -40,6 +40,19 @@ Button::Button(const QString &text, QWidget *parent)
 		"}"
 	);
 };
+
+ButtonSvg::ButtonSvg(const QString &text, QString svgBalise, int size, QWidget *parent)
+    : QPushButton(text, parent)
+{
+	QSvgRenderer renderer(svgBalise.toUtf8());
+	QPixmap pixmap(size, size);
+	pixmap.fill(Qt::transparent);         // fond transparent
+	QPainter painter(&pixmap);
+	renderer.render(&painter);
+	QIcon icon(pixmap);  // chemin vers ton fichier SVG
+	setIcon(icon);
+	setIconSize(QSize(size, size));
+};
 /*
 Button::ButtonSvg(const QString &text, QString svgBalise, int size = 8, QWidget *parent)
     : QPushButton(text, parent)

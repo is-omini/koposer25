@@ -5,33 +5,45 @@ CONFIG += c++11
 TARGET = DreamMoutain
 
 # Dossier de build
-DESTDIR = build/bin          # le binaire final ira dans build/bin
-OBJECTS_DIR = build/obj      # fichiers objets
-MOC_DIR = build/moc          # fichiers moc
-UI_DIR = build/ui            # fichiers ui compilés
-RCC_DIR = build/rcc          # fichiers rcc compilés
+DESTDIR = _build/bin          # le binaire final ira dans _build/bin
+OBJECTS_DIR = _build/obj      # fichiers objets
+MOC_DIR = _build/moc          # fichiers moc
+UI_DIR = _build/ui            # fichiers ui compilés
+RCC_DIR = _build/rcc          # fichiers rcc compilés
 
 # Sources
-SOURCES += src/DreamMountain.cpp \
-    src/main.cpp \
-    src/interface.cpp \
-    src/explorer_files.cpp \
-    src/file.cpp \
-    src/html_color_syntax.cpp \
-    src/code_editor.cpp \
-    src/web_view.cpp \
-    src/development_tab.cpp
+SOURCES += src/mainDreamMountain.cpp \
+    src/include/windowDreamMountain.cpp \
+    src/include/appContentDreamMountain.cpp \
+    src/include/codeEditorDreamMountain.cpp \
+    src/include/filesExplorerDreamMountain.cpp \
+    src/include/webViewDreamMountain.cpp \
+    src/include/interfaceDreamMountain.cpp \
+    src/include/system/textEditor.cpp \
+    src/include/system/lineNumberArea.cpp \
+    src/include/system/webEngine.cpp \
+    src/include/system/fileSortingAlgorithm.cpp \
+    src/include/system/fileEngine.cpp \
+    src/include/customBarDreamMountain.cpp \
+    src/include/statutAppBarDreamMountain.cpp
 
 # Headers
-HEADERS += src/DreamMountain.h \
-    src/ui_styles.h \
-    src/interface.h \
-    src/explorer_files.h \
-    src/file.h \
-    src/code_editor.h \
-    src/web_view.h \
-    src/development_tab.h \
-    src/html_color_syntax.h
+HEADERS += src/mainDreamMountain.h \
+    src/include/windowDreamMountain.h \
+    src/include/customBarDreamMountain.h \
+    src/include/statutAppBarDreamMountain.h \
+    src/include/appContentDreamMountain.h \
+    src/include/codeEditorDreamMountain.h \
+    src/include/filesExplorerDreamMountain.h \
+    src/include/webViewDreamMountain.h \
+    src/include/interfaceDreamMountain.h \
+    src/include/system/textEditor.h \
+    src/include/system/lineNumberArea.h \
+    src/include/system/webEngine.h \
+    src/include/system/fileSortingAlgorithm.h \
+    src/include/system/fileEngine.h \
+    src/include/colorDreamMountain.h \
+    src/include/iconDreamMountain.h
 
 # Personnalisation macOS
 mac {

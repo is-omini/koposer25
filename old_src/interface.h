@@ -37,4 +37,13 @@ public:
 
     void setSvg(QString svg, int w = 0, int h = 0);
 };
+
+class ButtonSvg : public QPushButton {
+    Q_OBJECT
+public:
+    QString attrID;
+    QString attrPath;
+    
+    explicit ButtonSvg(const QString &text = nullptr, QString svgBalise = nullptr, int size = 8, QWidget *parent = nullptr);
+};
 #endif

@@ -6,26 +6,51 @@
 
 #include <QTextBlock>
 #include <QPainter>
+#include "interface.h"
 
 class TextEdit;
 
 class LineNumberArea : public QWidget {
 public:
+    int lineNumberWidth;
     explicit LineNumberArea(TextEdit *editor);
 protected:
     void paintEvent(QPaintEvent *event) override;
 private:
     TextEdit *textEdit;
+    QWidget *overlay;
+};
+
+class EditorCode : public QWidget {
+    Q_OBJECT
+public:
+    explicit EditorCode(
+        TextEdit* &codeEditorInput,
+        QWidget *parent = nullptr
+    );
+
+    void updatePosition();
+
+    TextEdit* codeEditor;
+    QWidget* overlay;
+    VerticalBoxLayout* listAuto;
+    
+    int cursorPosY;
+    int cursorPosX;
 };
 
 class TextEdit : public QPlainTextEdit {
     Q_OBJECT
 public:
-    explicit TextEdit(QWidget *parent = nullptr) : QPlainTextEdit(parent) {
+    LineNumberArea *lineNumberArea;
+
+    explicit TextEdit(EditorCode* editorContenaire, QWidget *parent = nullptr) : QPlainTextEdit(parent) {
         lineNumberArea = new LineNumberArea(this);
         connect(this, &QPlainTextEdit::blockCountChanged, this, &TextEdit::updateLineNumberAreaWidth);
         connect(this, &QPlainTextEdit::updateRequest, this, &TextEdit::updateLineNumberArea);
         updateLineNumberAreaWidth(0);
+
+        editor = editorContenaire;
     }
 
     int lineNumberAreaWidth() {
@@ -55,20 +80,9 @@ private slots:
     }
 
 private:
-    LineNumberArea *lineNumberArea;
+    EditorCode *editor;
 
     friend class LineNumberArea;
-};
-
-class EditorCode : public QWidget {
-    Q_OBJECT
-public:
-    explicit EditorCode(
-        TextEdit* &codeEditorInput,
-        QWidget *parent = nullptr
-    );
-
-TextEdit* codeEditor;
 };
 
 #endif

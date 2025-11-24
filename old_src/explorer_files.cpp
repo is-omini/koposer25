@@ -20,6 +20,7 @@ ExplorerFiles::ExplorerFiles(
 	DevelopmentTab* developmentTab,
 	QWidget *parent) : QWidget(parent) {
 	setFixedWidth(240);
+	setStyleSheet("background-color: "+main->windowBackgoundColor+";");
 
 	styleNormal = R"(
 	QPushButton {
@@ -61,16 +62,13 @@ ExplorerFiles::ExplorerFiles(
     scroll->setStyleSheet(scrollBarWindow);
 
 	contenaireExplorere = new QWidget();
-	contenaireExplorere->setStyleSheet(
-		"background-color: "+dreamMountain->windowBackgoundColor+";"
-		"color: white;"
-	);
 
 	scroll->setWidget(contenaireExplorere);
 	verticalBox->addWidget(scroll);
 }
 
 void ExplorerFiles::explorerListFiles(std::string path, QString titleProject) {
+	porjectName = titleProject;
 	dreamMountain->explorerAllButton.clear();
 	if (layoutExplorerListItems) {
 		qDebug() << "DELETE !!!!!!";
@@ -87,29 +85,29 @@ void ExplorerFiles::explorerListFiles(std::string path, QString titleProject) {
 
 
 	const QString styleNormal = R"(
-	QPushButton {
+	ButtonSvg {
 		background-color: #2c2d30;
 		border: 1px solid #2c2d30;
 		color: white;
-		padding: 5px 10px 5px 32px;
+		padding: 5px 10px 5px 10px;
 		margin: 0;
 		text-align: left;
 	}
-	QPushButton:hover {
+	ButtonSvg:hover {
 		background-color: rgba(31,31,31,1);
 	}
 	)";
 
 	const QString styleSelected = R"(
-	QPushButton {
+	ButtonSvg {
 		background-color: #44454a;
 		border: 1px solid #44454a;
 		color: white;
-		padding: 5px 10px 5px 32px;
+		padding: 5px 10px 5px 10px;
 		margin: 0;
 		text-align: left;
 	}
-	QPushButton:hover {
+	ButtonSvg:hover {
 		background-color: #2c2d30);
 	}
 	)";
@@ -147,9 +145,29 @@ void ExplorerFiles::explorerListFiles(std::string path, QString titleProject) {
 	layoutExplorerListItems->addWidget(projectMenuTitle);
 	
 	for (const auto& entry : entries) {
-		Button *newButton = new Button(
-			QString::fromStdString(entry.path().filename().string())
-		);
+		ButtonSvg *newButton;
+
+		if (entry.is_directory()) {
+			newButton = new ButtonSvg(
+				QString::fromStdString(entry.path().filename().string()),
+				R"(
+				<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" fill="#ffffff">
+				<path d="M440 432H72a40 40 0 01-40-40V120a40 40 0 0140-40h75.89a40 40 0 0122.19 6.72l27.84 18.56a40 40 0 0022.19 6.72H440a40 40 0 0140 40v240a40 40 0 01-40 40zM32 192h448" fill="inherit" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+				</svg>
+				)",
+				16
+			);
+		} else {
+			newButton = new ButtonSvg(
+				QString::fromStdString(entry.path().filename().string()),
+				R"(
+				<svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" fill="#ffffff">
+				<path d="M416 221.25V416a48 48 0 01-48 48H144a48 48 0 01-48-48V96a48 48 0 0148-48h98.75a32 32 0 0122.62 9.37l141.26 141.26a32 32 0 019.37 22.62z" fill="inherit" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M256 56v120a32 32 0 0032 32h120" fill="inherit" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+				</svg>
+				)",
+				16
+			);
+		}
 		newButton->attrPath = QString::fromStdString(path + '/' + entry.path().filename().string());
 		newButton->setStyleSheet(styleNormal);
 		dreamMountain->explorerAllButton.push_back(newButton);
@@ -166,7 +184,7 @@ void ExplorerFiles::explorerListFiles(std::string path, QString titleProject) {
 				}
 
 				// Recharge l’explorateur
-				this->explorerListFiles(fullPath + "/");
+				this->explorerListFiles(fullPath + "/", titleProject);
 			});
 		} else {
 			newButton->connect(newButton, &QPushButton::clicked, [

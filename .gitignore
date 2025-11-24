@@ -1,4 +1,7 @@
 /build/
 /_build/
+/old_src/
+
 .DS_Store
 .qmake.stash
+logo_app.xcf

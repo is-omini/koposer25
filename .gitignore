@@ -2,6 +2,8 @@
 /_build/
 /old_src/
 
+/Makefile
+
 /.DS_Store
 /MacOs/.DS_Store
 /src/.DS_Store

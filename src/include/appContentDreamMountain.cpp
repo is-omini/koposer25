@@ -53,6 +53,7 @@ void AppContentDreamMountain::EditFiles(
 		char *text = newGetFile->read();
 		EditFiles(text, newGetFile->mimeFromExtension(), filePath, fileName);
 		free(text);
+		windowParentApp->setCurrentFilePath(test_->attrPath);
 		delete newGetFile;
 	});
 	getStatutAppBarDreamMountain()->appendLeftButtonList(test_);

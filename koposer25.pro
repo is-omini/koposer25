@@ -24,6 +24,7 @@ SOURCES += src/mainDreamMountain.cpp \
     src/include/system/webEngine.cpp \
     src/include/system/fileSortingAlgorithm.cpp \
     src/include/system/fileEngine.cpp \
+    src/include/system/fileExplorerEngine.cpp \
     src/include/customBarDreamMountain.cpp \
     src/include/statutAppBarDreamMountain.cpp
 
@@ -42,6 +43,7 @@ HEADERS += src/mainDreamMountain.h \
     src/include/system/webEngine.h \
     src/include/system/fileSortingAlgorithm.h \
     src/include/system/fileEngine.h \
+    src/include/system/fileExplorerEngine.h \
     src/include/colorDreamMountain.h \
     src/include/iconDreamMountain.h
 

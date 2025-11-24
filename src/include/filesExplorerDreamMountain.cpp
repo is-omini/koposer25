@@ -5,6 +5,7 @@
 
 #include "interfaceDreamMountain.h"
 
+#include "system/fileExplorerEngine.h"
 #include "system/fileEngine.h"
 #include "system/fileSortingAlgorithm.h"
 
@@ -82,7 +83,8 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 		})"
 	);
 	QObject::connect(uploadFolderProjectBtn, &QPushButton::clicked, [this]() {
-		QString dossier = QFileDialog::getExistingDirectory(
+		openFolder(windowParentApp);
+		/*QString dossier = QFileDialog::getExistingDirectory(
 			this,
 			"Choisir un dossier"
 		);
@@ -93,9 +95,41 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 			windowParentApp->filesExplorerHistory.clear();
 			windowParentApp->filesExplorerHistory.push_back(dossier.toStdString());
 			updateListFilesPoject(windowParentApp->getCurrentProjectPath().toStdString() + "/");
-		}
+		}*/
 	});
 	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(uploadFolderProjectBtn);
+
+	QPushButton* uploadFileBtn = windowParentApp->getCustomWindowBarDreamMountain()->AppendButtonList(
+		nullptr,
+		iconAddFile,
+		16,
+		R"(
+		QPushButton {
+			background-color: #25282d;
+			padding: 8px;
+			border-radius: 5px;
+			height: 16px;
+			width: 16px;
+			margin: 0;
+			text-align: center;
+		}
+		QPushButton:hover {
+			background-color: #4a4b4e;
+		})"
+	);
+	QObject::connect(uploadFileBtn, &QPushButton::clicked, [this]() {
+		saveFile(windowParentApp);
+
+		/*QFile fichier(fichierPath);
+
+		QString texte = textEdit->toPlainText();
+			
+		if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
+			QTextStream out(&fichier);
+			out << texte;
+		}*/
+	});
+	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(uploadFileBtn);
 
 	windowParentApp->getCustomWindowBarDreamMountain()->UpdateButtonListLeft();
 }
@@ -157,6 +191,7 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string path, QString
 					1
 				);
 				free(text);
+				windowParentApp->setCurrentFilePath(QString::fromStdString(fullPath));
 			}
 		});
 		layoutExplorerListItems->addWidget(newButton, 0, Qt::AlignTop);

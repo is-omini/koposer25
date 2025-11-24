@@ -64,6 +64,7 @@ SOURCES       = src/mainDreamMountain.cpp \
 		src/include/system/webEngine.cpp \
 		src/include/system/fileSortingAlgorithm.cpp \
 		src/include/system/fileEngine.cpp \
+		src/include/system/fileExplorerEngine.cpp \
 		src/include/customBarDreamMountain.cpp \
 		src/include/statutAppBarDreamMountain.cpp _build/moc/moc_interfaceDreamMountain.cpp
 OBJECTS       = _build/obj/mainDreamMountain.o \
@@ -78,6 +79,7 @@ OBJECTS       = _build/obj/mainDreamMountain.o \
 		_build/obj/webEngine.o \
 		_build/obj/fileSortingAlgorithm.o \
 		_build/obj/fileEngine.o \
+		_build/obj/fileExplorerEngine.o \
 		_build/obj/customBarDreamMountain.o \
 		_build/obj/statutAppBarDreamMountain.o \
 		_build/obj/moc_interfaceDreamMountain.o
@@ -464,6 +466,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		src/include/system/webEngine.h \
 		src/include/system/fileSortingAlgorithm.h \
 		src/include/system/fileEngine.h \
+		src/include/system/fileExplorerEngine.h \
 		src/include/colorDreamMountain.h \
 		src/include/iconDreamMountain.h src/mainDreamMountain.cpp \
 		src/include/windowDreamMountain.cpp \
@@ -477,6 +480,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		src/include/system/webEngine.cpp \
 		src/include/system/fileSortingAlgorithm.cpp \
 		src/include/system/fileEngine.cpp \
+		src/include/system/fileExplorerEngine.cpp \
 		src/include/customBarDreamMountain.cpp \
 		src/include/statutAppBarDreamMountain.cpp
 QMAKE_TARGET  = DreamMoutain
@@ -1306,8 +1310,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/mainDreamMountain.h src/include/windowDreamMountain.h src/include/customBarDreamMountain.h src/include/statutAppBarDreamMountain.h src/include/appContentDreamMountain.h src/include/codeEditorDreamMountain.h src/include/filesExplorerDreamMountain.h src/include/webViewDreamMountain.h src/include/interfaceDreamMountain.h src/include/system/textEditor.h src/include/system/lineNumberArea.h src/include/system/webEngine.h src/include/system/fileSortingAlgorithm.h src/include/system/fileEngine.h src/include/colorDreamMountain.h src/include/iconDreamMountain.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/mainDreamMountain.cpp src/include/windowDreamMountain.cpp src/include/appContentDreamMountain.cpp src/include/codeEditorDreamMountain.cpp src/include/filesExplorerDreamMountain.cpp src/include/webViewDreamMountain.cpp src/include/interfaceDreamMountain.cpp src/include/system/textEditor.cpp src/include/system/lineNumberArea.cpp src/include/system/webEngine.cpp src/include/system/fileSortingAlgorithm.cpp src/include/system/fileEngine.cpp src/include/customBarDreamMountain.cpp src/include/statutAppBarDreamMountain.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/mainDreamMountain.h src/include/windowDreamMountain.h src/include/customBarDreamMountain.h src/include/statutAppBarDreamMountain.h src/include/appContentDreamMountain.h src/include/codeEditorDreamMountain.h src/include/filesExplorerDreamMountain.h src/include/webViewDreamMountain.h src/include/interfaceDreamMountain.h src/include/system/textEditor.h src/include/system/lineNumberArea.h src/include/system/webEngine.h src/include/system/fileSortingAlgorithm.h src/include/system/fileEngine.h src/include/system/fileExplorerEngine.h src/include/colorDreamMountain.h src/include/iconDreamMountain.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/mainDreamMountain.cpp src/include/windowDreamMountain.cpp src/include/appContentDreamMountain.cpp src/include/codeEditorDreamMountain.cpp src/include/filesExplorerDreamMountain.cpp src/include/webViewDreamMountain.cpp src/include/interfaceDreamMountain.cpp src/include/system/textEditor.cpp src/include/system/lineNumberArea.cpp src/include/system/webEngine.cpp src/include/system/fileSortingAlgorithm.cpp src/include/system/fileEngine.cpp src/include/system/fileExplorerEngine.cpp src/include/customBarDreamMountain.cpp src/include/statutAppBarDreamMountain.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1392,6 +1396,7 @@ _build/obj/mainDreamMountain.o: src/mainDreamMountain.cpp src/mainDreamMountain.
 		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h \
 		src/include/appContentDreamMountain.h \
 		src/include/codeEditorDreamMountain.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		src/include/system/textEditor.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
@@ -1399,13 +1404,16 @@ _build/obj/mainDreamMountain.o: src/mainDreamMountain.cpp src/mainDreamMountain.
 		src/include/filesExplorerDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QScrollArea \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollarea.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
 		src/include/webViewDreamMountain.h \
 		src/include/system/webEngine.h \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		src/include/statutAppBarDreamMountain.h \
+		src/include/interfaceDreamMountain.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QVector \
+		/opt/homebrew/lib/QtCore.framework/Headers/qvector.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QString \
 		/opt/homebrew/lib/QtCore.framework/Headers/qstring.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
@@ -1430,6 +1438,7 @@ _build/obj/windowDreamMountain.o: src/include/windowDreamMountain.cpp src/includ
 		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h \
 		src/include/appContentDreamMountain.h \
 		src/include/codeEditorDreamMountain.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		src/include/system/textEditor.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
@@ -1437,16 +1446,23 @@ _build/obj/windowDreamMountain.o: src/include/windowDreamMountain.cpp src/includ
 		src/include/filesExplorerDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QScrollArea \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollarea.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
 		src/include/webViewDreamMountain.h \
 		src/include/system/webEngine.h \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		src/include/statutAppBarDreamMountain.h \
+		src/include/interfaceDreamMountain.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QVector \
+		/opt/homebrew/lib/QtCore.framework/Headers/qvector.h \
 		src/include/colorDreamMountain.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QEvent \
-		/opt/homebrew/lib/QtCore.framework/Headers/qcoreevent.h
+		/opt/homebrew/lib/QtCore.framework/Headers/qcoreevent.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QSettings \
+		/opt/homebrew/lib/QtCore.framework/Headers/qsettings.h \
+		/opt/homebrew/lib/QtGui.framework/Headers/QCloseEvent \
+		/opt/homebrew/lib/QtGui.framework/Headers/qevent.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/windowDreamMountain.o src/include/windowDreamMountain.cpp
 
 _build/obj/appContentDreamMountain.o: src/include/appContentDreamMountain.cpp src/include/appContentDreamMountain.h \
@@ -1455,6 +1471,10 @@ _build/obj/appContentDreamMountain.o: src/include/appContentDreamMountain.cpp sr
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
 		src/include/codeEditorDreamMountain.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		src/include/system/textEditor.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
@@ -1462,8 +1482,6 @@ _build/obj/appContentDreamMountain.o: src/include/appContentDreamMountain.cpp sr
 		src/include/filesExplorerDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QScrollArea \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollarea.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
 		src/include/webViewDreamMountain.h \
@@ -1471,30 +1489,39 @@ _build/obj/appContentDreamMountain.o: src/include/appContentDreamMountain.cpp sr
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
 		src/include/statutAppBarDreamMountain.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
-		src/include/windowDreamMountain.h \
-		src/include/customBarDreamMountain.h \
+		src/include/interfaceDreamMountain.h \
 		/opt/homebrew/lib/QtSvg.framework/Headers/QSvgRenderer \
 		/opt/homebrew/lib/QtSvg.framework/Headers/qsvgrenderer.h \
-		/opt/homebrew/lib/QtGui.framework/Headers/QPixmap \
-		/opt/homebrew/lib/QtGui.framework/Headers/qpixmap.h \
 		/opt/homebrew/lib/QtGui.framework/Headers/QPainter \
 		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h \
-		src/include/iconDreamMountain.h
+		src/include/windowDreamMountain.h \
+		src/include/customBarDreamMountain.h \
+		/opt/homebrew/lib/QtGui.framework/Headers/QPixmap \
+		/opt/homebrew/lib/QtGui.framework/Headers/qpixmap.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QVector \
+		/opt/homebrew/lib/QtCore.framework/Headers/qvector.h \
+		src/include/iconDreamMountain.h \
+		src/include/system/fileEngine.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/appContentDreamMountain.o src/include/appContentDreamMountain.cpp
 
 _build/obj/codeEditorDreamMountain.o: src/include/codeEditorDreamMountain.cpp src/include/codeEditorDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		src/include/system/textEditor.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
 		src/include/system/lineNumberArea.h \
 		src/include/colorDreamMountain.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h
+		src/include/iconDreamMountain.h \
+		/opt/homebrew/lib/QtSvg.framework/Headers/QSvgRenderer \
+		/opt/homebrew/lib/QtSvg.framework/Headers/qsvgrenderer.h \
+		/opt/homebrew/lib/QtGui.framework/Headers/QPainter \
+		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/codeEditorDreamMountain.o src/include/codeEditorDreamMountain.cpp
 
 _build/obj/filesExplorerDreamMountain.o: src/include/filesExplorerDreamMountain.cpp src/include/filesExplorerDreamMountain.h \
@@ -1529,11 +1556,18 @@ _build/obj/filesExplorerDreamMountain.o: src/include/filesExplorerDreamMountain.
 		src/include/system/webEngine.h \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		src/include/statutAppBarDreamMountain.h \
+		src/include/interfaceDreamMountain.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QVector \
+		/opt/homebrew/lib/QtCore.framework/Headers/qvector.h \
 		src/include/colorDreamMountain.h \
 		src/include/iconDreamMountain.h \
-		src/include/interfaceDreamMountain.h \
 		src/include/system/fileEngine.h \
-		src/include/system/fileSortingAlgorithm.h
+		src/include/system/fileSortingAlgorithm.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QFileDialog \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QDir \
+		/opt/homebrew/lib/QtCore.framework/Headers/qdir.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/filesExplorerDreamMountain.o src/include/filesExplorerDreamMountain.cpp
 
 _build/obj/webViewDreamMountain.o: src/include/webViewDreamMountain.cpp src/include/webViewDreamMountain.h \
@@ -1560,7 +1594,17 @@ _build/obj/textEditor.o: src/include/system/textEditor.cpp src/include/system/te
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
-		src/include/system/lineNumberArea.h
+		src/include/system/lineNumberArea.h \
+		src/include/codeEditorDreamMountain.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QPushButton \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		src/include/iconDreamMountain.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QRect \
+		/opt/homebrew/lib/QtCore.framework/Headers/qrect.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QRegularExpression \
+		/opt/homebrew/lib/QtCore.framework/Headers/qregularexpression.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/textEditor.o src/include/system/textEditor.cpp
 
 _build/obj/lineNumberArea.o: src/include/system/lineNumberArea.cpp src/include/system/lineNumberArea.h \
@@ -1587,6 +1631,14 @@ _build/obj/fileSortingAlgorithm.o: src/include/system/fileSortingAlgorithm.cpp s
 _build/obj/fileEngine.o: src/include/system/fileEngine.cpp src/include/system/fileEngine.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/fileEngine.o src/include/system/fileEngine.cpp
 
+_build/obj/fileExplorerEngine.o: src/include/system/fileExplorerEngine.cpp src/include/system/fileExplorerEngine.h \
+		src/include/system/fileEngine.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QFileDialog \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QString \
+		/opt/homebrew/lib/QtCore.framework/Headers/qstring.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/fileExplorerEngine.o src/include/system/fileExplorerEngine.cpp
+
 _build/obj/customBarDreamMountain.o: src/include/customBarDreamMountain.cpp src/include/windowDreamMountain.h \
 		src/include/customBarDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
@@ -1605,6 +1657,7 @@ _build/obj/customBarDreamMountain.o: src/include/customBarDreamMountain.cpp src/
 		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h \
 		src/include/appContentDreamMountain.h \
 		src/include/codeEditorDreamMountain.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		src/include/system/textEditor.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
@@ -1612,13 +1665,16 @@ _build/obj/customBarDreamMountain.o: src/include/customBarDreamMountain.cpp src/
 		src/include/filesExplorerDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QScrollArea \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollarea.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
 		src/include/webViewDreamMountain.h \
 		src/include/system/webEngine.h \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		src/include/statutAppBarDreamMountain.h \
+		src/include/interfaceDreamMountain.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QVector \
+		/opt/homebrew/lib/QtCore.framework/Headers/qvector.h \
 		src/include/iconDreamMountain.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/Qt \
 		/opt/homebrew/lib/QtCore.framework/Headers/qnamespace.h \
@@ -1633,18 +1689,20 @@ _build/obj/statutAppBarDreamMountain.o: src/include/statutAppBarDreamMountain.cp
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qpushbutton.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QHBoxLayout \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		src/include/interfaceDreamMountain.h \
+		/opt/homebrew/lib/QtSvg.framework/Headers/QSvgRenderer \
+		/opt/homebrew/lib/QtSvg.framework/Headers/qsvgrenderer.h \
+		/opt/homebrew/lib/QtGui.framework/Headers/QPainter \
+		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h \
 		src/include/windowDreamMountain.h \
 		src/include/customBarDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		/opt/homebrew/lib/QtSvg.framework/Headers/QSvgRenderer \
-		/opt/homebrew/lib/QtSvg.framework/Headers/qsvgrenderer.h \
 		/opt/homebrew/lib/QtGui.framework/Headers/QPixmap \
 		/opt/homebrew/lib/QtGui.framework/Headers/qpixmap.h \
-		/opt/homebrew/lib/QtGui.framework/Headers/QPainter \
-		/opt/homebrew/lib/QtGui.framework/Headers/qpainter.h \
 		src/include/appContentDreamMountain.h \
 		src/include/codeEditorDreamMountain.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		src/include/system/textEditor.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QPlainTextEdit \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qplaintextedit.h \
@@ -1652,13 +1710,15 @@ _build/obj/statutAppBarDreamMountain.o: src/include/statutAppBarDreamMountain.cp
 		src/include/filesExplorerDreamMountain.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QScrollArea \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qscrollarea.h \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/QVBoxLayout \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QSplitter \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qsplitter.h \
 		src/include/webViewDreamMountain.h \
 		src/include/system/webEngine.h \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/QWebEngineView \
 		/opt/homebrew/lib/QtWebEngineWidgets.framework/Headers/qwebengineview.h \
+		/opt/homebrew/lib/QtCore.framework/Headers/QVector \
+		/opt/homebrew/lib/QtCore.framework/Headers/qvector.h \
+		src/include/colorDreamMountain.h \
 		src/include/iconDreamMountain.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o _build/obj/statutAppBarDreamMountain.o src/include/statutAppBarDreamMountain.cpp
 

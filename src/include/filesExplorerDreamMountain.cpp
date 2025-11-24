@@ -6,7 +6,6 @@
 #include "interfaceDreamMountain.h"
 
 #include "system/fileExplorerEngine.h"
-#include "system/fileEngine.h"
 #include "system/fileSortingAlgorithm.h"
 
 #include <QFileDialog>
@@ -32,7 +31,9 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 	scroll->setWidget(contenaireExplorere);
 	verticalBox->addWidget(scroll);
 
-	QPushButton* test = windowParentApp->getCustomWindowBarDreamMountain()->AppendButtonList(
+
+	// backExplorerBtn
+	QPushButton* backExplorerBtn = windowParentApp->getCustomWindowBarDreamMountain()->AppendButtonList(
 		nullptr,
 		iconBackFolder,
 		16,
@@ -51,19 +52,10 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 			background-color: #4a4b4e;
 		})"
 	);
-	QObject::connect(test, &QPushButton::clicked, [this]() {
-		if (windowParentApp->filesExplorerHistory.size() <= 1) {
-			return;
-		}
-		windowParentApp->filesExplorerHistory.pop_back();
+	QObject::connect(backExplorerBtn, &QPushButton::clicked, [this]() { backFolderToExplorer(windowParentApp); });
+	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(backExplorerBtn);
 
-		std::string previous = windowParentApp->filesExplorerHistory.back();
-		windowParentApp->currentPath = QString::fromStdString(previous);
-
-		updateListFilesPoject(previous + "/", windowParentApp->porjectName);
-	});
-	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(test);
-
+	//uploadFolderProjectBtn
 	QPushButton* uploadFolderProjectBtn = windowParentApp->getCustomWindowBarDreamMountain()->AppendButtonList(
 		nullptr,
 		iconAddProject,
@@ -82,26 +74,13 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 			background-color: #4a4b4e;
 		})"
 	);
-	QObject::connect(uploadFolderProjectBtn, &QPushButton::clicked, [this]() {
-		openFolder(windowParentApp);
-		/*QString dossier = QFileDialog::getExistingDirectory(
-			this,
-			"Choisir un dossier"
-		);
-
-		if (!dossier.isEmpty()) {
-			windowParentApp->setCurrentProjectPath(dossier);
-			//windowParentApp->oldProjectPath.clear();
-			windowParentApp->filesExplorerHistory.clear();
-			windowParentApp->filesExplorerHistory.push_back(dossier.toStdString());
-			updateListFilesPoject(windowParentApp->getCurrentProjectPath().toStdString() + "/");
-		}*/
-	});
+	QObject::connect(uploadFolderProjectBtn, &QPushButton::clicked, [this]() { openFolder(windowParentApp); });
 	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(uploadFolderProjectBtn);
 
-	QPushButton* uploadFileBtn = windowParentApp->getCustomWindowBarDreamMountain()->AppendButtonList(
+	//uploadFileBtn
+	QPushButton* saveFileBtn = windowParentApp->getCustomWindowBarDreamMountain()->AppendButtonList(
 		nullptr,
-		iconAddFile,
+		iconSave,
 		16,
 		R"(
 		QPushButton {
@@ -117,19 +96,8 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 			background-color: #4a4b4e;
 		})"
 	);
-	QObject::connect(uploadFileBtn, &QPushButton::clicked, [this]() {
-		saveFile(windowParentApp);
-
-		/*QFile fichier(fichierPath);
-
-		QString texte = textEdit->toPlainText();
-			
-		if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			QTextStream out(&fichier);
-			out << texte;
-		}*/
-	});
-	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(uploadFileBtn);
+	QObject::connect(saveFileBtn, &QPushButton::clicked, [this]() { saveFile(windowParentApp); });
+	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(saveFileBtn);
 
 	windowParentApp->getCustomWindowBarDreamMountain()->UpdateButtonListLeft();
 }
@@ -137,8 +105,8 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 
 void FilesExplorerDreamMountain::updateListFilesPoject(std::string path, QString titleProject) {
 	windowParentApp->porjectName = titleProject;
-	windowParentApp->filesExplorer.clear();
 
+	windowParentApp->filesExplorerHistory.clear();
 	if (layoutExplorerListItems) {
 		QLayoutItem *child;
 		while ((child = layoutExplorerListItems->takeAt(0)) != nullptr) {
@@ -180,17 +148,18 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string path, QString
 				QDir dir(QString::fromStdString(fullPath));
 				if(dir.exists()) updateListFilesPoject(fullPath + "/", titleProject);
 			} else {
-				FileEngine *getFile = new FileEngine(fullPath);
-				if (getFile->mimeFromExtension().find("text") == std::string::npos) return;
-				char *text = getFile->read();
-				windowParentApp->getAppContent()->EditFiles(
-					text,
-					getFile->mimeFromExtension(),
-					path + '/' + entry.path().filename().string(),
-					entry.path().filename().string(),
-					1
-				);
-				free(text);
+				openFile(windowParentApp, fullPath);
+				// FileEngine *getFile = new FileEngine(fullPath);
+				// if (getFile->mimeFromExtension().find("text") == std::string::npos) return;
+				// char *text = getFile->read();
+				// windowParentApp->getAppContent()->EditFiles(
+				// 	text,
+				// 	getFile->mimeFromExtension(),
+				// 	path + '/' + entry.path().filename().string(),
+				// 	entry.path().filename().string(),
+				// 	1
+				// );
+				// free(text);
 				windowParentApp->setCurrentFilePath(QString::fromStdString(fullPath));
 			}
 		});

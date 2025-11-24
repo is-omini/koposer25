@@ -1,9 +1,97 @@
 #include "fileExplorerEngine.h"
-#include "fileEngine.h"
 //CC julie
+
+#include <unordered_map>
+
+
 #include <QFileDialog>
 #include <QFile>
 #include <QString>
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+const std::unordered_map<std::string,std::string> mimeMap = {
+	{".cpp", "text/plain"},
+	{".h", "text/plain"},
+	{".htacess", "text/plain"},
+	{".gitignore", "text/plain"},
+	{".gitattributes", "text/plain"},
+	{".gitignore", "text/plain"},
+	{".scss", "text/plain"},
+	{".sass", "text/plain"},
+	{".ts", "text/plain"},
+
+	{".txt", "text/plain"},
+	{".log", "text/plain"},
+	{".ini", "text/plain"},
+	{".bat", "text/plain"},
+	{".sh", "text/plain"},
+	{".tex", "text/plain"},
+	{".csv", "text/csv"},
+	{".htm", "text/html"},
+	{".html", "text/html"},
+	{".css", "text/css"},
+	{".js", "text/javascript"},
+	{".mjs", "text/javascript"},
+	{".ts", "text/typescript"},
+	{".md", "text/markdown"},
+	{".yaml", "text/yaml"},
+	{".yml", "text/yaml"},
+	{".rtf", "text/rtf"},
+	{".xml", "text/xml"},
+	{".json", "application/json"},
+	//{".json", "text/json"}
+};
+
+std::string fileMime(std::string filePath) {
+	size_t pos = filePath.rfind('.');
+	if(pos == std::string::npos) return "application/octet-stream";
+
+	std::string ext = filePath.substr(pos);
+	auto it = mimeMap.find(ext);
+	if(it != mimeMap.end()) return it->second;
+	return "application/octet-stream";
+}
+
+int openFile(WindowDreamMountain* windowParentApp, std::string fichierPath) {
+	//FileEngine *getFile = new FileEngine(fichierPath.toStdString());
+	//if (getFile->mimeFromExtension().find("text") == std::string::npos) return;
+	//char *text = getFile->read();
+
+	FILE *file = fopen(fichierPath.c_str(), "r");
+	if (!file) {
+		qDebug() << "Impossible d'ouvrir le fichier : " << fichierPath;
+		return 0;
+	}
+
+	// Aller à la fin pour connaître la taille
+	fseek(file, 0, SEEK_END);
+	long size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	// Allouer la mémoire pour le contenu
+	char *buffer = (char *)malloc(size + 1);
+	if (!buffer) {
+		fclose(file);
+		qDebug() << "Erreur d'allocation : " << fichierPath;
+		return 0;
+	}
+	// Lire le fichier en une fois
+	fread(buffer, 1, size, file);
+	buffer[size] = '\0';  // Terminaison de chaîne
+	windowParentApp->getAppContent()->EditFiles(
+		buffer,
+		fileMime(fichierPath), //"text/plain", //getFile->mimeFromExtension(),
+		fichierPath,
+		fichierPath,
+		1
+	);
+	fclose(file);
+
+	return 1;
+}
 
 void saveFile(WindowDreamMountain* windowParentApp) {
 	QString fichierPath = windowParentApp->getCurrentFilePath();
@@ -15,14 +103,10 @@ void saveFile(WindowDreamMountain* windowParentApp) {
 			"Tous les fichiers (*)"
 		);
 	}
-	qDebug() << fichierPath.isEmpty();
+
 	if (fichierPath.isEmpty()) return;
-	qDebug() << "SAVE" << fichierPath.isEmpty();
-
 	QFile fichier(fichierPath);
-
 	QString texte = windowParentApp->getAppContent()->getCodeEditorDreamMountain()->getText();
-		
 	if (fichier.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		QTextStream out(&fichier);
 		out << texte;
@@ -55,4 +139,18 @@ void openFolder(WindowDreamMountain* windowParentApp) {
 			windowParentApp->getCurrentProjectPath().toStdString() + "/"
 		);
 	}
+}
+
+void backFolderToExplorer(WindowDreamMountain* windowParentApp) {
+	if (windowParentApp->filesExplorerHistory.size() <= 1) {
+		return;
+	}
+	windowParentApp->filesExplorerHistory.pop_back();
+
+	std::string previous = windowParentApp->filesExplorerHistory.back();
+	windowParentApp->currentPath = QString::fromStdString(previous);
+
+	windowParentApp->getAppContent()->getFileExplorerAppDreamMountain()->updateListFilesPoject(
+		previous + "/", windowParentApp->porjectName
+	);
 }

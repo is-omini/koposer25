@@ -2,6 +2,10 @@
 /_build/
 /old_src/
 
-.DS_Store
-.qmake.stash
-logo_app.xcf
+/.DS_Store
+/MacOs/.DS_Store
+/src/.DS_Store
+/src/include/.DS_Store
+/src/include/system/.DS_Store
+/.qmake.stash
+/logo_app.xcf

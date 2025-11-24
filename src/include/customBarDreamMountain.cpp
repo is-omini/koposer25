@@ -203,11 +203,17 @@ CustomBarDreamMountain::CustomBarDreamMountain(WindowDreamMountain *main, QWidge
 	QPushButton *windowFullsizeButton = new QPushButton();
 	windowFullsizeButton->setObjectName("windowFullsizeButton");
 	QObject::connect(windowFullsizeButton, &QPushButton::clicked, [this]() {
-		QWidget *w = window();
+		/*QWidget *w = window();
 		if (w->windowState() & Qt::WindowFullScreen) {
 			w->setWindowState(Qt::WindowNoState);
 		} else {
 			w->setWindowState(Qt::WindowFullScreen);
+		}*/
+
+		if (window()->isMaximized()) {
+			window()->showNormal();
+		} else {
+			window()->showMaximized();
 		}
 	});
 	layoutCustomeBarButtonWindow->addWidget(windowFullsizeButton);
@@ -265,28 +271,6 @@ CustomBarDreamMountain::CustomBarDreamMountain(WindowDreamMountain *main, QWidge
 		)"
 	);
 	rightButtonList.append(visualBn);
-
-
-	QPushButton* test1 = AppendButtonList(
-		nullptr,
-		iconFile,
-		16,
-		R"(
-		QPushButton {
-			background-color: #25282d;
-			color: #fff;
-			padding: 8px;
-			border-radius: 5px;
-			height: 16px;
-			width: 16px;
-			margin: 0;
-			text-align: center;
-		}
-		QPushButton:hover {
-			background-color: #4a4b4e;
-		})"
-	);
-	leftButtonList.append(test1);
 	CustomBarDreamMountain::UpdateButtonListRight();
 
 	adjustSize();

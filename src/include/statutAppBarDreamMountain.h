@@ -21,20 +21,13 @@ public:
 		QString css = nullptr
 	);
 
-	void UpdateButtonListRight();
 	void UpdateButtonListLeft();
 
-	void appendLeftButtonList(Button* btn) {
-		leftButtonList.append(btn);
-	};
-
-	void appendRightButtonList(Button* btn) {
-		rightButtonList.append(btn);
-	};
+	void appendLeftButtonList(Button* btn) { leftButtonList.append(btn); };
 
 	bool isFileStatusBar(std::string filePath) {
 		bool exists = false;
-		for (auto *b : rightButtonList) {
+		for (auto *b : leftButtonList) {
 			if (b->attrPath == QString::fromStdString(filePath)) {
 				exists = true;
 				break;
@@ -44,7 +37,6 @@ public:
 	}
 
 private:
-	QList<Button*> rightButtonList;
 	QList<Button*> leftButtonList;
 
 	QWidget* widgetLeftStatutAppBarButtonList;

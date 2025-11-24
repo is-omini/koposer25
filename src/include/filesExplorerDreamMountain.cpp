@@ -88,11 +88,11 @@ FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app,
 		);
 
 		if (!dossier.isEmpty()) {
-			windowParentApp->currentPath = dossier;
+			windowParentApp->setCurrentProjectPath(dossier);
 			//windowParentApp->oldProjectPath.clear();
 			windowParentApp->filesExplorerHistory.clear();
 			windowParentApp->filesExplorerHistory.push_back(dossier.toStdString());
-			updateListFilesPoject(dossier.toStdString() + "/");
+			updateListFilesPoject(windowParentApp->getCurrentProjectPath().toStdString() + "/");
 		}
 	});
 	windowParentApp->getCustomWindowBarDreamMountain()->appendLeftButtonList(uploadFolderProjectBtn);
@@ -152,8 +152,8 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string path, QString
 				windowParentApp->getAppContent()->EditFiles(
 					text,
 					getFile->mimeFromExtension(),
-					fullPath,
 					path + '/' + entry.path().filename().string(),
+					entry.path().filename().string(),
 					1
 				);
 				free(text);

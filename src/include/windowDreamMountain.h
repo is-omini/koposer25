@@ -21,6 +21,29 @@ public:
 	QString currentFilePath;
 	QString currentProjectPath;
 
+	void filesExplorerHistoryPush(std::string fullPath) {
+		if (!filesExplorerHistory.empty() && filesExplorerHistory.back() == fullPath) return;
+		filesExplorerHistory.push_back(fullPath);
+	}
+	void filesExplorerHistoryPop() {
+		filesExplorerHistory.pop_back();
+	}
+	void filesExplorerHistoryClear() {
+		filesExplorerHistory.clear();
+	}
+
+	std::string filesExplorerHistoryGetLast() {
+		std::string path;
+		if (filesExplorerHistory.empty()) {
+			path = "/";
+		} else {
+			path = filesExplorerHistory.back();
+			if (path.empty()) path = "/";
+		}
+
+		return path;
+	}
+
 
 	//TextEdit *codeEditorInput;
 	//QWebEngineView *vueWeb;

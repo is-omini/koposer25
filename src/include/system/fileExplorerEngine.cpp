@@ -45,7 +45,7 @@ const std::unordered_map<std::string,std::string> mimeMap = {
 	//{".json", "text/json"}
 };
 
-std::string fileMime(std::string filePath) {
+std::string getFileMime(std::string filePath) {
 	size_t pos = filePath.rfind('.');
 	if(pos == std::string::npos) return "application/octet-stream";
 
@@ -55,11 +55,45 @@ std::string fileMime(std::string filePath) {
 	return "application/octet-stream";
 }
 
-int openFile(WindowDreamMountain* windowParentApp, std::string fichierPath) {
-	//FileEngine *getFile = new FileEngine(fichierPath.toStdString());
-	//if (getFile->mimeFromExtension().find("text") == std::string::npos) return;
-	//char *text = getFile->read();
+std::string getFileName(std::string path) {
+	size_t pos = path.find_last_of("/\\");
+	std::string filename = path;
+	if (pos != std::string::npos) {
+		filename = path.substr(pos + 1);
+	}
 
+	return filename;
+}
+
+char* readFile(std::string fichierPath) {
+	FILE *file = fopen(fichierPath.c_str(), "r");
+	if (!file) {
+		printf("Impossible d'ouvrir le fichier : %s\n", fichierPath.c_str());
+		return NULL;
+	}
+
+	// Aller à la fin pour connaître la taille
+	fseek(file, 0, SEEK_END);
+	long size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	// Allouer la mémoire pour le contenu
+	char *buffer = (char *)malloc(size + 1);
+	if (!buffer) {
+		fclose(file);
+		return NULL;
+	}
+
+	// Lire le fichier en une fois
+	fread(buffer, 1, size, file);
+	buffer[size] = '\0';  // Terminaison de chaîne
+
+	fclose(file);
+
+	return buffer;
+}
+
+int openFile(WindowDreamMountain* windowParentApp, std::string fichierPath) {
 	FILE *file = fopen(fichierPath.c_str(), "r");
 	if (!file) {
 		qDebug() << "Impossible d'ouvrir le fichier : " << fichierPath;
@@ -83,9 +117,9 @@ int openFile(WindowDreamMountain* windowParentApp, std::string fichierPath) {
 	buffer[size] = '\0';  // Terminaison de chaîne
 	windowParentApp->getAppContent()->EditFiles(
 		buffer,
-		fileMime(fichierPath), //"text/plain", //getFile->mimeFromExtension(),
+		getFileMime(fichierPath), //"text/plain", //getFile->mimeFromExtension(),
 		fichierPath,
-		fichierPath,
+		getFileName(fichierPath),
 		1
 	);
 	fclose(file);
@@ -111,18 +145,6 @@ void saveFile(WindowDreamMountain* windowParentApp) {
 		QTextStream out(&fichier);
 		out << texte;
 	}
-
-	/*FileEngine *getFile = new FileEngine(fichierPath.toStdString());
-	if (getFile->mimeFromExtension().find("text") == std::string::npos) return;
-	char *text = getFile->read();
-	windowParentApp->getAppContent()->EditFiles(
-		text,
-		getFile->mimeFromExtension(),
-		fichierPath.toStdString(),
-		fichierPath.toStdString(),
-		1
-	);
-	free(text);*/
 }
 
 void openFolder(WindowDreamMountain* windowParentApp) {
@@ -142,12 +164,13 @@ void openFolder(WindowDreamMountain* windowParentApp) {
 }
 
 void backFolderToExplorer(WindowDreamMountain* windowParentApp) {
-	if (windowParentApp->filesExplorerHistory.size() <= 1) {
-		return;
-	}
-	windowParentApp->filesExplorerHistory.pop_back();
+	qDebug() << "///" << windowParentApp->filesExplorerHistoryGetLast();
 
-	std::string previous = windowParentApp->filesExplorerHistory.back();
+	if (windowParentApp->filesExplorerHistory.size() < 1) return;
+	if (windowParentApp->filesExplorerHistory.size() > 1) windowParentApp->filesExplorerHistoryPop();
+
+	std::string previous = windowParentApp->filesExplorerHistoryGetLast();
+	qDebug() << "windowParentApp->porjectName =" << (windowParentApp->porjectName);
 	windowParentApp->currentPath = QString::fromStdString(previous);
 
 	windowParentApp->getAppContent()->getFileExplorerAppDreamMountain()->updateListFilesPoject(

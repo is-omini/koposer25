@@ -13,6 +13,8 @@ public:
 	explicit FilesExplorerDreamMountain(WindowDreamMountain *app, QWidget *parent = nullptr);
 
 	void updateListFilesPoject(std::string path, QString titleProject = nullptr);
+
+	void clearLayoutExplorerListItems();
 private:
 	QScrollArea *scroll;
 	QVBoxLayout *verticalBox = nullptr;

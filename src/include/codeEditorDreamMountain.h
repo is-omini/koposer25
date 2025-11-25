@@ -7,9 +7,11 @@
 
 #include "system/textEditor.h"
 
+class WindowDreamMountain;
+
 class CodeEditorDreamMountain : public QWidget {
 public:
-	explicit CodeEditorDreamMountain(QWidget *parent = nullptr);
+	explicit CodeEditorDreamMountain(WindowDreamMountain *main,QWidget *parent = nullptr);
 
 	TextEditor *getSystemEnfant() { return textEditorSystem; }
 	//void setText(QString string) { textEditorSystem->setText(string); }
@@ -20,12 +22,16 @@ public:
 
 	void clearOverlay();
 
+	WindowDreamMountain* getWindowParentApp();
+
 	QPushButton* createButtonToOverlay(
 		QString string = nullptr,
 		QString Svg = nullptr,
 		int svgSize = 12,
 		QString css = nullptr
 	);
+
+	bool overlayCodeEditorIsVisible() { return menuDeroulantCodeEditor->isVisible(); }
 
 	void appendButtonToOverlay(QPushButton* button) {
 		menuDeroulantCodeEditorList->addWidget(button);
@@ -37,6 +43,8 @@ private:
 	TextEditor *textEditorSystem;
 	QWidget* menuDeroulantCodeEditor;
 	QVBoxLayout* menuDeroulantCodeEditorList;
+
+	WindowDreamMountain* windowParentApp;
 };
 
 #endif

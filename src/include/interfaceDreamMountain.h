@@ -8,10 +8,19 @@
 class ButtonSvg : public QPushButton {
 	Q_OBJECT
 public:
+
+	QString getTexte() {
+		return "Hello World";
+	}
+
 	QString attrID;
 	QString attrPath;
 	
-	explicit ButtonSvg(const QString &text = nullptr, QString svgBalise = nullptr, int size = 8, QWidget *parent = nullptr);
+	explicit ButtonSvg(
+		const QString &text = nullptr,
+		QString svgBalise = nullptr,
+		int size = 8,
+		QWidget *parent = nullptr);
 };
 
 class Button : public QPushButton {
@@ -19,6 +28,14 @@ class Button : public QPushButton {
 public:
 	QString attrID;
 	QString attrPath;
+
+	QString getTexte() {
+		return "Hello World";
+	}
+
+	QVector<Button*> getContextMenu() {
+		return contextMenuButtons;
+	}
 	
 	explicit Button(
 		const QString &text = nullptr,
@@ -26,6 +43,17 @@ public:
 		int size = 8,
 		QWidget *parent = nullptr
 	);
+
+	QString getSvg() {
+		return "";
+	}
+
+	void append(Button* b) {
+		contextMenuButtons.append(b);
+	}
+
+private:
+	QVector<Button*> contextMenuButtons;
 };
 
 #endif

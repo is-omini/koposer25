@@ -2,6 +2,11 @@
 
 #include "../codeEditorDreamMountain.h"
 #include "../iconDreamMountain.h"
+#include "../windowDreamMountain.h"
+
+#include <iostream>
+#include <string>
+using namespace std;
 
 #include <QRect>
 #include <QRegularExpression>
@@ -35,6 +40,19 @@ void TextEditor::updateLineNumberArea(const QRect &rect, int dy) {
 }
 
 void TextEditor::keyPressEvent(QKeyEvent *event) {
+
+	//if(!textEditorParent->overlayCodeEditorIsVisible()) {
+	//	QPlainTextEdit::keyPressEvent(event);
+	//	return;
+	//}
+
+	QString currentPath = textEditorParent->getWindowParentApp()->getCurrentFilePath();
+	std::string currentPathStd = currentPath.toStdString();
+	if(!textEditorParent->overlayCodeEditorIsVisible() && (currentPathStd.find("html") == std::string::npos)) {
+		QPlainTextEdit::keyPressEvent(event);
+		return;
+	}
+
 	textEditorParent->clearOverlay();
 	QRect cursRect = cursorRect();
 	QPoint cursorPos = cursRect.bottomRight();

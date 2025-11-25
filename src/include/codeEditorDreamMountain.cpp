@@ -2,17 +2,21 @@
 #include "colorDreamMountain.h"
 #include "iconDreamMountain.h"
 
+#include "windowDreamMountain.h"
+
 #include <QVBoxLayout>
 
 #include <QPushButton>
 #include <QSvgRenderer>
 #include <QPainter>
 
-CodeEditorDreamMountain::CodeEditorDreamMountain(QWidget *parent) : QWidget(parent) {
+CodeEditorDreamMountain::CodeEditorDreamMountain(WindowDreamMountain *main,QWidget *parent) : QWidget(parent) {
 	setStyleSheet(
 		"background-color: "+colorBackgroundInput+";"
 		"color: white;"
 	);
+
+	windowParentApp = main;
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0,0,0,0);
@@ -49,6 +53,10 @@ CodeEditorDreamMountain::CodeEditorDreamMountain(QWidget *parent) : QWidget(pare
 	menuDeroulantCodeEditor->adjustSize();
 	menuDeroulantCodeEditor->raise();
 	menuDeroulantCodeEditor->hide();
+}
+
+WindowDreamMountain* CodeEditorDreamMountain::getWindowParentApp() {
+	return windowParentApp;
 }
 
 void CodeEditorDreamMountain::updatePosition() {

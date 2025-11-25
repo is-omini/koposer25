@@ -104,7 +104,7 @@ WindowDreamMountain::WindowDreamMountain(QWidget *parent) : QMainWindow(parent) 
 	MainWindowDreamMountain->addWidget(CustomWindowBarDreamMountain);
 
 	appContentDreamMountain = new AppContentDreamMountain(this);
-	MainWindowDreamMountain->addWidget(appContentDreamMountain, 1);
+	MainWindowDreamMountain->addWidget(appContentDreamMountain);
 
 	loadWindowGeometry();
 	show();

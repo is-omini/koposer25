@@ -65,6 +65,13 @@ public:
 	void setCurrentProjectPath(QString path) {
 		currentProjectPath = path;
 		qDebug() << currentProjectPath;
+
+		int lastSlash = currentProjectPath.lastIndexOf('/');
+		QString lastSegment = currentProjectPath.mid(lastSlash + 1);
+
+		CustomWindowBarDreamMountain->sourceBnC->setText(
+			lastSegment
+		);
 	}
 
 	AppContentDreamMountain *getAppContentDreamMountain() { return appContentDreamMountain; }

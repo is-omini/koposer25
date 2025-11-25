@@ -4,27 +4,40 @@
 
 #include "interfaceDreamMountain.h"
 
+class WindowDreamMountain;
+
 #include <QWidget>
 #include <QString>
 #include <QVBoxLayout>
 
 class WVVisualConstructDrM : public QWidget {
 public:
-	explicit WVVisualConstructDrM(QWidget* parent = nullptr);
+	explicit WVVisualConstructDrM(WindowDreamMountain *main,QWidget* parent = nullptr);
 
 	void addLine(QString string) {
 		qDebug() << string;
 		Button *btn = new Button(string, nullptr, 0);
-		btn->setStyleSheet(R"(
+		QString colorText = "#ffffff"; // ou toute autre couleur
+		if(string.contains("ERROR")) colorText = "#FF5F57";
+		if(string.contains("WARNING")) colorText = "#FEBC2E";
+
+		QString colorHover = "#1e1f22"; // ou toute autre couleur
+		if(string.contains("ERROR")) colorHover = "#521D1A";
+		if(string.contains("WARNING")) colorHover = "#52411A";
+
+		btn->setStyleSheet(QString(R"(
 			QPushButton {
-				background-color: #1e1f22;
-				border: 1px solid #1e1f22;
-				color: white;
-				padding: 8px 10px 8px 10px;
-				margin: 0;
+				background-color: transparent;
+				color: %1;
+				border: none;
 				text-align: left;
+				border-radius: 4px;
+				padding: 8px 14px;
 			}
-		)");
+			QPushButton:hover {
+				background-color: %2;
+			}
+		)").arg(colorText, colorHover));
 		layoutConteneur->addWidget(btn);
 	}
 
@@ -45,6 +58,8 @@ public:
 	}
 private:
 	QVBoxLayout* layoutConteneur;
+
+	WindowDreamMountain* windowParentApp;
 };
 
 #endif

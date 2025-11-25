@@ -100,7 +100,7 @@ AppContentDreamMountain::AppContentDreamMountain(WindowDreamMountain *app, QWidg
 
 	fileExplorerAppDreamMountain = new FilesExplorerDreamMountain(windowParentApp, contentAppBarDreamMountain);
 	codeEditorAppDreamMountain = new CodeEditorDreamMountain(windowParentApp, contentAppBarDreamMountain);
-	webViewAppDreamMountain = new WebViewDreamMountain(contentAppBarDreamMountain);
+	webViewAppDreamMountain = new WebViewDreamMountain(windowParentApp, contentAppBarDreamMountain);
 	//fileExplorerAppDreamMountain->updateListFilesPoject("/Users/julie/Documents/project-dev/");
 
 	contentAppBarDreamMountain->addWidget(fileExplorerAppDreamMountain);

@@ -13,12 +13,15 @@ class WindowDreamMountain;
 
 class CustomBarDreamMountain : public QWidget {
 public:
+	QPushButton* sourceBnC;
+
 	explicit CustomBarDreamMountain(WindowDreamMountain *main, QWidget *parent = nullptr);
 
 	void hideCustumeBar();
 	void showCustumeBar();
 
 	void UpdateButtonListRight();
+	void UpdateButtonListCenter();
 	void UpdateButtonListLeft();
 	QPushButton* AppendButtonList(
 		QString string = nullptr,
@@ -49,9 +52,13 @@ private:
 	QHBoxLayout *layoutLeftButtonList;
 	QWidget *widgetLeftButtonList;
 
+	QHBoxLayout *layoutCenterButtonList;
+	QWidget *widgetCenterButtonList;
+
 	WindowDreamMountain *windowParentApp;
 
 	QList<QPushButton*> rightButtonList;
+	QList<QPushButton*> centerButtonList;
 	QList<QPushButton*> leftButtonList;
 protected:
 	void mousePressEvent(QMouseEvent *event) override;

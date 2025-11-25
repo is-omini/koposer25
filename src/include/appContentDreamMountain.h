@@ -35,6 +35,7 @@ public:
 	FilesExplorerDreamMountain *getFileExplorerAppDreamMountain() { return fileExplorerAppDreamMountain; }
 	StatutAppBarDreamMountain *getStatutAppBarDreamMountain() { return statutAppBarDreamMountain; }
 	ContextMenuDreamMountain *getContextMenuDreamMountain() { return contextMenuDreamMountain; }
+	WebViewDreamMountain *getWebViewAppDreamMountain() { return webViewAppDreamMountain; }
 private:
 	WebViewDreamMountain *webViewAppDreamMountain;
 	CodeEditorDreamMountain *codeEditorAppDreamMountain;

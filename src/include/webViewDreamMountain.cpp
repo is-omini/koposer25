@@ -1,10 +1,13 @@
 #include "webViewDreamMountain.h"
 
+#include "windowDreamMountain.h"
+
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QSplitter>
 
-WebViewDreamMountain::WebViewDreamMountain(QWidget *parent) : QWidget(parent) {
+WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main,QWidget *parent) : QWidget(parent) {
+	windowParentApp = main;
 	setMinimumWidth(360);
 
 	setStyleSheet(
@@ -23,7 +26,7 @@ WebViewDreamMountain::WebViewDreamMountain(QWidget *parent) : QWidget(parent) {
 
 	webEngineSystem = new WebEngine(this, splitter);
 
-	WvVisualConstructDrm = new WVVisualConstructDrM(splitter);
+	WvVisualConstructDrm = new WVVisualConstructDrM(windowParentApp, splitter);
 	layout->addWidget(splitter);
 
 	splitter->setSizes({300,150});

@@ -5,6 +5,8 @@
 #include "../windowDreamMountain.h"
 #include "../contextMenuDreamMountain.h"
 
+#include "colorSyntax.h"
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -183,4 +185,6 @@ TextEditor::TextEditor(CodeEditorDreamMountain* parentEdit, QWidget *parent) : Q
 	connect(this, &QPlainTextEdit::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
 	connect(this, &QPlainTextEdit::updateRequest, this, &TextEditor::updateLineNumberArea);
 	updateLineNumberAreaWidth(0);
+
+	HtmlHighlighter *highlighter = new HtmlHighlighter(document());
 }

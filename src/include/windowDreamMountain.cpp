@@ -58,6 +58,7 @@ void WindowDreamMountain::saveWindowGeometry() {
 
 void WindowDreamMountain::loadWindowGeometry() {
     QSettings settings("VotreEntreprise", "DreamMountain");
+    setCurrentProjectPath(settings.value("filesExplorer/currentPath").toString());
     currentProjectPath = settings.value("filesExplorer/currentPath").toString();
     std::string stdCurrentPath = currentProjectPath.toStdString();
 

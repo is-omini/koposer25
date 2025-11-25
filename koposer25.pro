@@ -18,10 +18,12 @@ SOURCES += src/mainDreamMountain.cpp \
     src/include/codeEditorDreamMountain.cpp \
     src/include/filesExplorerDreamMountain.cpp \
     src/include/webViewDreamMountain.cpp \
+    src/include/webViewVisualConstructDreamMountain.cpp \
     src/include/interfaceDreamMountain.cpp \
     src/include/system/textEditor.cpp \
     src/include/system/lineNumberArea.cpp \
     src/include/system/webEngine.cpp \
+    src/include/system/webEnginePage.cpp \
     src/include/system/fileSortingAlgorithm.cpp \
     src/include/system/fileExplorerEngine.cpp \
     src/include/customBarDreamMountain.cpp \
@@ -37,10 +39,12 @@ HEADERS += src/mainDreamMountain.h \
     src/include/codeEditorDreamMountain.h \
     src/include/filesExplorerDreamMountain.h \
     src/include/webViewDreamMountain.h \
+    src/include/webViewVisualConstructDreamMountain.h \
     src/include/interfaceDreamMountain.h \
     src/include/system/textEditor.h \
     src/include/system/lineNumberArea.h \
     src/include/system/webEngine.h \
+    src/include/system/webEnginePage.h \
     src/include/system/fileSortingAlgorithm.h \
     src/include/system/fileExplorerEngine.h \
     src/include/colorDreamMountain.h \

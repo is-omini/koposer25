@@ -101,10 +101,13 @@ AppContentDreamMountain::AppContentDreamMountain(WindowDreamMountain *app, QWidg
 	fileExplorerAppDreamMountain = new FilesExplorerDreamMountain(windowParentApp, contentAppBarDreamMountain);
 	codeEditorAppDreamMountain = new CodeEditorDreamMountain(windowParentApp, contentAppBarDreamMountain);
 	webViewAppDreamMountain = new WebViewDreamMountain(contentAppBarDreamMountain);
-
-	webViewAppDreamMountain->setHtmlWeb("<h1>Hello World</h1>");
 	//fileExplorerAppDreamMountain->updateListFilesPoject("/Users/julie/Documents/project-dev/");
 
+	contentAppBarDreamMountain->addWidget(fileExplorerAppDreamMountain);
+	contentAppBarDreamMountain->addWidget(codeEditorAppDreamMountain);
+	contentAppBarDreamMountain->addWidget(webViewAppDreamMountain);
+
+	webViewAppDreamMountain->setHtmlWeb("<h1>Hello World</h1>");
 	QObject::connect(codeEditorAppDreamMountain->getSystemEnfant(), &QPlainTextEdit::textChanged, [this]() {
 		webViewAppDreamMountain->setHtmlWeb(codeEditorAppDreamMountain->getText());
 	});
@@ -117,32 +120,4 @@ AppContentDreamMountain::AppContentDreamMountain(WindowDreamMountain *app, QWidg
 
 	// Widget superposé
 	contextMenuDreamMountain = new ContextMenuDreamMountain(windowParentApp, this);
-	/*contextMenuDreamMountain = new QWidget(this);
-	contextMenuDreamMountain->setObjectName("contextMenu");
-	contextMenuDreamMountain->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	contextMenuDreamMountain->setStyleSheet(R"(
-		#contextMenu {
-			background-color: red;
-		}
-
-		#contextMenu QPushButton {
-			
-			border: 1px solid #2c2d30;
-			color: white;
-			padding: 5px 5px 5px 5px;
-			margin: 0;
-			text-align: left;
-		}
-		#contextMenu QPushButton:hover {
-			background-color: rgba(31,31,31,0.3);
-		}
-	)"); //background-color: #2c2d30;
-
-	contextMenuDreamMountainList = new QVBoxLayout(contextMenuDreamMountain);
-	contextMenuDreamMountainList->setContentsMargins(0,0,0,0);
-	contextMenuDreamMountainList->setSpacing(10);
-	contextMenuDreamMountain->setMinimumWidth(200);
-	contextMenuDreamMountain->setMinimumHeight(200);
-
-	//contextMenuDreamMountain->adjustSize();*/
 }

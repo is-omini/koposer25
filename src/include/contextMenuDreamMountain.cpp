@@ -8,10 +8,11 @@ ContextMenuDreamMountain::ContextMenuDreamMountain(WindowDreamMountain *main, QW
 	setStyleSheet(R"(
 		QWidget {
 			background-color: #1e1f22;
+			border: solid 1px #2c2d30;
 		}
 		QPushButton {
 			background-color: #1e1f22;
-			border: 1px solid #1e1f22;
+			border: 1px solid #2c2d30;
 			color: white;
 			padding: 5px 5px 5px 5px;
 			margin: 0;
@@ -26,19 +27,6 @@ ContextMenuDreamMountain::ContextMenuDreamMountain(WindowDreamMountain *main, QW
 	contextMenuDreamMountainList->setSpacing(5);
 	contextMenuDreamMountainList->setContentsMargins(0,0,0,0);
 	this->setLayout(contextMenuDreamMountainList);
-
-	QWidget* manusWidget = new QWidget(this);
-	QVBoxLayout* manusLayout = new QVBoxLayout(manusWidget);
-	manusLayout->setContentsMargins(0,0,0,0);
-	manusLayout->setSpacing(0);
-
-	for (int i = 0; i < 3; ++i) {
-		Button* btn = new Button("Teste");
-		manusLayout->addWidget(btn);
-	}
-
-	contextMenuDreamMountainList->addWidget(manusWidget);
-
 	adjustSize();
 	update();
 
@@ -48,6 +36,7 @@ ContextMenuDreamMountain::ContextMenuDreamMountain(WindowDreamMountain *main, QW
 
 	//adjustSize();
 	//show();
+	hide();
 
 	raise();
 }
@@ -96,6 +85,7 @@ bool ContextMenuDreamMountain::getContextMenu(QWidget* widget, QPoint localPos) 
 }
 
 void ContextMenuDreamMountain::updateListOverlay(QVector<Button*> contextMenu) {
+	qDebug() << contextMenu;
 	QWidget* manusWidget = new QWidget(this);
 	QVBoxLayout* manusLayout = new QVBoxLayout(manusWidget);
 	manusLayout->setContentsMargins(0,0,0,0);

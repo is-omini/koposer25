@@ -14,6 +14,6 @@ QString DreamMountain::getCurrentPath() { return currentPath; }
 
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
-	new DreamMountain();
+	DreamMountain *dreamMountain = new DreamMountain();
 	return app.exec();
 }

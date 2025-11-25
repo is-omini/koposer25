@@ -133,7 +133,8 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string pathExplorer,
 
 
 FilesExplorerDreamMountain::FilesExplorerDreamMountain(WindowDreamMountain *app, QWidget *parent) : QWidget(parent) {
-	setFixedWidth(240);
+	setMinimumWidth(240);
+	setMaximumWidth(340);
 
 	windowParentApp = app;
 

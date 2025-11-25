@@ -125,7 +125,7 @@ const QString styleButonExplorerFileNormal = R"(
         background-color: #2c2d30;
         border: 1px solid #2c2d30;
         color: white;
-        padding: 5px 10px 5px 10px;
+        padding: 8px 10px 8px 10px;
         margin: 0;
         text-align: left;
     }
@@ -139,7 +139,7 @@ const QString styleButonExplorerFileSelected = R"(
         background-color: #44454a;
         border: 1px solid #44454a;
         color: white;
-        padding: 5px 10px 5px 10px;
+        padding: 8px 10px 8px 10px;
         margin: 0;
         text-align: left;
     }

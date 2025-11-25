@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "webViewVisualConstructDreamMountain.h"
+
 #include "system/webEngine.h"
 
 class WebViewDreamMountain : public QWidget {
@@ -13,6 +15,7 @@ public:
 	void setHtmlWeb(QString string);
 private:
 	WebEngine* webEngineSystem;
+	WVVisualConstructDrM* WvVisualConstructDrm = nullptr;
 };
 
 #endif

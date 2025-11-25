@@ -3,6 +3,7 @@
 #include "../codeEditorDreamMountain.h"
 #include "../iconDreamMountain.h"
 #include "../windowDreamMountain.h"
+#include "../contextMenuDreamMountain.h"
 
 #include <iostream>
 #include <string>
@@ -12,14 +13,75 @@ using namespace std;
 #include <QRegularExpression>
 #include <QPushButton>
 
-TextEditor::TextEditor(CodeEditorDreamMountain* parentEdit, QWidget *parent) : QPlainTextEdit(parent) {
-	textEditorParent = parentEdit;
-	lineNumberArea = new LineNumberArea(this, this);
-	connect(this, &QPlainTextEdit::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
-	connect(this, &QPlainTextEdit::updateRequest, this, &TextEditor::updateLineNumberArea);
-	updateLineNumberAreaWidth(0);
+#include <QApplication>
+#include <QClipboard>
+#include <QTextEdit>
+
+
+void TextEditor::mouseReleaseEvent(QMouseEvent *event)
+{
+	/*if(copyPastContextMenuButton) contextMenuButtons.removeOne(copyPastContextMenuButton);
+
+	QTextCursor cursor = textCursor();
+
+	if (cursor.hasSelection()) {
+		copyPastContextMenuButton = new Button("Copier le texte");
+		copyPastContextMenuButton->connect(copyPastContextMenuButton, &QPushButton::clicked, [=](){
+			QString selectedText = textCursor().selectedText();
+			qDebug() << "Texte sélectionné :" << selectedText;
+			QClipboard *clipboard = QApplication::clipboard();
+			clipboard->setText(selectedText);
+
+			contextMenuButtons.removeOne(copyPastContextMenuButton);
+		});
+		contextMenuButtons.append(copyPastContextMenuButton);
+	}*/
+
+	// Appeler la méthode parent pour ne pas casser le comportement normal
+	QPlainTextEdit::mouseReleaseEvent(event);
 }
 
+void TextEditor::mousePressEvent(QMouseEvent *event) {
+	textEditorParent->getWindowParentApp(
+		)->getAppContentDreamMountain(
+		)->getContextMenuDreamMountain(
+		)->hide();
+	if(copyPastContextMenuButton) contextMenuButtons.removeOne(copyPastContextMenuButton);
+	QPlainTextEdit::mousePressEvent(event);
+
+	if (event->button() != Qt::RightButton) return;
+
+	QTextCursor cursor = textCursor();
+    QTextCursor clickCursor = cursorForPosition(event->pos());
+
+	if (cursor.hasSelection() &&
+        clickCursor.position() >= cursor.selectionStart() &&
+        clickCursor.position() <= cursor.selectionEnd())
+    {
+    	copyPastContextMenuButton = new Button("Copier le texte");
+		copyPastContextMenuButton->connect(copyPastContextMenuButton, &QPushButton::clicked, [=](){
+			QString selectedText = textCursor().selectedText();
+			QClipboard *clipboard = QApplication::clipboard();
+			clipboard->setText(selectedText);
+
+			contextMenuButtons.removeOne(copyPastContextMenuButton);
+		});
+		contextMenuButtons.append(copyPastContextMenuButton);
+    }
+
+	QWidget* clickedWidget = QApplication::widgetAt(QCursor::pos());
+	if(clickedWidget) {
+		textEditorParent->getWindowParentApp(
+		)->getAppContentDreamMountain(
+		)->getContextMenuDreamMountain(
+		)->getContextMenu(this, clickedWidget->mapFromGlobal(QCursor::pos()));
+
+		event->accept(); // indiquer qu'on a géré l'événement
+    	return;          // ne pas continuer
+	}
+
+	event->ignore();
+}
 
 int TextEditor::lineNumberAreaWidth() {
 	int digits = QString::number(blockCount()).length();
@@ -110,4 +172,15 @@ void TextEditor::keyPressEvent(QKeyEvent *event) {
 
 
 	QPlainTextEdit::keyPressEvent(event);
+}
+
+
+TextEditor::TextEditor(CodeEditorDreamMountain* parentEdit, QWidget *parent) : QPlainTextEdit(parent) {
+	setContextMenuPolicy(Qt::NoContextMenu);
+
+	textEditorParent = parentEdit;
+	lineNumberArea = new LineNumberArea(this, this);
+	connect(this, &QPlainTextEdit::blockCountChanged, this, &TextEditor::updateLineNumberAreaWidth);
+	connect(this, &QPlainTextEdit::updateRequest, this, &TextEditor::updateLineNumberArea);
+	updateLineNumberAreaWidth(0);
 }

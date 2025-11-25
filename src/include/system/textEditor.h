@@ -35,6 +35,10 @@ protected:
 
 	void keyPressEvent(QKeyEvent *event) override;
 
+	void mousePressEvent(QMouseEvent *event) override;
+
+	void mouseReleaseEvent(QMouseEvent *event) override;
+
 	/* void mousePressEvent(QMouseEvent *event) override {
 		if(event->button() == Qt::RightButton) {
 			///QWidget::mousePressEvent(event);
@@ -49,6 +53,7 @@ private slots:
 	void updateLineNumberArea(const QRect &rect, int dy);
 private:
 	QVector<Button*> contextMenuButtons;
+	Button *copyPastContextMenuButton;
 
 	LineNumberArea *lineNumberArea;
 
@@ -58,5 +63,7 @@ private:
 
 	int cursorPosY;
 	int cursorPosX;
+
+	bool copyPastBtn;
 };
 #endif

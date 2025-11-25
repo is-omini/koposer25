@@ -13,6 +13,9 @@ public:
 	~WebViewDreamMountain();
 
 	void setHtmlWeb(QString string);
+	QString getHtmlWeb(QString string);
+
+	WVVisualConstructDrM* getWvVisualConstructDrm() { return WvVisualConstructDrm; }
 private:
 	WebEngine* webEngineSystem;
 	WVVisualConstructDrM* WvVisualConstructDrm = nullptr;

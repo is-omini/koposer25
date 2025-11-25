@@ -21,10 +21,12 @@ WebViewDreamMountain::WebViewDreamMountain(QWidget *parent) : QWidget(parent) {
 	splitter->setHandleWidth(0);
 	splitter->setMinimumWidth(0);
 
-	webEngineSystem = new WebEngine(splitter);
+	webEngineSystem = new WebEngine(this, splitter);
 
 	WvVisualConstructDrm = new WVVisualConstructDrM(splitter);
 	layout->addWidget(splitter);
+
+	splitter->setSizes({300,150});
 
 	//QSplitter *splitter = new QSplitter(Qt::Vertical, this);
 	//splitter->setStyleSheet("QSplitter::handle { background: transparent; }");

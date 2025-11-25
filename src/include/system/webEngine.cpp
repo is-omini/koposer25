@@ -2,7 +2,9 @@
 
 #include "webEnginePage.h"
 
-WebEngine::WebEngine(QWidget* parent) : QWebEngineView(parent) {
+WebEngine::WebEngine(WebViewDreamMountain* main, QWidget* parent) : QWebEngineView(parent) {
+	WebViewDrm = main;
+	
 	WebEnginePage *page = new WebEnginePage(this);
 	setPage(page);
 }

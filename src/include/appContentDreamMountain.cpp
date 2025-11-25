@@ -107,9 +107,25 @@ AppContentDreamMountain::AppContentDreamMountain(WindowDreamMountain *app, QWidg
 	contentAppBarDreamMountain->addWidget(codeEditorAppDreamMountain);
 	contentAppBarDreamMountain->addWidget(webViewAppDreamMountain);
 
-	webViewAppDreamMountain->setHtmlWeb("<h1>Hello World</h1>");
+	webViewAppDreamMountain->setHtmlWeb(R"(
+	<h1>Hello World</h1>
+	<script>
+	console.log("Hellow World")
+	console.warn("Hellow World")
+	console.error("Hellow World")
+	</script>
+	)");
+	codeEditorAppDreamMountain->setText(R"(
+	<h1>Hello World</h1>
+	<script>
+	console.log("Hellow World")
+	console.warn("Hellow World")
+	console.error("Hellow World")
+	</script>
+	)");
 	QObject::connect(codeEditorAppDreamMountain->getSystemEnfant(), &QPlainTextEdit::textChanged, [this]() {
 		webViewAppDreamMountain->setHtmlWeb(codeEditorAppDreamMountain->getText());
+		webViewAppDreamMountain->getWvVisualConstructDrm()->clearLine();
 	});
 
 	statutAppBarDreamMountain = new StatutAppBarDreamMountain(windowParentApp);

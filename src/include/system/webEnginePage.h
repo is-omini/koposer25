@@ -3,10 +3,12 @@
 
 #include <QWebEnginePage>
 
+class WebEngine;
+
 class WebEnginePage : public QWebEnginePage {
 	Q_OBJECT
 public:
-	explicit WebEnginePage(QObject* parent = nullptr);
+	explicit WebEnginePage(WebEngine* main, QObject* parent = nullptr);
 
 protected:
 	void javaScriptConsoleMessage(
@@ -14,6 +16,9 @@ protected:
 		const QString &message,
 		int lineNumber,
 		const QString &sourceID) override;
+
+private:
+	WebEngine* webEngineDrm;
 };
 
 #endif

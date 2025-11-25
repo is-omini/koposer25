@@ -1,5 +1,9 @@
 #include "webEnginePage.h"
 
+#include "webEngine.h"
+
+#include "../webViewDreamMountain.h"
+
 /*
 enum JavaScriptConsoleMessageLevel {
     QWebEnginePage::InfoMessageLevel,      // équivalent de console.log
@@ -15,21 +19,24 @@ void WebEnginePage::javaScriptConsoleMessage(
 	int lineNumber,
 	const QString &sourceID)
 {
+    QString line;
 	switch(level) {
         case QWebEnginePage::InfoMessageLevel:
-            qDebug() << "[INFO]" << message << "Line:" << lineNumber;
+            line = "[INFO] Line: " + QString::number(lineNumber) + " : " + message;
             break;
         case QWebEnginePage::WarningMessageLevel:
-            qDebug() << "[WARNING]" << message << "Line:" << lineNumber;
+            line = "[WARNING] Line: " + QString::number(lineNumber) + " : " + message;
             break;
         case QWebEnginePage::ErrorMessageLevel:
-            qDebug() << "[ERROR]" << message << "Line:" << lineNumber;
+            line = "[ERROR] Line: " + QString::number(lineNumber) + " : " + message;
             break;
          default:
-            qDebug() << "[DEBUG]" << message << "Line:" << lineNumber;
+            line = "[DEBUG] Line: " + QString::number(lineNumber) + " : " + message;
             break;
     }
-    qDebug() << sourceID;
+    //qDebug() << line;
+
+    webEngineDrm->getWebViewDrm()->getWvVisualConstructDrm()->addLine(line);
 	/*
 	qDebug()
 		<< "JS Console:" << message
@@ -38,7 +45,9 @@ void WebEnginePage::javaScriptConsoleMessage(
 	*/
 }
 
-WebEnginePage::WebEnginePage(QObject* parent) : QWebEnginePage(parent) {}
+WebEnginePage::WebEnginePage(WebEngine* main, QObject* parent) : QWebEnginePage(parent) {
+    webEngineDrm = main;
+}
 
 
 /*

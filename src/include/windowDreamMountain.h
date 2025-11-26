@@ -11,6 +11,7 @@
 #include <QPushButton>
 
 class WindowDreamMountain : public QMainWindow {
+	Q_OBJECT
 public:
 	//tmp
 	QString porjectName;
@@ -43,9 +44,8 @@ public:
 
 		return path;
 	}
-
-	void updateListFilesExplorerDreamMountain(std::string StdCurrentFolderPath, QString titleProject = "");
-
+	CodeEditorDreamMountain* getCodeEditorAppDreamMountain();
+    WebViewDreamMountain* getWebViewAppDreamMountain();
 
 
 	//TextEdit *codeEditorInput;
@@ -68,19 +68,14 @@ public:
 	void setCurrentProjectPath(QString path) {
 		currentProjectPath = path;
 		qDebug() << currentProjectPath;
-
-		int lastSlash = currentProjectPath.lastIndexOf('/');
-		QString lastSegment = currentProjectPath.mid(lastSlash + 1);
-
-		CustomWindowBarDreamMountain->sourceBnC->setText(
-			lastSegment
-		);
 	}
 
 	AppContentDreamMountain *getAppContentDreamMountain() { return appContentDreamMountain; }
 	CustomBarDreamMountain *getCustomWindowBarDreamMountain() { return CustomWindowBarDreamMountain; }
 
 	AppContentDreamMountain *getAppContent() { return appContentDreamMountain; }
+
+	void updateListFilesPoject(std::string path, QString titleProject = nullptr);
 private:
 	CustomBarDreamMountain *CustomWindowBarDreamMountain;
 	AppContentDreamMountain *appContentDreamMountain;

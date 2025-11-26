@@ -10,10 +10,6 @@
 
 #include <QCloseEvent>
 
-void WindowDreamMountain::updateListFilesExplorerDreamMountain(std::string StdCurrentFolderPath, QString titleProject) {
-	appContentDreamMountain->getFileExplorerAppDreamMountain()->updateListFilesPoject(StdCurrentFolderPath, titleProject);
-}
-
 void WindowDreamMountain::hideCustomWindowBar() {
 	CustomWindowBarDreamMountain->hide();
 }
@@ -62,7 +58,6 @@ void WindowDreamMountain::saveWindowGeometry() {
 
 void WindowDreamMountain::loadWindowGeometry() {
     QSettings settings("VotreEntreprise", "DreamMountain");
-    setCurrentProjectPath(settings.value("filesExplorer/currentPath").toString());
     currentProjectPath = settings.value("filesExplorer/currentPath").toString();
     std::string stdCurrentPath = currentProjectPath.toStdString();
 
@@ -86,11 +81,9 @@ void WindowDreamMountain::loadWindowGeometry() {
     }
 }
 
-
-
-
-
-
+void WindowDreamMountain::updateListFilesPoject(std::string path, QString titleProject) {
+    appContentDreamMountain->getFileExplorerAppDreamMountain()->updateListFilesPoject(path, titleProject);
+}
 
 WindowDreamMountain::WindowDreamMountain(QWidget *parent) : QMainWindow(parent) {
 	setWindowFlags(Qt::FramelessWindowHint);

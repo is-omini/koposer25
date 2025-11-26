@@ -32,6 +32,8 @@ public:
 	);
 
 	void clearLayoutExplorerListItems();
+
+	void showEmptyAreaMenu(const QPoint &pos);
 private:
 	QScrollArea *scroll;
 	QVBoxLayout *verticalBox = nullptr;

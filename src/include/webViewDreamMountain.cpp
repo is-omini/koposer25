@@ -1,15 +1,14 @@
 #include "webViewDreamMountain.h"
 
-#include "windowDreamMountain.h"
-
+#include <QEventLoop>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QSplitter>
+#include "windowDreamMountain.h"
 
-WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main,QWidget *parent) : QWidget(parent) {
-	windowParentApp = main;
+WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main, QWidget *parent) : QWidget(parent) {
 	setMinimumWidth(360);
-
+	windowParentApp = main;
 	setStyleSheet(
 		"background-color: white;"
 	);
@@ -28,8 +27,7 @@ WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main,QWidget *pa
 
 	WvVisualConstructDrm = new WVVisualConstructDrM(windowParentApp, splitter);
 	layout->addWidget(splitter);
-
-	splitter->setSizes({300,100});
+	splitter->setSizes({300,150});
 
 	//QSplitter *splitter = new QSplitter(Qt::Vertical, this);
 	//splitter->setStyleSheet("QSplitter::handle { background: transparent; }");
@@ -50,8 +48,25 @@ WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main,QWidget *pa
 	//layout->addWidget(splitter);
 }
 
-void WebViewDreamMountain::setHtmlWeb(QString string) {
-	webEngineSystem->setHtml(string);
+void WebViewDreamMountain::onVisualConstructVisibilityChanged(bool visible) {
+    if (visible) {
+        WvVisualConstructDrm->show();
+    } else {
+        WvVisualConstructDrm->hide();
+    }
+}
+
+void WebViewDreamMountain::setHtmlWeb(const QString& html, const QUrl& baseUrl){
+	webEngineSystem->setHtml(html, baseUrl);
+	webEngineSystem->page()->runJavaScript("document.body.contentEditable = true;");
+}
+
+QString WebViewDreamMountain::getHtmlWeb(){
+    QString html;
+    QEventLoop loop;
+    webEngineSystem->page()->toHtml([&](const QString &result){ html = result; loop.quit(); });
+    loop.exec();
+    return html;
 }
 
 WebViewDreamMountain::~WebViewDreamMountain() {

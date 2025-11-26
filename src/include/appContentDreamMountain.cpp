@@ -82,8 +82,23 @@ void AppContentDreamMountain::updatePosition(QPoint localPos) {
 
 	contextMenuDreamMountain->raise();
 	contextMenuDreamMountain->show();
+} 
+
+void AppContentDreamMountain::onCodeEditorVisibilityChanged(bool visible) {
+    if (visible) {
+        // Mode "Source"
+        codeEditorAppDreamMountain->show();
+        webViewAppDreamMountain->show();
+        webViewAppDreamMountain->onVisualConstructVisibilityChanged(true);
+    } else {
+        // Mode "Design"
+        codeEditorAppDreamMountain->hide();
+        webViewAppDreamMountain->show();
+        webViewAppDreamMountain->onVisualConstructVisibilityChanged(false);
+    }
 }
 
+AppContentDreamMountain::~AppContentDreamMountain() {}
 
 AppContentDreamMountain::AppContentDreamMountain(WindowDreamMountain *app, QWidget *parent) : QWidget(parent) {
 	windowParentApp = app;

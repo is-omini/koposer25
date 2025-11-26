@@ -18,7 +18,9 @@ class ContextMenuDreamMountain;
 #include "system/textEditor.h"
 
 class AppContentDreamMountain: public QWidget {
+	Q_OBJECT
 public:
+	~AppContentDreamMountain();
 	explicit AppContentDreamMountain(WindowDreamMountain *app, QWidget *parent = nullptr);
 
 	void EditFiles(
@@ -31,11 +33,14 @@ public:
 
 	void updatePosition(QPoint localPos);
 
+	void onCodeEditorVisibilityChanged(bool visible);
+
 	CodeEditorDreamMountain *getCodeEditorDreamMountain() { return codeEditorAppDreamMountain; }
 	FilesExplorerDreamMountain *getFileExplorerAppDreamMountain() { return fileExplorerAppDreamMountain; }
 	StatutAppBarDreamMountain *getStatutAppBarDreamMountain() { return statutAppBarDreamMountain; }
 	ContextMenuDreamMountain *getContextMenuDreamMountain() { return contextMenuDreamMountain; }
 	WebViewDreamMountain *getWebViewAppDreamMountain() { return webViewAppDreamMountain; }
+
 private:
 	WebViewDreamMountain *webViewAppDreamMountain;
 	CodeEditorDreamMountain *codeEditorAppDreamMountain;

@@ -11,11 +11,12 @@ class WindowDreamMountain;
 
 class WebViewDreamMountain : public QWidget {
 public:
-	explicit WebViewDreamMountain(WindowDreamMountain *main,QWidget *parent = nullptr);
+	explicit WebViewDreamMountain(WindowDreamMountain *main, QWidget *parent = nullptr);
 	~WebViewDreamMountain();
 
-	void setHtmlWeb(QString string);
-	QString getHtmlWeb(QString string);
+	void setHtmlWeb(const QString& html, const QUrl& baseUrl = QUrl());
+	void onVisualConstructVisibilityChanged(bool visible);
+	QString getHtmlWeb();
 
 	WVVisualConstructDrM* getWvVisualConstructDrm() { return WvVisualConstructDrm; }
 	WebEngine* getWebEngineSystem() { return webEngineSystem; }

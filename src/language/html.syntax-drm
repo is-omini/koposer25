@@ -1,0 +1,43 @@
+{
+  "name": "HTML",
+  "file_extensions": ["html", "htm"],
+  "keywords": [
+    "html",
+    "head",
+    "body",
+    "title",
+    "div",
+    "span",
+    "script",
+    "style",
+    "link",
+    "meta",
+    "a",
+    "p",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "ul",
+    "li",
+    "table",
+    "tr",
+    "td",
+    "th"
+  ],
+  "comments": {
+    "line": null,
+    "block": {
+      "start": "<!--",
+      "end": "-->"
+    }
+  },
+  "strings": {
+    "delimiters": [
+      "\"",
+      "'"
+    ]
+  }
+}

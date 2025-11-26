@@ -157,23 +157,39 @@ void openFolder(WindowDreamMountain* windowParentApp) {
 		//windowParentApp->oldProjectPath.clear();
 		windowParentApp->filesExplorerHistory.clear();
 		windowParentApp->filesExplorerHistory.push_back(dossier.toStdString());
-		windowParentApp->getAppContent()->getFileExplorerAppDreamMountain()->updateListFilesPoject(
+		windowParentApp->updateListFilesExplorerDreamMountain(
 			windowParentApp->getCurrentProjectPath().toStdString() + "/"
 		);
 	}
 }
 
 void backFolderToExplorer(WindowDreamMountain* windowParentApp) {
-	qDebug() << "///" << windowParentApp->filesExplorerHistoryGetLast();
-
 	if (windowParentApp->filesExplorerHistory.size() < 1) return;
 	if (windowParentApp->filesExplorerHistory.size() > 1) windowParentApp->filesExplorerHistoryPop();
 
 	std::string previous = windowParentApp->filesExplorerHistoryGetLast();
-	qDebug() << "windowParentApp->porjectName =" << (windowParentApp->porjectName);
 	windowParentApp->currentPath = QString::fromStdString(previous);
 
-	windowParentApp->getAppContent()->getFileExplorerAppDreamMountain()->updateListFilesPoject(
+	windowParentApp->updateListFilesExplorerDreamMountain(
 		previous + "/", windowParentApp->porjectName
 	);
+}
+
+
+void openExplorerFile(WindowDreamMountain* windowParentApp, std::string StdFilePath, QString QStrFileName) {
+	openFile(windowParentApp, StdFilePath);
+	windowParentApp->setCurrentFilePath(QStrFileName);
+}
+
+void openExplorerFolder(
+	WindowDreamMountain* windowParentApp,
+	std::string currentFolderPath,
+	std::string StdFilePath,
+	QString QStrFileName,
+	QString titleProject
+) {
+	windowParentApp->filesExplorerHistoryPush(currentFolderPath);
+
+	QDir dir(QStrFileName);
+	if(dir.exists()) windowParentApp->updateListFilesExplorerDreamMountain(StdFilePath, titleProject);
 }

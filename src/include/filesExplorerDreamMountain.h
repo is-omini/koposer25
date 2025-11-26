@@ -8,11 +8,28 @@ class WindowDreamMountain;
 #include <QVBoxLayout>
 #include <QSplitter>
 
+#include "interfaceDreamMountain.h"
+
 class FilesExplorerDreamMountain : public QWidget {
 public:
 	explicit FilesExplorerDreamMountain(WindowDreamMountain *app, QWidget *parent = nullptr);
 
 	void updateListFilesPoject(std::string path, QString titleProject = nullptr);
+
+	Button* ButtonExplorer(
+		QString buttonText,
+		QString buttonIconSvg,
+
+		QString pathFile,
+		QString path,
+
+
+
+		QString pathExplorer,
+		QString titleProject,
+
+		bool isDirectory
+	);
 
 	void clearLayoutExplorerListItems();
 private:

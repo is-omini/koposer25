@@ -10,6 +10,10 @@
 
 #include <QCloseEvent>
 
+void WindowDreamMountain::updateListFilesExplorerDreamMountain(std::string StdCurrentFolderPath, QString titleProject) {
+	appContentDreamMountain->getFileExplorerAppDreamMountain()->updateListFilesPoject(StdCurrentFolderPath, titleProject);
+}
+
 void WindowDreamMountain::hideCustomWindowBar() {
 	CustomWindowBarDreamMountain->hide();
 }

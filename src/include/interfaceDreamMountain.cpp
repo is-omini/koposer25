@@ -21,6 +21,9 @@ Button::Button(
 )
 	: QPushButton(text, parent)
 {
+	buttonTexte = text;
+
+	if(svgBalise.isEmpty()) return;
 	QSvgRenderer renderer(svgBalise.toUtf8());
 	QPixmap pixmap(size, size);
 	pixmap.fill(Qt::transparent);

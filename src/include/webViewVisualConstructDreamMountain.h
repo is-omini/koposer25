@@ -3,6 +3,7 @@
 
 
 #include "interfaceDreamMountain.h"
+#include "system/terminal.h"
 
 class WindowDreamMountain;
 
@@ -10,12 +11,17 @@ class WindowDreamMountain;
 #include <QString>
 #include <QVBoxLayout>
 
+#include <iostream>
+#include <string>
+#include <regex>
+#include <vector>
+
 class WVVisualConstructDrM : public QWidget {
 public:
 	explicit WVVisualConstructDrM(WindowDreamMountain *main,QWidget* parent = nullptr);
 
 	void addLine(QString string) {
-		qDebug() << string;
+		//qDebug() << string;
 		Button *btn = new Button(string, nullptr, 0);
 		QString colorText = "#ffffff"; // ou toute autre couleur
 		if(string.contains("ERROR")) colorText = "#FF5F57";
@@ -41,8 +47,45 @@ public:
 		layoutConteneur->addWidget(btn);
 	}
 
+	void getHtmlElement(std::string html) {
+		qDebug() << html;
+		auto tags = listHtmlTags(html);
+
+		for (const auto& t : tags) {
+			Debug() << t;
+		}
+	}
+
+	std::vector<std::string> listHtmlTags(const std::string& html) {
+	    std::regex tagRegex("<\\/?([a-zA-Z0-9-]+)[^>]*>");
+	    std::smatch match;
+	    std::string text = html;
+	    std::vector<std::string> result;
+
+	    while (std::regex_search(text, match, tagRegex)) {
+	        std::string fullTag = match[0];
+	        std::string tagName = match[1];
+
+	        if(tagName != "script") {
+
+	        if (fullTag[1] == '/') {
+	            // Balise fermante
+	            result.push_back("-" + tagName);
+	        } else {
+	            // Balise ouvrante
+	            result.push_back(tagName);
+	        }
+	        	
+	        }
+
+	        text = match.suffix().str();
+	    }
+
+	    return result;
+	}
+
 	void clearLine() {
-		qDebug() << "CLEAR";
+		//qDebug() << "CLEAR";
 
 		if (layoutConteneur) {
 			QLayoutItem *child;

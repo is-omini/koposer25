@@ -3,8 +3,6 @@
 #include "colorDreamMountain.h"
 #include "iconDreamMountain.h"
 
-#include "interfaceDreamMountain.h"
-
 #include "system/fileExplorerEngine.h"
 #include "system/fileSortingAlgorithm.h"
 
@@ -16,8 +14,70 @@
 
 #include <QInputDialog>
 
+Button* FilesExplorerDreamMountain::ButtonExplorer(
+	QString buttonText,
+	QString buttonIconSvg,
+
+	QString fileName,
+	QString path,
+
+
+
+	QString QStrCurrentFolderPath,
+	QString titleProject,
+
+	bool isDirectory
+) {
+	Button *btn = new Button(
+		buttonText,
+		buttonIconSvg,
+		16
+	);
+	btn->setStyleSheet(styleButonExplorerFileNormal);
+	btn->attrPath = fileName;
+
+	QString QStrFilePath = QStrCurrentFolderPath + "/" + fileName + "/";
+
+
+	// Re-definition
+	std::string StdFileName = fileName.toStdString();
+	std::string StdCurrentFolderPath = QStrCurrentFolderPath.toStdString();
+	std::string StdFilePath = QStrFilePath.toStdString();
+
+
+	// Ajout du clique
+	btn->connect(btn, &QPushButton::clicked, [=](){
+		if (isDirectory) {
+			qDebug() << "StdFileName : " << StdFileName;
+			qDebug() << "StdCurrentFolderPath : " << StdCurrentFolderPath;
+			qDebug() << "StdFilePath : " << StdFilePath;
+			
+			//windowParentApp->filesExplorerHistoryPush(StdFilePath);
+
+			//QDir dir(path);
+			//if(dir.exists()) updateListFilesPoject(StdFilePath, titleProject);
+			openExplorerFolder(
+				windowParentApp,
+				StdCurrentFolderPath,
+				StdFilePath,
+				QStrFilePath,
+				titleProject
+			);
+		} else {
+			openExplorerFile(windowParentApp, StdFileName, QStrFilePath);
+			//openFile(windowParentApp, StdFileName);
+			//windowParentApp->setCurrentFilePath(QStrFilePath);
+		}
+	});
+
+
+	// Ajout dans le QVBoxLayout
+	layoutExplorerListItems->addWidget(btn, 0, Qt::AlignTop);
+
+	return btn;
+}
+
 void FilesExplorerDreamMountain::clearLayoutExplorerListItems() {
-	//windowParentApp->filesExplorerHistory.clear();
 	if (layoutExplorerListItems) {
 		QLayoutItem *child;
 		while ((child = layoutExplorerListItems->takeAt(0)) != nullptr) {
@@ -32,7 +92,7 @@ void FilesExplorerDreamMountain::clearLayoutExplorerListItems() {
 }
 
 
-void FilesExplorerDreamMountain::updateListFilesPoject(std::string pathExplorer, QString titleProject) {
+void FilesExplorerDreamMountain::updateListFilesPoject(std::string StdCurrentFolderPath, QString titleProject) {
 	windowParentApp->porjectName = titleProject;
 	clearLayoutExplorerListItems();
 
@@ -40,47 +100,68 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string pathExplorer,
 	layoutExplorerListItems->setContentsMargins(0,0,0,0);
 	layoutExplorerListItems->setSpacing(0);
 
-	FileSortingAlgorithm *SortingPathFiles = new FileSortingAlgorithm(pathExplorer);
+	FileSortingAlgorithm *SortingPathFiles = new FileSortingAlgorithm(StdCurrentFolderPath);
 
 	for (const auto& entry : SortingPathFiles->entries) {
-		std::string fullPath = pathExplorer + '/' + entry.path().filename().string();
-
 		QString buttonIcon = iconFile;
-		if (entry.is_directory()) buttonIcon = iconFolder;
+		if(entry.is_directory()) buttonIcon = iconFolder;
 
-		Button *newButton = new Button(
+		std::string StdPathFileName = entry.path().filename().string();
+		std::string StdFilePath = StdCurrentFolderPath + "/" + entry.path().filename().string() + "/";
+
+		QString QStrPathFileName = QString::fromUtf8(StdPathFileName.c_str());
+		QString QStrFileName = QString::fromUtf8(StdFilePath.c_str());
+		QString QStrCurrentFolderPath = QString::fromUtf8(StdCurrentFolderPath.c_str());
+
+		Button* newButton = ButtonExplorer(
+			// Default (name + icon)
+			QStrPathFileName, 
+			buttonIcon, 
+
+			// Custome
+			QStrPathFileName,
+			QStrFileName,
+
+			// Event
+			QStrCurrentFolderPath,
+			titleProject,
+
+			entry.is_directory()
+		);
+
+		/* Button *newButton = new Button(
 			QString::fromStdString(entry.path().filename().string()),
 			buttonIcon,
 			16
 		);
-		newButton->attrPath = QString::fromStdString(pathExplorer + '/' + entry.path().filename().string());
+		newButton->attrPath = QString::fromStdString(StdCurrentFolderPath + '/' + entry.path().filename().string());
 		newButton->setStyleSheet(styleButonExplorerFileNormal);
 		newButton->connect(newButton, &QPushButton::clicked, [=](){
 			if (entry.is_directory()) {
-				qDebug() << "/::" << pathExplorer;
-				windowParentApp->filesExplorerHistoryPush(pathExplorer);
+				qDebug() << "/::" << StdCurrentFolderPath;
+				windowParentApp->filesExplorerHistoryPush(StdCurrentFolderPath);
 
-				QDir dir(QString::fromStdString(fullPath));
-				if(dir.exists()) updateListFilesPoject(fullPath + "/", titleProject);
+				QDir dir(QStrFileName);
+				if(dir.exists()) updateListFilesPoject(StdFilePath + "/", titleProject);
 			} else {
-				openFile(windowParentApp, fullPath);
-				windowParentApp->setCurrentFilePath(QString::fromStdString(fullPath));
+				openFile(windowParentApp, StdFilePath);
+				windowParentApp->setCurrentFilePath(QStrFileName);
 			}
 		});
-		layoutExplorerListItems->addWidget(newButton, 0, Qt::AlignTop);
+		layoutExplorerListItems->addWidget(newButton, 0, Qt::AlignTop);*/
 
 
 		Button *c1 = new Button("Ouvrir");
 		c1->connect(c1, &QPushButton::clicked, [=](){
 			if (entry.is_directory()) {
-				windowParentApp->filesExplorerHistoryPush(pathExplorer);
+				windowParentApp->filesExplorerHistoryPush(StdCurrentFolderPath);
 
-				QDir dir(QString::fromStdString(fullPath));
-				if(dir.exists()) updateListFilesPoject(fullPath + "/", titleProject);
+				QDir dir(QStrFileName);
+				if(dir.exists()) updateListFilesPoject(StdFilePath, titleProject);
 			}
 			else {
-				openFile(windowParentApp, fullPath);
-				windowParentApp->setCurrentFilePath(QString::fromStdString(fullPath));
+				openFile(windowParentApp, StdFilePath);
+				windowParentApp->setCurrentFilePath(QStrFileName);
 			}
 		});
 		newButton->append(c1);
@@ -97,9 +178,9 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string pathExplorer,
 			);
 			if (ok && !newName.isEmpty()) {
 				/* try {
-					fs::rename(fullPath, fs::path(fullPath).parent_path() / newName.toStdString());
+					fs::rename(StdFilePath, fs::path(StdFilePath).parent_path() / newName.toStdString());
 					//this->explorerListFiles(path);
-					updateListFilesPoject(fullPath, titleProject);
+					updateListFilesPoject(StdFilePath, titleProject);
 				} catch (const fs::filesystem_error& e) {
 					QMessageBox::warning(this, "Erreur", e.what());
 				} */
@@ -115,7 +196,7 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string pathExplorer,
 			);
 			if (reply == QMessageBox::Yes) {
 				try {
-					fs::remove_all(fullPath);
+					fs::remove_all(StdFilePath);
 					//updateListFilesPoject(path);
 				} catch (const fs::filesystem_error& e) {
 					QMessageBox::warning(this, "Erreur", e.what());
@@ -123,8 +204,6 @@ void FilesExplorerDreamMountain::updateListFilesPoject(std::string pathExplorer,
 			}
 		});
 		newButton->append(c3);
-		// Button *c4 = new Button("Hello World 4");
-		// newButton->append(c4);
 	}
 
 	layoutExplorerListItems->addStretch();

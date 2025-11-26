@@ -72,10 +72,10 @@ WVVisualConstructDrM::WVVisualConstructDrM(WindowDreamMountain *main,QWidget* pa
 		}
 	)");
 	zoom->connect(zoom, &Button::clicked, [=](){
-		windowParentApp->getAppContentDreamMountain()->getWebViewAppDreamMountain()->getWebEngineSystem()->zoomIn();
+    	windowParentApp->getAppContentDreamMountain()->getWebViewAppDreamMountain()->getWebEngineSystem()->zoomIn();
 		qreal currentZoom = windowParentApp->getAppContentDreamMountain()->getWebViewAppDreamMountain()->getWebEngineSystem()->zoomCurrent();
-		QString currentZoomString = QString::number(currentZoom * 100);
-		zoomInt->setText(currentZoomString+"%");
+		QString currentZoomString = QString::number(currentZoom * 100) + "%";
+		zoomInt->setText(currentZoomString);
 	});
 
 	Button *unZoom = new Button("", R"(<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M240-460v-40h480v40H240Z"/></svg>)", 16);
@@ -83,8 +83,8 @@ WVVisualConstructDrM::WVVisualConstructDrM(WindowDreamMountain *main,QWidget* pa
 	unZoom->connect(unZoom, &Button::clicked, [=](){
 		windowParentApp->getAppContentDreamMountain()->getWebViewAppDreamMountain()->getWebEngineSystem()->zoomOut();
 		qreal currentZoom = windowParentApp->getAppContentDreamMountain()->getWebViewAppDreamMountain()->getWebEngineSystem()->zoomCurrent();
-		QString currentZoomString = QString::number(currentZoom * 100);
-		zoomInt->setText(currentZoomString+"%");
+		QString currentZoomString = QString::number(currentZoom * 100) + "%";
+		zoomInt->setText(currentZoomString);
 	});
 	wis1->setStyleSheet(R"(
 		QPushButton {
@@ -100,6 +100,40 @@ WVVisualConstructDrM::WVVisualConstructDrM(WindowDreamMountain *main,QWidget* pa
 			background-color: #1e1f22;
 		}
 	)");
+
+	
+	zoomInt->connect(zoomInt, &Button::clicked, [=]() {
+    	QString btnText = zoomInt->text();   // Toujours lire depuis l'objet
+
+		qreal currentZoom = windowParentApp->getAppContentDreamMountain()
+			->getWebViewAppDreamMountain()
+			->getWebEngineSystem()
+			->zoomCurrent();
+
+		int webEngineWidth = windowParentApp->getAppContentDreamMountain()
+				->getWebViewAppDreamMountain()
+				->getWebEngineSystem()->width(); 
+
+		int webEngineheight = windowParentApp->getAppContentDreamMountain()
+				->getWebViewAppDreamMountain()
+				->getWebEngineSystem()->height(); 
+
+		QString currentZoomString = QString::number(currentZoom * 100) + "%";
+
+		qDebug()
+		<< "height"
+		<<  QString::number((webEngineheight/(currentZoom)), 'f', 0)
+
+		<< "width"
+		<<  QString::number((webEngineWidth/(currentZoom)), 'f', 0);
+
+		//qDebug() << btnText << "==" << currentZoomString;
+		if (btnText == currentZoomString) btnText = QString::number((webEngineWidth/(currentZoom)), 'f', 0)+"x"+QString::number((webEngineheight/(currentZoom)), 'f', 0);
+		else btnText = currentZoomString;
+
+		zoomInt->setText(btnText);
+	});
+
 
 
 	layoutConteneur_->addWidget(zoom);

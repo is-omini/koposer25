@@ -44,6 +44,9 @@ public:
 		return path;
 	}
 
+	void updateListFilesExplorerDreamMountain(std::string StdCurrentFolderPath, QString titleProject = "");
+
+
 
 	//TextEdit *codeEditorInput;
 	//QWebEngineView *vueWeb;

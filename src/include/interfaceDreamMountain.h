@@ -29,8 +29,10 @@ public:
 	QString attrID;
 	QString attrPath;
 
+	QString buttonTexte;
+
 	QString getTexte() {
-		return "Hello World";
+		return buttonTexte;
 	}
 
 	QVector<Button*> getContextMenu() {

@@ -139,8 +139,17 @@ AppContentDreamMountain::AppContentDreamMountain(WindowDreamMountain *app, QWidg
 	</script>
 	)");
 	QObject::connect(codeEditorAppDreamMountain->getSystemEnfant(), &QPlainTextEdit::textChanged, [this]() {
-		webViewAppDreamMountain->setHtmlWeb(codeEditorAppDreamMountain->getText());
-		webViewAppDreamMountain->getWvVisualConstructDrm()->clearLine();
+        // Pour éviter les boucles de mise à jour, on vérifie si le contenu est différent
+        if (webViewAppDreamMountain->getHtmlWebForUpdate() != codeEditorAppDreamMountain->getText()) {
+		    webViewAppDreamMountain->setHtmlWeb(codeEditorAppDreamMountain->getText());
+		    webViewAppDreamMountain->getWvVisualConstructDrm()->clearLine();
+        }
+	});
+
+	QObject::connect(webViewAppDreamMountain, &WebViewDreamMountain::htmlChanged, [this](const QString& html) {
+		if (codeEditorAppDreamMountain->getText() != html) {
+			codeEditorAppDreamMountain->setText(html);
+		}
 	});
 
 	statutAppBarDreamMountain = new StatutAppBarDreamMountain(windowParentApp);

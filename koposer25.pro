@@ -30,7 +30,8 @@ SOURCES += src/mainDreamMountain.cpp \
     src/include/system/terminal.cpp \
     src/include/customBarDreamMountain.cpp \
     src/include/statutAppBarDreamMountain.cpp \
-    src/include/contextMenuDreamMountain.cpp
+    src/include/contextMenuDreamMountain.cpp \
+    src/include/webChannelBridge.cpp
 
 # Headers
 HEADERS += src/mainDreamMountain.h \
@@ -53,7 +54,8 @@ HEADERS += src/mainDreamMountain.h \
     src/include/system/terminal.h \
     src/include/colorDreamMountain.h \
     src/include/iconDreamMountain.h \
-    src/include/contextMenuDreamMountain.h
+    src/include/contextMenuDreamMountain.h \
+    src/include/webChannelBridge.h
 
 # Personnalisation macOS
 mac {

@@ -6,6 +6,7 @@
 #include <QSplitter>
 #include "windowDreamMountain.h"
 
+#include <QWebChannel>
 WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main, QWidget *parent) : QWidget(parent) {
 	setMinimumWidth(360);
 	windowParentApp = main;
@@ -24,6 +25,12 @@ WebViewDreamMountain::WebViewDreamMountain(WindowDreamMountain *main, QWidget *p
 	splitter->setMinimumWidth(0);
 
 	webEngineSystem = new WebEngine(windowParentApp, this, splitter);
+
+	// Création du pont et du canal de communication
+	bridge = new WebChannelBridge(this);
+	QWebChannel *channel = new QWebChannel(this);
+	channel->registerObject(QStringLiteral("bridge"), bridge);
+	webEngineSystem->page()->setWebChannel(channel);
 
 	WvVisualConstructDrm = new WVVisualConstructDrM(windowParentApp, splitter);
 	layout->addWidget(splitter);
@@ -57,8 +64,30 @@ void WebViewDreamMountain::onVisualConstructVisibilityChanged(bool visible) {
 }
 
 void WebViewDreamMountain::setHtmlWeb(const QString& html, const QUrl& baseUrl){
+	currentHtml = html;
 	webEngineSystem->setHtml(html, baseUrl);
-	webEngineSystem->page()->runJavaScript("document.body.contentEditable = true;");
+
+	// Script pour rendre le contenu éditable et notifier les changements
+	QString script = R"(
+		document.body.contentEditable = true;
+		// Écoute les changements dans le body
+		document.body.addEventListener('input', function() {
+			// Envoie le HTML mis à jour au C++ via le WebChannel
+			new QWebChannel(qt.webChannelTransport, function(channel) {
+				channel.objects.bridge.htmlChanged(document.documentElement.outerHTML);
+			});
+		});
+	)";
+	webEngineSystem->page()->runJavaScript(script);
+
+	// Connecter le signal du pont au signal de cette classe
+	connect(bridge, &WebChannelBridge::htmlChanged, this, [this](const QString &html) {
+		currentHtml = html;
+		emit htmlChanged(html);
+	});
+}
+QString WebViewDreamMountain::getHtmlWebForUpdate() {
+	return currentHtml;
 }
 
 QString WebViewDreamMountain::getHtmlWeb(){
